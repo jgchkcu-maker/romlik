@@ -1,9 +1,9 @@
-name: Auto Update HApp Top 50 Subscription
+name: Auto Update HApp Subscription (Full Pool xray Probe)
 
 on:
   schedule:
-    # Проверка подписки каждые 5 минут: тестируем серверы реальным xray-коннектом,
-    # мёртвые заменяем живыми из пула
+    # Каждые 5 минут: перепроверяем ВЕСЬ пул конфигов реальным xray-коннектом,
+    # заменяем мёртвые/медленные лучшими по пингу. Без ограничения в 50 серверов.
     - cron: '*/5 * * * *'
   push:
     branches:
@@ -45,9 +45,9 @@ jobs:
           rm -rf xray_tmp xray.zip
           xray version
 
-      - name: Run Watch Cycle (test subscription + replace dead)
+      - name: Run Watch Cycle (full pool xray probe, best N by real ping)
         run: |
-          python happ_top50_hub.py --watch-once
+          python happ_top50_hub.py --watch-once --max-nodes 0 --xray-bin /usr/local/bin/xray
 
       - name: Commit and Push Updated Subscription
         run: |

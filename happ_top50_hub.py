@@ -747,6 +747,9 @@ class CodexRealProbe:
 
         alive.sort(key=lambda x: x.latency_ms if x.latency_ms is not None else 99999)
         return alive
+
+
+class HappSubscriptionHub:
     """
     // Главный строитель подписки HApp и локальный сервер раздачи
     """
@@ -794,27 +797,22 @@ class CodexRealProbe:
         print(f"    - Глобальных скоростных узлов: {len(global_nodes)}")
         return whitelist_nodes, global_nodes
 
-    async def generate_top50(self, wl_count: int = 25, global_count: int = 25, timeout: float = 1.3,
+    async def generate_top50(self, timeout: float = 1.3,
                               max_latency: float = 800.0, require_tls: bool = True,
-                              xray_bin: str = "xray", use_real_probe: bool = True) -> List[CodexNode]:
+                              xray_bin: str = "xray", use_real_probe: bool = True,
+                              max_nodes: int = 100) -> List[CodexNode]:
         wl_raw, global_raw = self.load_nodes()
         probe = CodexFastProbe(timeout=timeout, concurrency=400, require_tls=require_tls)
 
-        # Ограничиваем выборку для экспресс-проверки
-        wl_pool = wl_raw[:1500] if len(wl_raw) > 1500 else wl_raw
-        global_pool = global_raw[:1500] if len(global_raw) > 1500 else global_raw
-
-        # Параллельная проверка обоих пулов
+        # Параллельная проверка ВСЕГО пула (без лимита — берем всё что есть)
         alive_wl, alive_global = await asyncio.gather(
-            probe.probe_all(wl_pool, label="Белые Списки (SNI/CIDR)"),
-            probe.probe_all(global_pool, label="Глобальная Скорость")
+            probe.probe_all(wl_raw, label="Белые Списки (SNI/CIDR)"),
+            probe.probe_all(global_raw, label="Глобальная Скорость")
         )
 
-        # TLS-префильтр: берём больше кандидатов, чем нужно в итог —
-        # реальный xray-зонд отсевёт тех, кто принимает TLS, но не проксирует.
-        candidate_wl = alive_wl[:120]
-        candidate_gl = alive_global[:120]
-        candidates = candidate_wl + candidate_gl
+        # Все TLS-живые кандидаты отправляем на реальную xray-проверку
+        candidates = alive_wl + alive_global
+        print(f"[*] TLS-префильтр: {len(alive_wl)} WL + {len(alive_global)} GL = {len(candidates)} кандидатов")
 
         # // РЕАЛЬНАЯ проверка через xray-core (честный тест)
         real_alive: List[CodexNode] = []
@@ -824,19 +822,17 @@ class CodexRealProbe:
             real_alive = await real_probe.probe_all(candidates)
             print(f"    -> Реально рабочих серверов: {len(real_alive)}")
 
-        # // Fallback: если xray недоступен (нет бинарника) — используем TLS-фильтр
+        # // Fallback: если xray недоступен — используем TLS-фильтр
         if not real_alive:
             if use_real_probe:
                 print("[!] xray-core недоступен или не нашёл рабочих — используем TLS-префильтр")
             LATENCY_DEAD_THRESHOLD_MS = max_latency
             real_alive = [n for n in candidates if n.latency_ms and n.latency_ms < LATENCY_DEAD_THRESHOLD_MS]
 
-        # // Разделяем обратно на белые списки и глобальные, сортируем по реальному пингу
-        real_wl = [n for n in real_alive if n.is_whitelist][:wl_count]
-        real_gl = [n for n in real_alive if not n.is_whitelist][:global_count]
-
-        # Объединяем в итоговый ТОП-50: белые списки первыми
-        combined: List[CodexNode] = real_wl + real_gl
+        # // Сортируем по РЕАЛЬНОМУ пингу (от xray observatory) и берём лучших N
+        real_alive.sort(key=lambda x: x.latency_ms if x.latency_ms is not None else 99999)
+        combined: List[CodexNode] = real_alive[:max_nodes]
+        print(f"[*] Итого в подписке: {len(combined)} серверов (лучшие по реальному пингу)")
 
         # // Геолокация: сначала офлайн-словарь, затем онлайн ip-api для XX
         for n in combined:
@@ -880,7 +876,7 @@ class CodexRealProbe:
         # 3. JSON для приложений
         json_path = os.path.join(self.out_dir, "happ_subscription.json")
         data = {
-            "title": "HApp Top 50 Codex Subscription",
+            "title": "HApp Subscription (Full Pool, Best by Real Ping)",
             "updated_at": time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime()),
             "total_nodes": len(top_nodes),
             "whitelist_nodes": len([n for n in top_nodes if n.is_whitelist]),
@@ -905,9 +901,9 @@ class CodexRealProbe:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
         print("\n" + "=" * 65)
-        print("СФОРМИРОВАНА ЕДИНАЯ ПОДПИСКА ТОП-50 ДЛЯ HAPP:")
-        print(f"  [+] Серверов Белых Списков:   {len([n for n in top_nodes if n.is_whitelist])}")
-        print(f"  [+] Скоростных серверов:      {len([n for n in top_nodes if not n.is_whitelist])}")
+        print("СФОРМИРОВАНА ПОДПИСКА ДЛЯ HAPP (весь пул, лучшие по пингу):")
+        print(f"  [+] Белых списков:   {len([n for n in top_nodes if n.is_whitelist])}")
+        print(f"  [+] Глобальных:       {len([n for n in top_nodes if not n.is_whitelist])}")
         print(f"  -> Прямой список (Plain):     {os.path.abspath(plain_path)}")
         print(f"  -> Подписка Base64 (URL/Sub): {os.path.abspath(b64_path)}")
         print("=" * 65)
@@ -947,55 +943,34 @@ class CodexRealProbe:
                 break
         return found[:count]
 
-    async def watch_cycle(self, xray_bin: str = "xray", require_tls: bool = False) -> List[CodexNode]:
+    async def watch_cycle(self, xray_bin: str = "xray", require_tls: bool = False, max_nodes: int = 100) -> List[CodexNode]:
         """
-        Один цикл проверки: тестирует серверы текущей подписки реальным xray-коннектом,
-        мёртвые заменяет живыми из пула. Возвращает итоговый список серверов.
+        Один цикл проверки: ПЕРЕПРОВЕРЯЕТ ВЕСЬ ПУЛ ИЗ ИСТОЧНИКА реальным xray-коннектом,
+        сортирует по реальному пингу и формирует свежую подписку из лучших N.
+        Мёртвые/медленные автоматически заменяются быстрыми из пула.
         """
-        current = self.load_subscription_servers()
-        if not current:
-            print("[!] Подписка пуста — генерирую начальную...")
-            return await self.generate_top50(use_real_probe=True, xray_bin=xray_bin, require_tls=require_tls)
+        print(f"[*] Полная перепроверка пула конфигов (xray real probe)...")
+        # // Генерируем подписку с нуля из всего пула — это гарантирует
+        # // что мёртвые серверы заменены лучшими живыми
+        nodes = await self.generate_top50(
+            require_tls=require_tls, xray_bin=xray_bin,
+            use_real_probe=True, max_nodes=max_nodes,
+        )
+        print(f"    ✓ Подписка обновлена: {len(nodes)} серверов (лучшие по реальному пингу)")
+        return nodes
 
-        print(f"[*] Проверка {len(current)} серверов подписки (xray real probe)...")
-        real_probe = CodexRealProbe(xray_bin=xray_bin, timeout=12.0)
-        alive = await real_probe.probe_all(current)
-        dead_count = len(current) - len(alive)
-
-        if dead_count == 0:
-            print(f"    ✓ Все {len(current)} серверов живые — замен не нужно")
-            for idx, node in enumerate(alive, 1):
-                node.formatted_uri = CodexRenamer.apply_happ_name(node, idx)
-            self.save_artifacts(alive)
-            return alive
-
-        print(f"    ✗ Мёртвых серверов: {dead_count} из {len(current)}")
-        exclude = {n.key() for n in alive}
-        replacements = await self.find_replacements(dead_count, xray_bin, exclude, require_tls)
-        if replacements:
-            print(f"    → Найдено замен: {len(replacements)}")
-            combined = alive + replacements
-        else:
-            print(f"    ! Не найдено замен — оставляю {len(alive)} живых")
-            combined = alive
-
-        for idx, node in enumerate(combined, 1):
-            node.formatted_uri = CodexRenamer.apply_happ_name(node, idx)
-        self.save_artifacts(combined)
-        print(f"    ✓ Подписка обновлена: {len(combined)} серверов")
-        return combined
-
-    async def watch_loop(self, interval_minutes: int = 5, xray_bin: str = "xray", require_tls: bool = False):
+    async def watch_loop(self, interval_minutes: int = 5, xray_bin: str = "xray", require_tls: bool = False, max_nodes: int = 100):
         """
-        Бесконечный цикл: проверяет серверы текущей подписки реальным xray-коннектом,
-        мёртвые заменяет живыми из пула. Интервал по умолчанию — 5 минут.
+        Бесконечный цикл: ПЕРЕПРОВЕРЯЕТ ВЕСЬ ПУЛ ИЗ ИСТОЧНИКА и формирует
+        свежую подписку из лучших N серверов по реальному пингу. Интервал — 5 минут.
         """
-        print(f"\n[+] РЕЖИМ ПРОВЕРКИ ПОДПИСКИ каждые {interval_minutes} минут (xray real probe)")
+        print(f"\n[+] РЕЖИМ ПРОВЕРКИ ПОДПИСКИ каждые {interval_minutes} минут (полный xray real probe)")
+        print(f"    Целевое количество серверов: {max_nodes}")
         print("    Ctrl+C для остановки.\n")
 
         while True:
             try:
-                await self.watch_cycle(xray_bin=xray_bin, require_tls=require_tls)
+                await self.watch_cycle(xray_bin=xray_bin, require_tls=require_tls, max_nodes=max_nodes)
             except Exception as e:
                 print(f"    ! Ошибка в цикле: {e}")
             await asyncio.sleep(interval_minutes * 60)
@@ -1080,37 +1055,41 @@ def main():
     parser.add_argument("--no-require-tls", dest="require_tls", action="store_false", help="Гибрид: TLS-проверка с TCP-фолбэком, TLS-вериф. серверы в приоритете (по умолчанию)")
     parser.add_argument("--xray-bin", type=str, default="xray", help="Путь к xray-core бинарнику (по умолчанию 'xray')")
     parser.add_argument("--no-real-probe", action="store_true", help="Отключить реальную проверку xray-core (только TLS-фильтр)")
-    parser.add_argument("--watch", action="store_true", help="Режим проверки подписки: каждые N минут тестирует серверы и заменяет мёртвые живыми")
+    parser.add_argument("--watch", action="store_true", help="Режим проверки подписки: каждые N минут перепроверяет весь пул и обновляет подписку лучшими серверами")
     parser.add_argument("--watch-once", action="store_true", help="Один цикл проверки (для GitHub Action), затем выход")
     parser.add_argument("--interval", type=int, default=5, help="Интервал проверки в минутах для --watch (по умолчанию 5)")
+    parser.add_argument("--max-nodes", type=int, default=100, help="Максимальное количество серверов в подписке (по умолчанию 100, 0 = без ограничений)")
 
     args = parser.parse_args()
     hub = HappSubscriptionHub()
 
     # // Режим непрерывной проверки подписки (локально)
+    max_nodes = args.max_nodes if args.max_nodes > 0 else 9999
     if args.watch:
-        asyncio.run(hub.watch_loop(interval_minutes=args.interval, xray_bin=args.xray_bin, require_tls=args.require_tls))
+        asyncio.run(hub.watch_loop(interval_minutes=args.interval, xray_bin=args.xray_bin, require_tls=args.require_tls, max_nodes=max_nodes))
         return
 
     # // Один цикл проверки (для GitHub Action)
     if args.watch_once:
-        asyncio.run(hub.watch_cycle(xray_bin=args.xray_bin, require_tls=args.require_tls))
+        asyncio.run(hub.watch_cycle(xray_bin=args.xray_bin, require_tls=args.require_tls, max_nodes=max_nodes))
         return
 
-    # Генерация подписки ТОП-50
-    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout,
+    # Генерация подписки — ВСЕ серверы из пула, лучшие N по реальному пингу
+    asyncio.run(hub.generate_top50(timeout=args.timeout,
                                    max_latency=args.max_latency, require_tls=args.require_tls,
-                                   xray_bin=args.xray_bin, use_real_probe=not args.no_real_probe))
+                                   xray_bin=args.xray_bin, use_real_probe=not args.no_real_probe,
+                                   max_nodes=max_nodes))
 
     if args.serve or (not args.update):
         if args.auto_refresh > 0:
             def refresh_worker():
                 while True:
                     time.sleep(args.auto_refresh * 60)
-                    print(f"[*] Автообновление ТОП-50 подписки...")
-                    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout,
+                    print(f"[*] Автообновление подписки...")
+                    asyncio.run(hub.generate_top50(timeout=args.timeout,
                                                    max_latency=args.max_latency, require_tls=args.require_tls,
-                                                   xray_bin=args.xray_bin, use_real_probe=not args.no_real_probe))
+                                                   xray_bin=args.xray_bin, use_real_probe=not args.no_real_probe,
+                                                   max_nodes=max_nodes))
             t = threading.Thread(target=refresh_worker, daemon=True)
             t.start()
 
