@@ -5,8 +5,9 @@
  * ===============================================================================
  */
 
-// URL сырого файла подписки на GitHub (замените на ваш репозиторий)
-const GITHUB_RAW_SUB = "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/26.txt";
+// URL сгенерированной и обработанной подписки ТОП-50 (уже в base64, с флагами стран и отфильтрованными дохлыми серверами)
+// Генерируется скриптом happ_top50_hub.py через GitHub Actions каждые 2 часа.
+const GITHUB_RAW_SUB = "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/happ_subscription_b64.txt";
 
 export default {
   async fetch(request, env, ctx) {
@@ -22,8 +23,8 @@ export default {
       return new Response("Error loading subscription from archive.", { status: 502 });
     }
 
-    const rawText = await resp.text();
-    const b64Data = btoa(unescape(encodeURIComponent(rawText)));
+    // Файл уже закодирован в base64 скриптом генерации — отдаём как есть
+    const b64Data = await resp.text();
 
     // Заголовки совместимости с HApp, V2Box, Sing-box, Marzban
     const headers = new Headers();
