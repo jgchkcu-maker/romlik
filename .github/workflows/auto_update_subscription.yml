@@ -2,8 +2,9 @@ name: Auto Update HApp Top 50 Subscription
 
 on:
   schedule:
-    # Запуск каждые 2 часа для постоянного поддержания актуальных быстрых серверов
-    - cron: '0 */2 * * *'
+    # Проверка подписки каждые 5 минут: тестируем серверы реальным xray-коннектом,
+    # мёртвые заменяем живыми из пула
+    - cron: '*/5 * * * *'
   push:
     branches:
       - main
@@ -13,6 +14,10 @@ on:
 jobs:
   update-subscription:
     runs-on: ubuntu-latest
+    # // Не запускать следующий прогон, пока текущий не закончил
+    concurrency:
+      group: subscription-watch
+      cancel-in-progress: false
     permissions:
       contents: write
 
@@ -40,14 +45,14 @@ jobs:
           rm -rf xray_tmp xray.zip
           xray version
 
-      - name: Run Codex Top 50 Scanner (Whitelist + Global Speed)
+      - name: Run Watch Cycle (test subscription + replace dead)
         run: |
-          python happ_top50_hub.py --update
+          python happ_top50_hub.py --watch-once
 
       - name: Commit and Push Updated Subscription
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "Codex Archive Bot"
           git add happ_subscription.txt happ_subscription_b64.txt happ_subscription.json
-          git commit -m "⚡ Auto-update Top 50 HApp Subscription (Whitelist + Fast Nodes) [skip ci]" || echo "No changes to commit"
+          git commit -m "⚡ Watch: tested subscription, replaced dead servers [skip ci]" || echo "No changes to commit"
           git push

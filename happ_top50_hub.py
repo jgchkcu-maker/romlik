@@ -912,6 +912,94 @@ class CodexRealProbe:
         print(f"  -> Подписка Base64 (URL/Sub): {os.path.abspath(b64_path)}")
         print("=" * 65)
 
+    def load_subscription_servers(self) -> List[CodexNode]:
+        """Загружает серверы из текущей подписки (happ_subscription.json)."""
+        json_path = os.path.join(self.out_dir, "happ_subscription.json")
+        if not os.path.exists(json_path):
+            return []
+        try:
+            with open(json_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            nodes = []
+            for entry in data.get("nodes", []):
+                uri = entry.get("uri", "")
+                if uri:
+                    node = CodexParser.parse_uri(uri, is_whitelist=(entry.get("type") == "whitelist"))
+                    if node:
+                        nodes.append(node)
+            return nodes
+        except Exception:
+            return []
+
+    async def find_replacements(self, count: int, xray_bin: str, exclude_keys: set, require_tls: bool = False) -> List[CodexNode]:
+        """Ищет живые замены из пула конфигов, исключая уже используемые серверы."""
+        wl_raw, global_raw = self.load_nodes()
+        candidates = [n for n in (wl_raw + global_raw) if n.key() not in exclude_keys]
+        # // Тестируем кандидатов реальным xray-зондом батчами по 100
+        real_probe = CodexRealProbe(xray_bin=xray_bin, timeout=12.0)
+        found: List[CodexNode] = []
+        batch_size = 100
+        for i in range(0, len(candidates), batch_size):
+            batch = candidates[i:i + batch_size]
+            alive = await real_probe.probe_all(batch)
+            found.extend(alive)
+            if len(found) >= count:
+                break
+        return found[:count]
+
+    async def watch_cycle(self, xray_bin: str = "xray", require_tls: bool = False) -> List[CodexNode]:
+        """
+        Один цикл проверки: тестирует серверы текущей подписки реальным xray-коннектом,
+        мёртвые заменяет живыми из пула. Возвращает итоговый список серверов.
+        """
+        current = self.load_subscription_servers()
+        if not current:
+            print("[!] Подписка пуста — генерирую начальную...")
+            return await self.generate_top50(use_real_probe=True, xray_bin=xray_bin, require_tls=require_tls)
+
+        print(f"[*] Проверка {len(current)} серверов подписки (xray real probe)...")
+        real_probe = CodexRealProbe(xray_bin=xray_bin, timeout=12.0)
+        alive = await real_probe.probe_all(current)
+        dead_count = len(current) - len(alive)
+
+        if dead_count == 0:
+            print(f"    ✓ Все {len(current)} серверов живые — замен не нужно")
+            for idx, node in enumerate(alive, 1):
+                node.formatted_uri = CodexRenamer.apply_happ_name(node, idx)
+            self.save_artifacts(alive)
+            return alive
+
+        print(f"    ✗ Мёртвых серверов: {dead_count} из {len(current)}")
+        exclude = {n.key() for n in alive}
+        replacements = await self.find_replacements(dead_count, xray_bin, exclude, require_tls)
+        if replacements:
+            print(f"    → Найдено замен: {len(replacements)}")
+            combined = alive + replacements
+        else:
+            print(f"    ! Не найдено замен — оставляю {len(alive)} живых")
+            combined = alive
+
+        for idx, node in enumerate(combined, 1):
+            node.formatted_uri = CodexRenamer.apply_happ_name(node, idx)
+        self.save_artifacts(combined)
+        print(f"    ✓ Подписка обновлена: {len(combined)} серверов")
+        return combined
+
+    async def watch_loop(self, interval_minutes: int = 5, xray_bin: str = "xray", require_tls: bool = False):
+        """
+        Бесконечный цикл: проверяет серверы текущей подписки реальным xray-коннектом,
+        мёртвые заменяет живыми из пула. Интервал по умолчанию — 5 минут.
+        """
+        print(f"\n[+] РЕЖИМ ПРОВЕРКИ ПОДПИСКИ каждые {interval_minutes} минут (xray real probe)")
+        print("    Ctrl+C для остановки.\n")
+
+        while True:
+            try:
+                await self.watch_cycle(xray_bin=xray_bin, require_tls=require_tls)
+            except Exception as e:
+                print(f"    ! Ошибка в цикле: {e}")
+            await asyncio.sleep(interval_minutes * 60)
+
 
 # // Встроенный сверхлегкий HTTP-сервер раздачи подписки по локальной сети
 class CodexHttpHandler(http.server.BaseHTTPRequestHandler):
@@ -992,9 +1080,22 @@ def main():
     parser.add_argument("--no-require-tls", dest="require_tls", action="store_false", help="Гибрид: TLS-проверка с TCP-фолбэком, TLS-вериф. серверы в приоритете (по умолчанию)")
     parser.add_argument("--xray-bin", type=str, default="xray", help="Путь к xray-core бинарнику (по умолчанию 'xray')")
     parser.add_argument("--no-real-probe", action="store_true", help="Отключить реальную проверку xray-core (только TLS-фильтр)")
+    parser.add_argument("--watch", action="store_true", help="Режим проверки подписки: каждые N минут тестирует серверы и заменяет мёртвые живыми")
+    parser.add_argument("--watch-once", action="store_true", help="Один цикл проверки (для GitHub Action), затем выход")
+    parser.add_argument("--interval", type=int, default=5, help="Интервал проверки в минутах для --watch (по умолчанию 5)")
 
     args = parser.parse_args()
     hub = HappSubscriptionHub()
+
+    # // Режим непрерывной проверки подписки (локально)
+    if args.watch:
+        asyncio.run(hub.watch_loop(interval_minutes=args.interval, xray_bin=args.xray_bin, require_tls=args.require_tls))
+        return
+
+    # // Один цикл проверки (для GitHub Action)
+    if args.watch_once:
+        asyncio.run(hub.watch_cycle(xray_bin=args.xray_bin, require_tls=args.require_tls))
+        return
 
     # Генерация подписки ТОП-50
     asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout,
