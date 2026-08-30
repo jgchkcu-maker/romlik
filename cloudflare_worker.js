@@ -7,7 +7,7 @@
 
 // URL сгенерированной и обработанной подписки ТОП-50 (уже в base64, с флагами стран и отфильтрованными дохлыми серверами)
 // Генерируется скриптом happ_top50_hub.py через GitHub Actions каждые 2 часа.
-const GITHUB_RAW_SUB = "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/happ_subscription_b64.txt";
+const GITHUB_RAW_SUB = "https://raw.githubusercontent.com/jgchkcu-maker/romlik/main/happ_subscription_b64.txt";
 
 export default {
   async fetch(request, env, ctx) {
