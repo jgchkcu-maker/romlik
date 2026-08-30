@@ -1,1 +1,1 @@
-trojan://bcacaab-baca-baca-dbac-accaabbcbacb@127.0.0.1:1080?security=tls&type=tcp#%F0%9F%9A%80%20%5B01%5D%20%F0%9F%96%A5%EF%B8%8F%20LOCAL%20%7C%20TROJAN%20%2810ms%29
+trojan://bcacaab-baca-baca-dbac-accaabbcbacb@127.0.0.1:1080?security=tls&type=tcp#%F0%9F%9A%80%20%5B01%5D%20%F0%9F%96%A5%EF%B8%8F%20LOCAL%20%7C%20TROJAN%20%2813ms%29

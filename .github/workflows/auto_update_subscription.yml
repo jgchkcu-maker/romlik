@@ -18,6 +18,8 @@ jobs:
     concurrency:
       group: subscription-watch
       cancel-in-progress: false
+    # Нам нужно больше 360с для xray-проб (батчи по 200 серверов × 15с + TLS-префильтр)
+    timeout-minutes: 15
     permissions:
       contents: write
 

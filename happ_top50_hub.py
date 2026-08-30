@@ -670,7 +670,7 @@ class CodexRealProbe:
             "observatory": {
                 "subjectSelector": tags,
                 "probeURL": self.probe_url,
-                "probeInterval": "2s",
+                "probeInterval": "0s",
                 "enableConcurrency": True,
             },
         }
@@ -687,8 +687,12 @@ class CodexRealProbe:
                 stderr=asyncio.subprocess.PIPE,
             )
             try:
-                # // Ждём, пока observatory соберёт данные
-                await asyncio.sleep(min(self.timeout, 5.0))
+                # // Ждём, пока observatory пробует каждый outbound.
+                # С probeInterval "0s" и enableConcurrency xray пробует параллельно,
+                # но Reality-ручные хендшейки занимают время.
+                # Ждём ~3с + 30мс на сервер в батче, максимум 20с.
+                wait_time = min(3.0 + 0.03 * len(nodes), 20.0)
+                await asyncio.sleep(wait_time)
 
                 # // Опрос через xray api CLI
                 res = await asyncio.create_subprocess_exec(
@@ -804,28 +808,36 @@ class HappSubscriptionHub:
         wl_raw, global_raw = self.load_nodes()
         probe = CodexFastProbe(timeout=timeout, concurrency=400, require_tls=require_tls)
 
-        # Параллельная проверка ВСЕГО пула (без лимита — берем всё что есть)
+        # Параллельная проверка ВСЕГО пула
         alive_wl, alive_global = await asyncio.gather(
             probe.probe_all(wl_raw, label="Белые Списки (SNI/CIDR)"),
             probe.probe_all(global_raw, label="Глобальная Скорость")
         )
 
-        # Все TLS-живые кандидаты отправляем на реальную xray-проверку
         candidates = alive_wl + alive_global
         print(f"[*] TLS-префильтр: {len(alive_wl)} WL + {len(alive_global)} GL = {len(candidates)} кандидатов")
 
-        # // РЕАЛЬНАЯ проверка через xray-core (честный тест)
+        # // РЕАЛЬНАЯ проверка через xray-core БАТЧАМИ (честный тест)
+        # Батчим по 200 чтобы xray успевал пробыть observatory за отведённое время
         real_alive: List[CodexNode] = []
         if use_real_probe and candidates:
-            print(f"[*] Реальная проверка через xray-core ({len(candidates)} кандидатов)...")
-            real_probe = CodexRealProbe(xray_bin=xray_bin, timeout=12.0)
-            real_alive = await real_probe.probe_all(candidates)
-            print(f"    -> Реально рабочих серверов: {len(real_alive)}")
+            real_probe = CodexRealProbe(xray_bin=xray_bin, timeout=60.0)
+            batch_size = 300
+            total = len(candidates)
+            for i in range(0, total, batch_size):
+                batch = candidates[i:i + batch_size]
+                batch_num = i // batch_size + 1
+                total_batches = (total - 1) // batch_size + 1
+                print(f"[*] xray-проба батч {batch_num}/{total_batches}: {len(batch)} кандидатов...")
+                alive = await real_probe.probe_all(batch)
+                real_alive.extend(alive)
+                print(f"    -> Всего реально живых: {len(real_alive)}")
+        else:
+            print("[!] xray-core отключён — используем TLS-префильтр")
 
-        # // Fallback: если xray недоступен — используем TLS-фильтр
+        # // Fallback: если xray ничего не нашёл — используем TLS-фильтр
         if not real_alive:
-            if use_real_probe:
-                print("[!] xray-core недоступен или не нашёл рабочих — используем TLS-префильтр")
+            print("[!] xray-core недоступен или не нашёл рабочих — используем TLS-префильтр")
             LATENCY_DEAD_THRESHOLD_MS = max_latency
             real_alive = [n for n in candidates if n.latency_ms and n.latency_ms < LATENCY_DEAD_THRESHOLD_MS]
 
