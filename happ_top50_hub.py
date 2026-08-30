@@ -49,6 +49,13 @@ class CodexNode:
         self.is_alive: bool = False
         self.tls_verified: bool = False
         self.formatted_uri: str = raw_uri
+        # // Параметры Reality/VLESS для реальной проверки через xray-core
+        self.uuid: str = ""
+        self.flow: str = ""
+        self.reality_pbk: str = ""
+        self.reality_sid: str = ""
+        self.reality_fp: str = ""
+        self.network_type: str = "tcp"
         self.country_code: str = ""
         self.country_name: str = ""
         self.country_flag: str = ""
@@ -116,13 +123,35 @@ class CodexParser:
                 remark = urllib.parse.unquote(parsed.fragment or "")
                 if host and port:
                     node = CodexNode(uri, protocol, host, port, remark, is_whitelist)
-                    # Извлекаем SNI из параметров запроса
+                    # Извлекаем параметры из запроса
                     # (некоторые источники кодируют & как &amp; — декодируем)
                     query_str = parsed.query.replace("&amp;", "&")
                     query = urllib.parse.parse_qs(query_str)
+                    # SNI / serverName
                     sni_values = query.get("sni", [])
                     if sni_values:
                         node.sni_host = sni_values[0]
+                    # UUID (userinfo до @)
+                    if parsed.username:
+                        node.uuid = urllib.parse.unquote(parsed.username)
+                    # Flow (xtls-rprx-vision и т.п.)
+                    flow_vals = query.get("flow", [])
+                    if flow_vals:
+                        node.flow = flow_vals[0]
+                    # Reality: publicKey, shortId, fingerprint
+                    pbk_vals = query.get("pbk", [])
+                    if pbk_vals:
+                        node.reality_pbk = pbk_vals[0]
+                    sid_vals = query.get("sid", [])
+                    if sid_vals:
+                        node.reality_sid = sid_vals[0]
+                    fp_vals = query.get("fp", [])
+                    if fp_vals:
+                        node.reality_fp = fp_vals[0]
+                    # Сетевой тип (tcp / grpc / ws)
+                    net_vals = query.get("type", [])
+                    if net_vals:
+                        node.network_type = net_vals[0]
                     return node
 
         except Exception:
@@ -548,7 +577,176 @@ class CodexFastProbe:
         return alive
 
 
-class HappSubscriptionHub:
+class CodexRealProbe:
+    """
+    // Проверка живости РЕАЛЬНЫМ VLESS+Reality подключением через xray-core.
+    // TLS-зонд даёт ложные срабатывания (Reality всегда отвечает на TLS),
+    // поэтому единственный честный тест — заставить xray-core реально
+    // подключиться и измерить пинг через встроенный observatory.
+    """
+
+    API_PORT = 19876
+
+    def __init__(self, xray_bin: str = "xray", probe_url: str = "http://www.gstatic.com/generate_204", timeout: float = 12.0):
+        self.xray_bin = xray_bin
+        self.probe_url = probe_url
+        self.timeout = timeout
+
+    def _build_outbound(self, node: CodexNode, tag: str) -> dict:
+        """Формирует outbounds-блок xray для VLESS/Trojan с Reality."""
+        user = {
+            "id": node.uuid or "",
+            "encryption": "none",
+        }
+        if node.flow:
+            user["flow"] = node.flow
+
+        stream_settings = {
+            "network": node.network_type or "tcp",
+        }
+
+        # // Reality
+        if node.reality_pbk:
+            stream_settings["security"] = "reality"
+            reality = {
+                "serverName": node.sni_host or "",
+                "publicKey": node.reality_pbk,
+                "fingerprint": node.reality_fp or "chrome",
+            }
+            if node.reality_sid:
+                reality["shortId"] = node.reality_sid
+            stream_settings["realitySettings"] = reality
+
+        # // gRPC serviceName
+        if (node.network_type or "tcp") == "grpc":
+            svc = urllib.parse.parse_qs(urllib.parse.urlparse(node.raw_uri).query.replace("&amp;", "&")).get("serviceName", [""])
+            stream_settings["grpcSettings"] = {"serviceName": svc[0] if svc else ""}
+
+        return {
+            "tag": tag,
+            "protocol": node.protocol,
+            "settings": {
+                "vnext": [{
+                    "address": node.host,
+                    "port": node.port,
+                    "users": [user],
+                }]
+            },
+            "streamSettings": stream_settings,
+        }
+
+    async def probe_all(self, nodes: List[CodexNode]) -> List[CodexNode]:
+        """
+        Возвращает только РЕАЛЬНО живые серверы с измеренным пингом.
+        Серверы, которые принимают TLS, но не проксируют — отсеются.
+        """
+        nodes = [n for n in nodes if n.host and n.port and n.uuid]
+        if not nodes:
+            return []
+
+        tags = [f"p{i}" for i in range(len(nodes))]
+        outbounds = [self._build_outbound(n, t) for n, t in zip(nodes, tags)]
+
+        api_tag = "api"
+        config = {
+            "log": {"loglevel": "warning"},
+            "inbounds": [
+                {
+                    "tag": api_tag,
+                    "port": self.API_PORT,
+                    "listen": "127.0.0.1",
+                    "protocol": "dokodemo-door",
+                    "settings": {"address": "127.0.0.1"},
+                }
+            ],
+            "outbounds": outbounds,
+            "routing": {
+                "rules": [{"inboundTag": [api_tag], "outboundTag": api_tag}],
+            },
+            "api": {
+                "services": ["ObservatoryService"],
+                "tag": api_tag,
+            },
+            "observatory": {
+                "subjectSelector": tags,
+                "probeURL": self.probe_url,
+                "probeInterval": "2s",
+                "enableConcurrency": True,
+            },
+        }
+
+        config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_xray_probe_config.json")
+        try:
+            with open(config_path, "w", encoding="utf-8") as f:
+                json.dump(config, f, ensure_ascii=False)
+
+            # // Запускаем xray в фоне
+            proc = await asyncio.create_subprocess_exec(
+                self.xray_bin, "run", "-c", config_path,
+                stdout=asyncio.subprocess.DEVNULL,
+                stderr=asyncio.subprocess.PIPE,
+            )
+            try:
+                # // Ждём, пока observatory соберёт данные
+                await asyncio.sleep(min(self.timeout, 5.0))
+
+                # // Опрос через xray api CLI
+                res = await asyncio.create_subprocess_exec(
+                    self.xray_bin, "api", "ObservatoryService.GetOutboundsStatus",
+                    "--server", f"127.0.0.1:{self.API_PORT}",
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                )
+                stdout, _ = await asyncio.wait_for(res.communicate(), timeout=10)
+                return self._parse_observatory(stdout.decode("utf-8", errors="ignore"), nodes, tags)
+            finally:
+                try:
+                    proc.kill()
+                    await proc.wait()
+                except Exception:
+                    pass
+        except Exception:
+            return []
+        finally:
+            try:
+                os.remove(config_path)
+            except Exception:
+                pass
+
+    def _parse_observatory(self, output: str, nodes: List[CodexNode], tags: List[str]) -> List[CodexNode]:
+        """Парсит вывод xray api ObservatoryService и возвращает живые серверы."""
+        alive = []
+        try:
+            data = json.loads(output)
+        except Exception:
+            return []
+
+        # // Формат ответа xray: { "status": [ { "alive": true, "delay": 123, "outboundTag": "p0" } ] }
+        status_list = []
+        if isinstance(data, dict):
+            for key in ("status", "outboundStatus", "probe", "targets"):
+                status_list = data.get(key, [])
+                if status_list:
+                    break
+
+        tag_to_node = {t: n for t, n in zip(tags, nodes)}
+        for item in status_list:
+            if not isinstance(item, dict):
+                continue
+            tag = item.get("outboundTag") or item.get("tag") or ""
+            node = tag_to_node.get(tag)
+            if not node:
+                continue
+            is_alive = item.get("alive", False)
+            delay = item.get("delay", 0)
+            if is_alive and delay and delay > 0:
+                node.is_alive = True
+                node.latency_ms = float(delay)
+                node.tls_verified = True
+                alive.append(node)
+
+        alive.sort(key=lambda x: x.latency_ms if x.latency_ms is not None else 99999)
+        return alive
     """
     // Главный строитель подписки HApp и локальный сервер раздачи
     """
@@ -596,7 +794,9 @@ class HappSubscriptionHub:
         print(f"    - Глобальных скоростных узлов: {len(global_nodes)}")
         return whitelist_nodes, global_nodes
 
-    async def generate_top50(self, wl_count: int = 25, global_count: int = 25, timeout: float = 1.3, max_latency: float = 800.0, require_tls: bool = True) -> List[CodexNode]:
+    async def generate_top50(self, wl_count: int = 25, global_count: int = 25, timeout: float = 1.3,
+                              max_latency: float = 800.0, require_tls: bool = True,
+                              xray_bin: str = "xray", use_real_probe: bool = True) -> List[CodexNode]:
         wl_raw, global_raw = self.load_nodes()
         probe = CodexFastProbe(timeout=timeout, concurrency=400, require_tls=require_tls)
 
@@ -610,37 +810,33 @@ class HappSubscriptionHub:
             probe.probe_all(global_pool, label="Глобальная Скорость")
         )
 
-        # Фильтруем "дохлые" серверы по порогу задержки.
-        # Реально живые серверы <300мс; "зомби"-серверы кластеризуются на
-        # 800-1000мс и выше (именно их жалуется пользователь — "дохлые").
-        # Порог НЕ размягчается при нехватке серверов: лучше меньше, но без
-        # дохлых, чем много, но с мёртвыми 857мс-узлами.
-        LATENCY_DEAD_THRESHOLD_MS = max_latency
-        alive_wl = [n for n in alive_wl if n.latency_ms and n.latency_ms < LATENCY_DEAD_THRESHOLD_MS]
-        alive_global = [n for n in alive_global if n.latency_ms and n.latency_ms < LATENCY_DEAD_THRESHOLD_MS]
+        # TLS-префильтр: берём больше кандидатов, чем нужно в итог —
+        # реальный xray-зонд отсевёт тех, кто принимает TLS, но не проксирует.
+        candidate_wl = alive_wl[:120]
+        candidate_gl = alive_global[:120]
+        candidates = candidate_wl + candidate_gl
 
-        top_wl = alive_wl[:wl_count]
-        top_global = alive_global[:global_count]
+        # // РЕАЛЬНАЯ проверка через xray-core (честный тест)
+        real_alive: List[CodexNode] = []
+        if use_real_probe and candidates:
+            print(f"[*] Реальная проверка через xray-core ({len(candidates)} кандидатов)...")
+            real_probe = CodexRealProbe(xray_bin=xray_bin, timeout=12.0)
+            real_alive = await real_probe.probe_all(candidates)
+            print(f"    -> Реально рабочих серверов: {len(real_alive)}")
 
-        # Если в одном пуле серверов меньше, добираем из другого
-        if len(top_wl) < wl_count:
-            extra = wl_count - len(top_wl)
-            top_global.extend(alive_global[global_count:global_count + extra])
-        elif len(top_global) < global_count:
-            extra = global_count - len(top_global)
-            top_wl.extend(alive_wl[wl_count:wl_count + extra])
+        # // Fallback: если xray недоступен (нет бинарника) — используем TLS-фильтр
+        if not real_alive:
+            if use_real_probe:
+                print("[!] xray-core недоступен или не нашёл рабочих — используем TLS-префильтр")
+            LATENCY_DEAD_THRESHOLD_MS = max_latency
+            real_alive = [n for n in candidates if n.latency_ms and n.latency_ms < LATENCY_DEAD_THRESHOLD_MS]
 
-        # Объединяем в итоговый ТОП-50
-        combined: List[CodexNode] = []
+        # // Разделяем обратно на белые списки и глобальные, сортируем по реальному пингу
+        real_wl = [n for n in real_alive if n.is_whitelist][:wl_count]
+        real_gl = [n for n in real_alive if not n.is_whitelist][:global_count]
 
-        # 1-25: Белые списки
-        for idx, node in enumerate(top_wl, 1):
-            combined.append(node)
-
-        # 26-50: Глобальная скорость
-        start_idx = len(combined) + 1
-        for idx, node in enumerate(top_global, start_idx):
-            combined.append(node)
+        # Объединяем в итоговый ТОП-50: белые списки первыми
+        combined: List[CodexNode] = real_wl + real_gl
 
         # // Геолокация: сначала офлайн-словарь, затем онлайн ip-api для XX
         for n in combined:
@@ -794,12 +990,16 @@ def main():
     parser.add_argument("--max-latency", type=float, default=800.0, help="Порог отсечения дохлых серверов в мс (по умолчанию 800мс)")
     parser.add_argument("--require-tls", dest="require_tls", action="store_true", default=False, help="Строго требовать TLS-хендшейк (максимально отсекает дохлых, но может дать меньше серверов)")
     parser.add_argument("--no-require-tls", dest="require_tls", action="store_false", help="Гибрид: TLS-проверка с TCP-фолбэком, TLS-вериф. серверы в приоритете (по умолчанию)")
+    parser.add_argument("--xray-bin", type=str, default="xray", help="Путь к xray-core бинарнику (по умолчанию 'xray')")
+    parser.add_argument("--no-real-probe", action="store_true", help="Отключить реальную проверку xray-core (только TLS-фильтр)")
 
     args = parser.parse_args()
     hub = HappSubscriptionHub()
 
     # Генерация подписки ТОП-50
-    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout, max_latency=args.max_latency, require_tls=args.require_tls))
+    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout,
+                                   max_latency=args.max_latency, require_tls=args.require_tls,
+                                   xray_bin=args.xray_bin, use_real_probe=not args.no_real_probe))
 
     if args.serve or (not args.update):
         if args.auto_refresh > 0:
@@ -807,7 +1007,9 @@ def main():
                 while True:
                     time.sleep(args.auto_refresh * 60)
                     print(f"[*] Автообновление ТОП-50 подписки...")
-                    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout, max_latency=args.max_latency, require_tls=args.require_tls))
+                    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout,
+                                                   max_latency=args.max_latency, require_tls=args.require_tls,
+                                                   xray_bin=args.xray_bin, use_real_probe=not args.no_real_probe))
             t = threading.Thread(target=refresh_worker, daemon=True)
             t.start()
 

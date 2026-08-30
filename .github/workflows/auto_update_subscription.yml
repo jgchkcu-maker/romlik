@@ -29,6 +29,17 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/AvenCores/goida-vpn-configs.git configs_repo
 
+      - name: Download xray-core (real VLESS+Reality probe)
+        run: |
+          XRAY_TAG=$(curl -sL "https://api.github.com/repos/XTLS/Xray-core/releases/latest" | grep -oP '"tag_name":\s*"\K[^"]+')
+          echo "Latest xray-core: $XRAY_TAG"
+          curl -L -o xray.zip "https://github.com/XTLS/Xray-core/releases/download/${XRAY_TAG}/Xray-linux-64.zip"
+          unzip -o xray.zip -d xray_tmp
+          sudo mv xray_tmp/xray /usr/local/bin/xray
+          chmod +x /usr/local/bin/xray
+          rm -rf xray_tmp xray.zip
+          xray version
+
       - name: Run Codex Top 50 Scanner (Whitelist + Global Speed)
         run: |
           python happ_top50_hub.py --update
