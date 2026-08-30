@@ -17,6 +17,7 @@ import json
 import os
 import re
 import socket
+import ssl
 import sys
 import threading
 import time
@@ -46,6 +47,7 @@ class CodexNode:
         self.is_whitelist = is_whitelist
         self.latency_ms: Optional[float] = None
         self.is_alive: bool = False
+        self.tls_verified: bool = False
         self.formatted_uri: str = raw_uri
         self.country_code: str = ""
         self.country_name: str = ""
@@ -333,6 +335,47 @@ class CodexGeo:
 
     DEFAULT_COUNTRY = ("XX", "Неизвестно", "🌐")
 
+    @staticmethod
+    def flag_from_code(cc: str) -> str:
+        """Флаг-эмодзи из двухбуквенного кода страны (Regional Indicator Symbols)."""
+        if not cc or len(cc) != 2 or not cc.isalpha():
+            return "🌐"
+        cc = cc.upper()
+        return "".join(chr(0x1F1E6 + ord(c) - ord("A")) for c in cc)
+
+    # // SNI -> страна (для серверов обхода, чей IP принадлежит CDN/облаку)
+    SNI_COUNTRY_MAP = {
+        "ru": ("RU", "Россия"),
+        "yandex.ru": ("RU", "Россия"),
+        "ya.ru": ("RU", "Россия"),
+        "max.ru": ("RU", "Россия"),
+        "ok.ru": ("RU", "Россия"),
+        "vk.com": ("RU", "Россия"),
+        "mail.ru": ("RU", "Россия"),
+        "webmax.ru": ("RU", "Россия"),
+        "api-maps.yandex.ru": ("RU", "Россия"),
+        "storage.yandex.net": ("RU", "Россия"),
+        "sso.passport.yandex.ru": ("RU", "Россия"),
+        "auto.api-yandex.net": ("RU", "Россия"),
+        "cloud.mail.ru": ("RU", "Россия"),
+        "eh.vk.com": ("RU", "Россия"),
+        "api.ok.ru": ("RU", "Россия"),
+        "api.yandex.net": ("RU", "Россия"),
+    }
+
+    @classmethod
+    def country_from_sni(cls, sni: str) -> Tuple[str, str]:
+        if not sni:
+            return ("", "")
+        sni = sni.lower()
+        for key, (cc, name) in cls.SNI_COUNTRY_MAP.items():
+            if sni == key or sni.endswith("." + key) or key in sni:
+                return (cc, name)
+        # // По TLD: .ru/.su/.by -> RU-зона (для белых списков это почти всегда RU)
+        if sni.endswith(".ru") or sni.endswith(".su") or sni.endswith(".by"):
+            return ("RU", "Россия")
+        return ("", "")
+
     @classmethod
     def detect(cls, ip: str) -> Tuple[str, str, str]:
         if not ip:
@@ -348,6 +391,42 @@ class CodexGeo:
             return cls.IP_COUNTRY_MAP[key3]
         return cls.DEFAULT_COUNTRY
 
+    @classmethod
+    def enrich_online(cls, nodes: List["CodexNode"], timeout: float = 8.0):
+        """
+        // Онлайн-геолокация через ip-api.com (батчами) для серверов,
+        // которые офлайн-словарь не определил (XX). Работает только для
+        // финальных ~50 серверов, поэтому нагрузка минимальна. При ошибке
+        // сети молча оставляем XX (офлайн-словарь — запасной вариант).
+        """
+        unknown = [n for n in nodes if n.country_code in ("", "XX")]
+        if not unknown:
+            return
+
+        # Батч по 40 IP (лимит free-тарифа ip-api ~45 запросов/мин)
+        batch_size = 40
+        for i in range(0, len(unknown), batch_size):
+            chunk = unknown[i:i + batch_size]
+            payload = json.dumps([{"query": n.host} for n in chunk]).encode("utf-8")
+            req = urllib.request.Request(
+                "http://ip-api.com/batch",
+                data=payload,
+                headers={"Content-Type": "application/json", "User-Agent": "Mozilla/5.0"},
+            )
+            try:
+                with urllib.request.urlopen(req, timeout=timeout) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                for item, node in zip(data, chunk):
+                    if isinstance(item, dict) and item.get("status") == "success":
+                        cc = (item.get("countryCode") or "XX").upper()
+                        name = item.get("country") or "Неизвестно"
+                        node.country_code = cc
+                        node.country_name = name
+                        node.country_flag = cls.flag_from_code(cc)
+            except Exception:
+                # Сеть недоступна (например, ip-api заблокирован) — оставляем XX
+                return
+
 
 class CodexRenamer:
     """
@@ -355,19 +434,18 @@ class CodexRenamer:
     """
     @staticmethod
     def apply_happ_name(node: CodexNode, index: int) -> str:
-        # // Определяем страну по IP
-        # // Локальный прокси (127.0.0.1) помечаем как локальный
+        # // Страна уже определена заранее (offline-словарь + онлайн ip-api)
+        # // в generate_top50. Здесь только подставляем и обрабатываем локальный прокси.
         if node.host in ("127.0.0.1", "localhost", "::1"):
             cc, cname, cflag = ("LOCAL", "Локальный", "🖥️")
         else:
-            cc, cname, cflag = CodexGeo.detect(node.host)
+            cc, cname, cflag = node.country_code or "XX", node.country_name or "Неизвестно", node.country_flag or "🌐"
         node.country_code = cc
         node.country_name = cname
         node.country_flag = cflag
 
         # // Формирование метки с флагом и страной
         prefix_icon = "⚡" if node.is_whitelist else "🚀"
-        category = "БЕЛЫЙ СПИСОК" if node.is_whitelist else "СКОРОСТНОЙ"
         proto_tag = node.protocol.upper()
         ping_tag = f"{int(node.latency_ms)}ms" if node.latency_ms else "OK"
 
@@ -393,30 +471,66 @@ class CodexRenamer:
 
 class CodexFastProbe:
     """
-    // Сверхбыстрый асинхронный зонд сокетов с минимальным расходом энергии процессора
+    // Сверхбыстрый асинхронный зонд: реальный TLS-хендшейк к SNI-хосту.
+    // Простого TCP-коннекта недостаточно — "зомби"-серверы принимают соединение,
+    // но не отвечают по TLS, поэтому трафик не идёт. Хендшейк = настоящая живость.
     """
-    def __init__(self, timeout: float = 1.3, concurrency: int = 400):
+    def __init__(self, timeout: float = 1.3, concurrency: int = 400, require_tls: bool = True):
         self.timeout = timeout
         self.semaphore = asyncio.Semaphore(concurrency)
+        self.require_tls = require_tls
+        self.ssl_ctx = self._build_ssl_ctx()
+
+    @staticmethod
+    def _build_ssl_ctx():
+        ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        return ctx
 
     async def probe(self, node: CodexNode) -> CodexNode:
-        # // Нить сокета натянута сквозь века
         async with self.semaphore:
             start = time.perf_counter()
+            # // Этап 1: реальный TLS-хендшейк к SNI-хосту (сильный сигнал живости)
             try:
-                conn = asyncio.open_connection(node.host, node.port)
+                sni = node.sni_host or node.host
+                conn = asyncio.open_connection(
+                    node.host, node.port,
+                    ssl=self.ssl_ctx, server_hostname=sni,
+                )
                 reader, writer = await asyncio.wait_for(conn, timeout=self.timeout)
                 node.latency_ms = (time.perf_counter() - start) * 1000.0
                 node.is_alive = True
-                
-                # // Застёжка аутентификации скрепляет эпохи
-                writer.close()
+                node.tls_verified = True
                 try:
+                    writer.close()
                     await writer.wait_closed()
                 except Exception:
                     pass
+                return node
             except Exception:
-                node.is_alive = False
+                pass
+
+            # // Этап 2: TLS не прошёл. Если не требуем строго TLS — пробуем
+            # // обычный TCP-коннект (слабый сигнал: зомби-серверы тоже примут).
+            if not self.require_tls:
+                try:
+                    start2 = time.perf_counter()
+                    conn = asyncio.open_connection(node.host, node.port)
+                    reader, writer = await asyncio.wait_for(conn, timeout=self.timeout)
+                    node.latency_ms = (time.perf_counter() - start2) * 1000.0
+                    node.is_alive = True
+                    node.tls_verified = False
+                    try:
+                        writer.close()
+                        await writer.wait_closed()
+                    except Exception:
+                        pass
+                    return node
+                except Exception:
+                    pass
+
+            node.is_alive = False
             return node
 
     async def probe_all(self, nodes: List[CodexNode], label: str = "Узлы") -> List[CodexNode]:
@@ -428,7 +542,8 @@ class CodexFastProbe:
         tasks = [asyncio.create_task(self.probe(n)) for n in nodes]
         results = await asyncio.gather(*tasks)
         alive = [n for n in results if n.is_alive]
-        alive.sort(key=lambda x: x.latency_ms if x.latency_ms is not None else 99999)
+        # TLS-верифицированные — впереди (это реально живые); TCP-зомби — в конце
+        alive.sort(key=lambda x: (0 if getattr(x, "tls_verified", False) else 1, x.latency_ms if x.latency_ms is not None else 99999))
         print(f"    -> Доступных серверов: {len(alive)} из {total}")
         return alive
 
@@ -481,9 +596,9 @@ class HappSubscriptionHub:
         print(f"    - Глобальных скоростных узлов: {len(global_nodes)}")
         return whitelist_nodes, global_nodes
 
-    async def generate_top50(self, wl_count: int = 25, global_count: int = 25, timeout: float = 1.3, max_latency: float = 800.0) -> List[CodexNode]:
+    async def generate_top50(self, wl_count: int = 25, global_count: int = 25, timeout: float = 1.3, max_latency: float = 800.0, require_tls: bool = True) -> List[CodexNode]:
         wl_raw, global_raw = self.load_nodes()
-        probe = CodexFastProbe(timeout=timeout, concurrency=400)
+        probe = CodexFastProbe(timeout=timeout, concurrency=400, require_tls=require_tls)
 
         # Ограничиваем выборку для экспресс-проверки
         wl_pool = wl_raw[:1500] if len(wl_raw) > 1500 else wl_raw
@@ -517,17 +632,34 @@ class HappSubscriptionHub:
 
         # Объединяем в итоговый ТОП-50
         combined: List[CodexNode] = []
-        
+
         # 1-25: Белые списки
         for idx, node in enumerate(top_wl, 1):
-            node.formatted_uri = CodexRenamer.apply_happ_name(node, idx)
             combined.append(node)
 
         # 26-50: Глобальная скорость
         start_idx = len(combined) + 1
         for idx, node in enumerate(top_global, start_idx):
-            node.formatted_uri = CodexRenamer.apply_happ_name(node, idx)
             combined.append(node)
+
+        # // Геолокация: сначала офлайн-словарь, затем онлайн ip-api для XX
+        for n in combined:
+            if n.host not in ("127.0.0.1", "localhost", "::1"):
+                cc, cname, cflag = CodexGeo.detect(n.host)
+                n.country_code, n.country_name, n.country_flag = cc, cname, cflag
+                # // Если офлайн-словарь не определил (XX), пробуем вывести
+                # // страну из SNI (yandex/ya.ru/max.ru/vk.com -> RU и т.п.)
+                if cc == "XX" and n.sni_host:
+                    scc, scname = CodexGeo.country_from_sni(n.sni_host)
+                    if scc:
+                        n.country_code = scc
+                        n.country_name = scname
+                        n.country_flag = CodexGeo.flag_from_code(scc)
+        CodexGeo.enrich_online(combined)
+
+        # // Присваиваем понятные имена с флагами
+        for idx, node in enumerate(combined, 1):
+            node.formatted_uri = CodexRenamer.apply_happ_name(node, idx)
 
         # Сохранение файлов подписки
         self.save_artifacts(combined)
@@ -660,12 +792,14 @@ def main():
     parser.add_argument("--auto-refresh", type=int, default=0, help="Период автообновления серверов в минутах (0 = выключено)")
     parser.add_argument("--timeout", type=float, default=1.3, help="Таймаут проверки отклика (по умолчанию 1.3с)")
     parser.add_argument("--max-latency", type=float, default=800.0, help="Порог отсечения дохлых серверов в мс (по умолчанию 800мс)")
+    parser.add_argument("--require-tls", dest="require_tls", action="store_true", default=False, help="Строго требовать TLS-хендшейк (максимально отсекает дохлых, но может дать меньше серверов)")
+    parser.add_argument("--no-require-tls", dest="require_tls", action="store_false", help="Гибрид: TLS-проверка с TCP-фолбэком, TLS-вериф. серверы в приоритете (по умолчанию)")
 
     args = parser.parse_args()
     hub = HappSubscriptionHub()
 
     # Генерация подписки ТОП-50
-    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout, max_latency=args.max_latency))
+    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout, max_latency=args.max_latency, require_tls=args.require_tls))
 
     if args.serve or (not args.update):
         if args.auto_refresh > 0:
@@ -673,7 +807,7 @@ def main():
                 while True:
                     time.sleep(args.auto_refresh * 60)
                     print(f"[*] Автообновление ТОП-50 подписки...")
-                    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout, max_latency=args.max_latency))
+                    asyncio.run(hub.generate_top50(wl_count=25, global_count=25, timeout=args.timeout, max_latency=args.max_latency, require_tls=args.require_tls))
             t = threading.Thread(target=refresh_worker, daemon=True)
             t.start()
 
