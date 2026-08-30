@@ -1,0 +1,42 @@
+name: Auto Update HApp Top 50 Subscription
+
+on:
+  schedule:
+    # Запуск каждые 2 часа для постоянного поддержания актуальных быстрых серверов
+    - cron: '0 */2 * * *'
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # Ручной запуск в один клик через вкладку Actions
+
+jobs:
+  update-subscription:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Clone Goida VPN Configs Mirror
+        run: |
+          git clone --depth 1 https://github.com/AvenCores/goida-vpn-configs.git configs_repo
+
+      - name: Run Codex Top 50 Scanner (Whitelist + Global Speed)
+        run: |
+          python happ_top50_hub.py --update
+
+      - name: Commit and Push Updated Subscription
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "Codex Archive Bot"
+          git add happ_subscription.txt happ_subscription_b64.txt happ_subscription.json
+          git commit -m "⚡ Auto-update Top 50 HApp Subscription (Whitelist + Fast Nodes) [skip ci]" || echo "No changes to commit"
+          git push

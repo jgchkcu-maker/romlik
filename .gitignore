@@ -1,0 +1,14 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary scraped files
+configs_repo/
+site.html
+summary_ru.txt
+extracted_info.txt
+i18n.js
+translations.json
+working_configs*
+furk_sub.txt
