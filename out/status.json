@@ -1,0 +1,245 @@
+{
+  "updated_at": 1789583654,
+  "duration_sec": 40.96,
+  "source_stats": {
+    "sources": {
+      "Au1rxx-verified": {
+        "pool": "normal",
+        "raw": 1476,
+        "sampled": 450,
+        "error": null
+      },
+      "igareck-ss-all": {
+        "pool": "normal",
+        "raw": 114,
+        "sampled": 114,
+        "error": null
+      },
+      "igareck-vless": {
+        "pool": "normal",
+        "raw": 164,
+        "sampled": 164,
+        "error": null
+      },
+      "AvenCores-5": {
+        "pool": "normal",
+        "raw": 56,
+        "sampled": 56,
+        "error": null
+      },
+      "AvenCores-4": {
+        "pool": "normal",
+        "raw": 136,
+        "sampled": 136,
+        "error": null
+      },
+      "morpheusadam-all": {
+        "pool": "normal",
+        "raw": 0,
+        "sampled": 0,
+        "error": null
+      },
+      "igareck-cidr-checked": {
+        "pool": "whitelist",
+        "raw": 0,
+        "sampled": 0,
+        "error": null
+      },
+      "igareck-cidr-all": {
+        "pool": "whitelist",
+        "raw": 37,
+        "sampled": 37,
+        "error": null
+      },
+      "Baarcuda-top100-vless": {
+        "pool": "normal",
+        "raw": 100,
+        "sampled": 100,
+        "error": null
+      },
+      "Baarcuda-top100": {
+        "pool": "normal",
+        "raw": 96,
+        "sampled": 96,
+        "error": null
+      },
+      "wlunlocker-blacklist": {
+        "pool": "normal",
+        "raw": 3063,
+        "sampled": 450,
+        "error": null
+      },
+      "igareck-sni-all": {
+        "pool": "whitelist",
+        "raw": 0,
+        "sampled": 0,
+        "error": null
+      },
+      "AvenCores-3": {
+        "pool": "normal",
+        "raw": 13444,
+        "sampled": 449,
+        "error": null
+      },
+      "igareck-mobile": {
+        "pool": "whitelist",
+        "raw": 37,
+        "sampled": 37,
+        "error": null
+      },
+      "AvenCores-whitelist": {
+        "pool": "whitelist",
+        "raw": 4773,
+        "sampled": 449,
+        "error": null
+      },
+      "wlunlocker-cidr3-eu": {
+        "pool": "whitelist",
+        "raw": 30,
+        "sampled": 30,
+        "error": null
+      },
+      "wlunlocker-cidr1-ru": {
+        "pool": "whitelist",
+        "raw": 150,
+        "sampled": 150,
+        "error": null
+      },
+      "wlunlocker-cidr2-ru": {
+        "pool": "whitelist",
+        "raw": 150,
+        "sampled": 150,
+        "error": null
+      },
+      "wlunlocker-whitelist-all": {
+        "pool": "whitelist",
+        "raw": 571,
+        "sampled": 450,
+        "error": null
+      },
+      "AvenCores-1": {
+        "pool": "normal",
+        "raw": 9931,
+        "sampled": 450,
+        "error": null
+      },
+      "anonymouskeys-all": {
+        "pool": "normal",
+        "raw": 25290,
+        "sampled": 450,
+        "error": null
+      },
+      "AvenCores-2": {
+        "pool": "normal",
+        "raw": 405406,
+        "sampled": 450,
+        "error": null
+      }
+    },
+    "raw_seen": 465024,
+    "sampled": 4668,
+    "unique_sampled": 4239
+  },
+  "pool_stats": {
+    "normal": {
+      "working_tested": 3
+    },
+    "whitelist": {
+      "working_tested": 3
+    }
+  },
+  "xray_tested": 80,
+  "working": 6,
+  "top": [
+    {
+      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.39.218:2095?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=xudp&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%BA%F0%9F%87%B8%20US-25608",
+      "protocol": "vless",
+      "host": "162.159.39.218",
+      "port": 2095,
+      "source": "AvenCores-1",
+      "pool": "normal",
+      "remark": "[OpenRay] 🇺🇸 US-25608",
+      "tcp_ms": 1.6838890000201445,
+      "latency_ms": 284.76099999999997,
+      "mbps": 25.06852,
+      "score": 17.0,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@108.162.198.178:2086?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%BA%F0%9F%87%B8%20US-25507",
+      "protocol": "vless",
+      "host": "108.162.198.178",
+      "port": 2086,
+      "source": "AvenCores-1",
+      "pool": "normal",
+      "remark": "[OpenRay] 🇺🇸 US-25507",
+      "tcp_ms": 1.658140999978741,
+      "latency_ms": 377.104,
+      "mbps": 14.85424,
+      "score": 9.121,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@108.162.198.178:2086?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%BA%F0%9F%87%B8%20US-25510",
+      "protocol": "vless",
+      "host": "108.162.198.178",
+      "port": 2086,
+      "source": "AvenCores-1",
+      "pool": "normal",
+      "remark": "[OpenRay] 🇺🇸 US-25510",
+      "tcp_ms": 1.63340500000686,
+      "latency_ms": 516.9169999999999,
+      "mbps": 12.4986,
+      "score": 6.714,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "uri": "vless://eb0e3aec-f67f-4fa2-8577-b0bff0484e77@138.124.80.245:443?encryption=none&amp;fp=&amp;mode=auto&amp;path=/assets/v2/pkg&amp;pbk=mLmBhbVFfNuo2eUgBh6r9-5Koz9mUCn3aSzlR6IejUg&amp;security=reality&amp;sid=f79448a30d&amp;sni=sstats.vk-portal.net&amp;type=xhttp#💈46@oneclickvpnkeys",
+      "protocol": "vless",
+      "host": "138.124.80.245",
+      "port": 443,
+      "source": "AvenCores-whitelist",
+      "pool": "whitelist",
+      "remark": "💈46@oneclickvpnkeys",
+      "tcp_ms": 108.43852899998296,
+      "latency_ms": 548.526,
+      "mbps": 2.868672,
+      "score": 1.499,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "uri": "vless://57ae2ef6-2aef-0002-b0c1-b8c9d4dfc233@5.129.198.223:443?encryption=none&path=%2Fapi%2Fv3%2Fupdates&pbk=MiyOBOmkjV9uSx-oM1Aoq9JgIXKjAgvXceTNgSeBvRk&security=reality&sid=d8c870848236fa69&sni=cdn-tw-msk-mishka.attention-game.ru&type=xhttp&fp=ios#%F0%9F%87%B8%F0%9F%87%AA%20Sweden%20%7C%20%5B%2ACIDR%5D",
+      "protocol": "vless",
+      "host": "5.129.198.223",
+      "port": 443,
+      "source": "igareck-cidr-all",
+      "pool": "whitelist",
+      "remark": "🇸🇪 Sweden | [*CIDR]",
+      "tcp_ms": 128.62452899997834,
+      "latency_ms": 2509.948,
+      "mbps": 2.95028,
+      "score": 0.569,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "uri": "vless://57ae2ef6-2aef-0002-b0c1-b8c9d4dfc233@5.129.198.223:443?encryption=none&path=%2Fapi%2Fv3%2Fupdates&pbk=MiyOBOmkjV9uSx-oM1Aoq9JgIXKjAgvXceTNgSeBvRk&security=reality&sid=d8c870848236fa69&sni=cdn-tw-msk-mishka.attention-game.ru&type=xhttp&fp=firefox#%F0%9F%87%B8%F0%9F%87%AA%20Sweden%20%7C%20%5B%2ACIDR%5D",
+      "protocol": "vless",
+      "host": "5.129.198.223",
+      "port": 443,
+      "source": "igareck-cidr-all",
+      "pool": "whitelist",
+      "remark": "🇸🇪 Sweden | [*CIDR]",
+      "tcp_ms": 130.6634430000031,
+      "latency_ms": 3026.4359999999997,
+      "mbps": 2.526824,
+      "score": 0.418,
+      "ok": true,
+      "error": ""
+    }
+  ]
+}
