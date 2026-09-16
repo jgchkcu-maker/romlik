@@ -4,9 +4,25 @@
     {"name": "AvenCores-2", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/2.txt"},
     {"name": "AvenCores-3", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/3.txt"},
     {"name": "AvenCores-4", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/4.txt"},
-    {"name": "AvenCores-5", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/5.txt"}
+    {"name": "AvenCores-5", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/5.txt"},
+    {"name": "morpheusadam-all", "url": "https://raw.githubusercontent.com/morpheusadam/v2ray-config/main/subs/all.txt"},
+    {"name": "anonymouskeys-all", "url": "https://raw.githubusercontent.com/anonymouskeys/Free-configs-/main/output/all.txt"},
+    {"name": "Au1rxx-verified", "url": "https://raw.githubusercontent.com/Au1rxx/free-vpn-subscriptions/main/output/v2ray-base64.txt"},
+    {"name": "igareck-vless", "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/main/BLACK_VLESS_RUS.txt"},
+    {"name": "igareck-ss-all", "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/main/BLACK_SS+All_RUS.txt"},
+    {"name": "wlunlocker-blacklist", "url": "https://raw.githubusercontent.com/wlunlocker/vpn-configs/main/blacklist_all.txt"},
+    {"name": "Baarcuda-top100", "url": "https://raw.githubusercontent.com/Baarcuda/vpn-configs/master/top100.txt"},
+    {"name": "Baarcuda-top100-vless", "url": "https://raw.githubusercontent.com/Baarcuda/vpn-configs/master/top100-vless.txt"}
   ],
   "whitelist": [
-    {"name": "AvenCores-whitelist", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/26.txt"}
+    {"name": "AvenCores-whitelist", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/26.txt"},
+    {"name": "igareck-cidr-all", "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/main/WHITE-CIDR-RU-all.txt"},
+    {"name": "igareck-cidr-checked", "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/main/WHITE-CIDR-RU-checked.txt"},
+    {"name": "igareck-sni-all", "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/main/WHITE-SNI-RU-all.txt"},
+    {"name": "igareck-mobile", "url": "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/main/Vless-Reality-White-Lists-Rus-Mobile.txt"},
+    {"name": "wlunlocker-whitelist-all", "url": "https://raw.githubusercontent.com/wlunlocker/vpn-configs/main/whitelist_all.txt"},
+    {"name": "wlunlocker-cidr1-ru", "url": "https://raw.githubusercontent.com/wlunlocker/vpn-configs/main/whitelist_cidr1_ru.txt"},
+    {"name": "wlunlocker-cidr2-ru", "url": "https://raw.githubusercontent.com/wlunlocker/vpn-configs/main/whitelist_cidr2_ru.txt"},
+    {"name": "wlunlocker-cidr3-eu", "url": "https://raw.githubusercontent.com/wlunlocker/vpn-configs/main/whitelist_cidr3_eu.txt"}
   ]
 }
