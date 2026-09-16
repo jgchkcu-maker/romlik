@@ -1,3 +1,1 @@
-vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.38.127:8880?host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&path=%2F%3Fed%3D2560security%3Dtls&security=none&type=ws##01 normal | 25.2Mbps | 297ms | Au1rxx-verified
-vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.0.53:2082?host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&path=%2F%3Fed%3D2560security%3Dtls&security=none&type=ws##02 normal | 20.5Mbps | 276ms | Au1rxx-verified
-vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.46.234:8080?host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&path=%2F&security=none&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr&type=ws##03 normal | 19.6Mbps | 473ms | Au1rxx-verified
+vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.46.234:2052?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none##01 normal | 3.7Mbps | 590ms | wlunlocker-blacklist

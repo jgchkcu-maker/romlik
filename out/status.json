@@ -1,48 +1,12 @@
 {
-  "updated_at": 1789593282,
-  "duration_sec": 40.27,
+  "updated_at": 1789601998,
+  "duration_sec": 35.05,
   "source_stats": {
     "sources": {
-      "AvenCores-5": {
-        "pool": "normal",
-        "raw": 61,
-        "sampled": 61,
-        "error": null
-      },
       "igareck-vless": {
-        "pool": "normal",
-        "raw": 108,
-        "sampled": 108,
-        "error": null
-      },
-      "igareck-ss-all": {
         "pool": "normal",
         "raw": 118,
         "sampled": 118,
-        "error": null
-      },
-      "AvenCores-4": {
-        "pool": "normal",
-        "raw": 144,
-        "sampled": 144,
-        "error": null
-      },
-      "Au1rxx-verified": {
-        "pool": "normal",
-        "raw": 1517,
-        "sampled": 450,
-        "error": null
-      },
-      "Baarcuda-top100-vless": {
-        "pool": "normal",
-        "raw": 100,
-        "sampled": 100,
-        "error": null
-      },
-      "Baarcuda-top100": {
-        "pool": "normal",
-        "raw": 96,
-        "sampled": 96,
         "error": null
       },
       "morpheusadam-all": {
@@ -51,22 +15,70 @@
         "sampled": 0,
         "error": null
       },
+      "igareck-ss-all": {
+        "pool": "normal",
+        "raw": 143,
+        "sampled": 143,
+        "error": null
+      },
+      "Au1rxx-verified": {
+        "pool": "normal",
+        "raw": 1504,
+        "sampled": 450,
+        "error": null
+      },
+      "AvenCores-3": {
+        "pool": "normal",
+        "raw": 13328,
+        "sampled": 443,
+        "error": null
+      },
+      "Baarcuda-top100": {
+        "pool": "normal",
+        "raw": 95,
+        "sampled": 95,
+        "error": null
+      },
+      "AvenCores-5": {
+        "pool": "normal",
+        "raw": 66,
+        "sampled": 66,
+        "error": null
+      },
+      "Baarcuda-top100-vless": {
+        "pool": "normal",
+        "raw": 100,
+        "sampled": 100,
+        "error": null
+      },
+      "AvenCores-4": {
+        "pool": "normal",
+        "raw": 147,
+        "sampled": 147,
+        "error": null
+      },
       "wlunlocker-blacklist": {
         "pool": "normal",
-        "raw": 3063,
+        "raw": 3037,
         "sampled": 450,
+        "error": null
+      },
+      "igareck-mobile": {
+        "pool": "whitelist",
+        "raw": 61,
+        "sampled": 61,
+        "error": null
+      },
+      "AvenCores-whitelist": {
+        "pool": "whitelist",
+        "raw": 4770,
+        "sampled": 435,
         "error": null
       },
       "igareck-sni-all": {
         "pool": "whitelist",
         "raw": 4,
         "sampled": 4,
-        "error": null
-      },
-      "anonymouskeys-all": {
-        "pool": "normal",
-        "raw": 24954,
-        "sampled": 450,
         "error": null
       },
       "igareck-cidr-checked": {
@@ -77,31 +89,19 @@
       },
       "igareck-cidr-all": {
         "pool": "whitelist",
-        "raw": 42,
-        "sampled": 42,
+        "raw": 61,
+        "sampled": 61,
         "error": null
       },
-      "igareck-mobile": {
+      "wlunlocker-whitelist-all": {
         "pool": "whitelist",
-        "raw": 42,
-        "sampled": 42,
+        "raw": 571,
+        "sampled": 450,
         "error": null
       },
-      "AvenCores-whitelist": {
-        "pool": "whitelist",
-        "raw": 4765,
-        "sampled": 406,
-        "error": null
-      },
-      "wlunlocker-cidr1-ru": {
-        "pool": "whitelist",
-        "raw": 150,
-        "sampled": 150,
-        "error": null
-      },
-      "AvenCores-1": {
+      "anonymouskeys-all": {
         "pool": "normal",
-        "raw": 9998,
+        "raw": 24877,
         "sampled": 450,
         "error": null
       },
@@ -111,19 +111,19 @@
         "sampled": 30,
         "error": null
       },
-      "wlunlocker-whitelist-all": {
+      "wlunlocker-cidr2-ru": {
         "pool": "whitelist",
-        "raw": 566,
+        "raw": 150,
+        "sampled": 150,
+        "error": null
+      },
+      "AvenCores-1": {
+        "pool": "normal",
+        "raw": 10033,
         "sampled": 450,
         "error": null
       },
-      "AvenCores-3": {
-        "pool": "normal",
-        "raw": 13328,
-        "sampled": 446,
-        "error": null
-      },
-      "wlunlocker-cidr2-ru": {
+      "wlunlocker-cidr1-ru": {
         "pool": "whitelist",
         "raw": 150,
         "sampled": 150,
@@ -132,127 +132,157 @@
       "AvenCores-2": {
         "pool": "normal",
         "raw": 405406,
-        "sampled": 449,
+        "sampled": 450,
         "error": null
       }
     },
-    "raw_seen": 464642,
-    "sampled": 4596,
-    "unique_sampled": 3985
+    "raw_seen": 464651,
+    "sampled": 4703,
+    "unique_sampled": 4168
   },
   "pool_stats": {
     "normal": {
-      "working_tested": 3
+      "working_tested": 1
     },
     "whitelist": {
-      "working_tested": 4
+      "working_tested": 8
     }
   },
   "xray_tested": 80,
-  "working": 7,
+  "working": 9,
   "top": [
     {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.38.127:8880?host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&path=%2F%3Fed%3D2560security%3Dtls&security=none&type=ws#vless-922038411",
+      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:22443?type=grpc&security=reality&pbk=V8llhEcbGI7Zqf52Ec0kryrdRv7lvLcKCjHe1Di23yw&sid=fdf9d63fcdd6be6a&sni=www.cloudflare.com&serviceName=f234981844&fp=firefox#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
       "protocol": "vless",
-      "host": "162.159.38.127",
-      "port": 8880,
-      "source": "Au1rxx-verified",
-      "pool": "normal",
-      "remark": "vless-922038411",
-      "tcp_ms": 5.926297999991448,
-      "latency_ms": 297.416,
-      "mbps": 25.246096,
-      "score": 16.879,
+      "host": "94.198.217.201",
+      "port": 22443,
+      "source": "igareck-mobile",
+      "pool": "whitelist",
+      "remark": "🇵🇱 Poland | [*CIDR]",
+      "tcp_ms": 118.96503999999908,
+      "latency_ms": 891.269,
+      "mbps": 5.422976,
+      "score": 2.182,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.0.53:2082?host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&path=%2F%3Fed%3D2560security%3Dtls&security=none&type=ws#vless-897906536",
+      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:22443?type=grpc&security=reality&pbk=V8llhEcbGI7Zqf52Ec0kryrdRv7lvLcKCjHe1Di23yw&sid=fdf9d63fcdd6be6a&sni=www.cloudflare.com&serviceName=f234981844&fp=edge#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
       "protocol": "vless",
-      "host": "162.159.0.53",
-      "port": 2082,
-      "source": "Au1rxx-verified",
-      "pool": "normal",
-      "remark": "vless-897906536",
-      "tcp_ms": 5.993856999992886,
-      "latency_ms": 276.243,
-      "mbps": 20.450768,
-      "score": 14.003,
+      "host": "94.198.217.201",
+      "port": 22443,
+      "source": "igareck-mobile",
+      "pool": "whitelist",
+      "remark": "🇵🇱 Poland | [*CIDR]",
+      "tcp_ms": 116.46850700000044,
+      "latency_ms": 902.436,
+      "mbps": 5.252112,
+      "score": 2.097,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.46.234:8080?host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&path=%2F&security=none&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr&type=ws#vless-1256086115",
+      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:22443?type=grpc&security=reality&pbk=V8llhEcbGI7Zqf52Ec0kryrdRv7lvLcKCjHe1Di23yw&sid=fdf9d63fcdd6be6a&sni=www.cloudflare.com&serviceName=f234981844&fp=chrome#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
+      "protocol": "vless",
+      "host": "94.198.217.201",
+      "port": 22443,
+      "source": "igareck-mobile",
+      "pool": "whitelist",
+      "remark": "🇵🇱 Poland | [*CIDR]",
+      "tcp_ms": 113.18365399999664,
+      "latency_ms": 924.363,
+      "mbps": 5.246504,
+      "score": 2.065,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:22443?type=grpc&security=reality&pbk=V8llhEcbGI7Zqf52Ec0kryrdRv7lvLcKCjHe1Di23yw&sid=fdf9d63fcdd6be6a&sni=www.cloudflare.com&serviceName=f234981844&fp=safari#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
+      "protocol": "vless",
+      "host": "94.198.217.201",
+      "port": 22443,
+      "source": "igareck-mobile",
+      "pool": "whitelist",
+      "remark": "🇵🇱 Poland | [*CIDR]",
+      "tcp_ms": 121.20274900000538,
+      "latency_ms": 944.042,
+      "mbps": 5.166944,
+      "score": 2.008,
+      "ok": true,
+      "error": ""
+    },
+    {
+      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.46.234:2052?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#🇫🇷 🏴 WLUnlocker Франция | #56",
       "protocol": "vless",
       "host": "104.18.46.234",
-      "port": 8080,
-      "source": "Au1rxx-verified",
+      "port": 2052,
+      "source": "wlunlocker-blacklist",
       "pool": "normal",
-      "remark": "vless-1256086115",
-      "tcp_ms": 5.996194000005062,
-      "latency_ms": 472.751,
-      "mbps": 19.552728,
-      "score": 10.936,
+      "remark": "🇫🇷 🏴 WLUnlocker Франция | #56",
+      "tcp_ms": 1.4915020000003665,
+      "latency_ms": 589.72,
+      "mbps": 3.668936,
+      "score": 1.85,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://24b84bd3-baa3-4192-9625-23c9690ae6f6@31.76.111.152:443?type=tcp&security=reality&flow=xtls-rprx-vision&pbk=yMoulSTnxnbOfAjWPfB244a29ms9HUkjgA1zLZ65Nzw&sni=ads.x5.ru&fp=ios#%F0%9F%87%A9%F0%9F%87%AA%20Germany%20%7C%20%F0%9F%8C%90%20%7C%20%5BSNI-RU%5D%20ads.x5.ru",
+      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:24443?type=grpc&security=reality&pbk=s2uiu3GQA2SlZzsr86Z5Dav97eAFTPf7Nvr-zqzzRgg&sid=72ccd4a7563c2953&sni=www.cloudflare.com&serviceName=9d30d49278&fp=safari#%F0%9F%87%AA%F0%9F%87%AA%20Estonia%20%7C%20%5B%2ACIDR%5D",
       "protocol": "vless",
-      "host": "31.76.111.152",
-      "port": 443,
-      "source": "igareck-sni-all",
+      "host": "94.198.217.201",
+      "port": 24443,
+      "source": "igareck-mobile",
       "pool": "whitelist",
-      "remark": "🇩🇪 Germany | 🌐 | [SNI-RU] ads.x5.ru",
-      "tcp_ms": 114.85421100000792,
-      "latency_ms": 931.3280000000001,
-      "mbps": 6.461808,
-      "score": 2.532,
+      "remark": "🇪🇪 Estonia | [*CIDR]",
+      "tcp_ms": 116.54259200000183,
+      "latency_ms": 1121.726,
+      "mbps": 4.018368,
+      "score": 1.4,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://24b84bd3-baa3-4192-9625-23c9690ae6f6@31.76.111.152:443?type=tcp&security=reality&flow=xtls-rprx-vision&pbk=yMoulSTnxnbOfAjWPfB244a29ms9HUkjgA1zLZ65Nzw&sni=ads.x5.ru&fp=firefox#%F0%9F%87%A9%F0%9F%87%AA%20Germany%20%7C%20%F0%9F%8C%90%20%7C%20%5BSNI-RU%5D%20ads.x5.ru",
+      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:24443?type=grpc&security=reality&pbk=s2uiu3GQA2SlZzsr86Z5Dav97eAFTPf7Nvr-zqzzRgg&sid=72ccd4a7563c2953&sni=www.cloudflare.com&serviceName=9d30d49278&fp=firefox#%F0%9F%87%AA%F0%9F%87%AA%20Estonia%20%7C%20%5B%2ACIDR%5D",
       "protocol": "vless",
-      "host": "31.76.111.152",
-      "port": 443,
-      "source": "igareck-sni-all",
+      "host": "94.198.217.201",
+      "port": 24443,
+      "source": "igareck-mobile",
       "pool": "whitelist",
-      "remark": "🇩🇪 Germany | 🌐 | [SNI-RU] ads.x5.ru",
-      "tcp_ms": 122.70171299999788,
-      "latency_ms": 920.868,
-      "mbps": 6.382048,
-      "score": 2.518,
+      "remark": "🇪🇪 Estonia | [*CIDR]",
+      "tcp_ms": 116.72929699999912,
+      "latency_ms": 1166.641,
+      "mbps": 3.819056,
+      "score": 1.297,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://24b84bd3-baa3-4192-9625-23c9690ae6f6@31.76.111.152:443?type=tcp&security=reality&flow=xtls-rprx-vision&pbk=yMoulSTnxnbOfAjWPfB244a29ms9HUkjgA1zLZ65Nzw&sni=ads.x5.ru&fp=qq#%F0%9F%87%A9%F0%9F%87%AA%20Germany%20%7C%20%F0%9F%8C%90%20%7C%20%5BSNI-RU%5D%20ads.x5.ru",
+      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:24443?type=grpc&security=reality&pbk=s2uiu3GQA2SlZzsr86Z5Dav97eAFTPf7Nvr-zqzzRgg&sid=72ccd4a7563c2953&sni=www.cloudflare.com&serviceName=9d30d49278&fp=edge#%F0%9F%87%AA%F0%9F%87%AA%20Estonia%20%7C%20%5B%2ACIDR%5D",
       "protocol": "vless",
-      "host": "31.76.111.152",
-      "port": 443,
-      "source": "igareck-sni-all",
+      "host": "94.198.217.201",
+      "port": 24443,
+      "source": "igareck-mobile",
       "pool": "whitelist",
-      "remark": "🇩🇪 Germany | 🌐 | [SNI-RU] ads.x5.ru",
-      "tcp_ms": 115.12599899999998,
-      "latency_ms": 910.023,
-      "mbps": 6.262392,
-      "score": 2.488,
+      "remark": "🇪🇪 Estonia | [*CIDR]",
+      "tcp_ms": 118.82600700000268,
+      "latency_ms": 1201.2240000000002,
+      "mbps": 3.647704,
+      "score": 1.215,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://24b84bd3-baa3-4192-9625-23c9690ae6f6@31.76.111.152:443?type=tcp&security=reality&flow=xtls-rprx-vision&pbk=yMoulSTnxnbOfAjWPfB244a29ms9HUkjgA1zLZ65Nzw&sni=ads.x5.ru&fp=chrome#%F0%9F%87%A9%F0%9F%87%AA%20Germany%20%7C%20%F0%9F%8C%90%20%7C%20%5BSNI-RU%5D%20ads.x5.ru",
+      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:24443?type=grpc&security=reality&pbk=s2uiu3GQA2SlZzsr86Z5Dav97eAFTPf7Nvr-zqzzRgg&sid=72ccd4a7563c2953&sni=www.cloudflare.com&serviceName=9d30d49278&fp=chrome#%F0%9F%87%AA%F0%9F%87%AA%20Estonia%20%7C%20%5B%2ACIDR%5D",
       "protocol": "vless",
-      "host": "31.76.111.152",
-      "port": 443,
-      "source": "igareck-sni-all",
+      "host": "94.198.217.201",
+      "port": 24443,
+      "source": "igareck-mobile",
       "pool": "whitelist",
-      "remark": "🇩🇪 Germany | 🌐 | [SNI-RU] ads.x5.ru",
-      "tcp_ms": 117.41312000000903,
-      "latency_ms": 925.867,
-      "mbps": 6.320896,
-      "score": 2.485,
+      "remark": "🇪🇪 Estonia | [*CIDR]",
+      "tcp_ms": 113.1442919999941,
+      "latency_ms": 1417.747,
+      "mbps": 4.04236,
+      "score": 1.202,
       "ok": true,
       "error": ""
     }
