@@ -1,0 +1,58 @@
+name: Select fastest working VPN servers
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fastest-vpn-refresh
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install xray-core
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG=$(curl -fsSL https://api.github.com/repos/XTLS/Xray-core/releases/latest | python -c 'import sys,json; print(json.load(sys.stdin)["tag_name"])')
+          curl -fsSL -o /tmp/xray.zip "https://github.com/XTLS/Xray-core/releases/download/${TAG}/Xray-linux-64.zip"
+          unzip -q /tmp/xray.zip xray -d /tmp/xray
+          sudo install -m 0755 /tmp/xray/xray /usr/local/bin/xray
+          xray version
+
+      - name: Collect, validate and speed-test
+        env:
+          TOP_N: '20'
+          TCP_KEEP: '220'
+          XRAY_TEST_KEEP: '70'
+          CONCURRENCY: '150'
+          SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=3000000'
+        run: python scanner.py
+
+      - name: Commit only when ranking changed
+        shell: bash
+        run: |
+          git config user.name "romlik-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add out/
+          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt; then
+            echo "Top server ranking did not change"
+            git reset
+            git restore out/ 2>/dev/null || true
+            exit 0
+          fi
+          git commit -m "Update fastest working VPN servers [skip ci]"
+          git push
