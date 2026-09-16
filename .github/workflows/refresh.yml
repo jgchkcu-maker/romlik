@@ -21,7 +21,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 14
+    timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
 
@@ -41,12 +41,20 @@ jobs:
 
       - name: Collect, validate and speed-test
         env:
+          PYTHONUNBUFFERED: '1'
           TOP_N: '20'
-          TCP_KEEP: '220'
-          XRAY_TEST_KEEP: '70'
-          CONCURRENCY: '150'
-          SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=3000000'
-        run: python scanner.py
+          SOURCE_LIMIT: '450'
+          FETCH_WORKERS: '10'
+          FETCH_TIMEOUT: '10'
+          TCP_TIMEOUT: '1.2'
+          TCP_KEEP: '90'
+          CONCURRENCY: '350'
+          XRAY_TEST_KEEP: '40'
+          XRAY_BATCH: '16'
+          SPEED_TIMEOUT: '6'
+          ROTATION_SECONDS: '300'
+          SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=1500000'
+        run: python -u scanner.py
 
       - name: Commit only when ranking changed
         shell: bash
