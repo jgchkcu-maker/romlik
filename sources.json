@@ -1,0 +1,12 @@
+{
+  "normal": [
+    {"name": "AvenCores-1", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/1.txt"},
+    {"name": "AvenCores-2", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/2.txt"},
+    {"name": "AvenCores-3", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/3.txt"},
+    {"name": "AvenCores-4", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/4.txt"},
+    {"name": "AvenCores-5", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/5.txt"}
+  ],
+  "whitelist": [
+    {"name": "AvenCores-whitelist", "url": "https://raw.githubusercontent.com/AvenCores/goida-vpn-configs/main/githubmirror/26.txt"}
+  ]
+}
