@@ -205,6 +205,34 @@ def stream_settings(q):
     return s
 
 
+def ss_credentials(uri):
+    p = urllib.parse.urlparse(uri)
+    if p.username:
+        user = urllib.parse.unquote(p.username)
+        decoded = b64decode(user)
+        if ":" in decoded:
+            user = decoded
+        if ":" in user:
+            return user.split(":", 1)
+
+    raw = uri[5:].split("#", 1)[0].split("?", 1)[0]
+    decoded = b64decode(raw)
+    if "@" in decoded:
+        creds = decoded.rsplit("@", 1)[0]
+        if ":" in creds:
+            return creds.split(":", 1)
+
+    if "@" in raw:
+        creds = raw.rsplit("@", 1)[0]
+        decoded_creds = b64decode(creds)
+        if ":" in decoded_creds:
+            creds = decoded_creds
+        if ":" in creds:
+            return creds.split(":", 1)
+
+    raise ValueError("unsupported shadowsocks credentials")
+
+
 def outbound(n):
     if n.protocol in ("vless", "trojan"):
         p, q = qdict(n.uri)
@@ -232,29 +260,27 @@ def outbound(n):
             "streamSettings": stream_settings(q),
         }
     if n.protocol == "ss":
-        p = urllib.parse.urlparse(n.uri)
-        if p.hostname and p.port and p.username:
-            user = urllib.parse.unquote(p.username)
-            dec = b64decode(user)
-            if ":" in dec:
-                user = dec
-            method, password = user.split(":", 1)
-            return {"protocol": "shadowsocks", "settings": {"servers": [{"address": p.hostname, "port": p.port, "method": method, "password": password}]}}
+        method, password = ss_credentials(n.uri)
+        return {
+            "protocol": "shadowsocks",
+            "settings": {"servers": [{"address": n.host, "port": n.port, "method": method, "password": password}]},
+        }
     raise ValueError("unsupported")
 
 
 def test_with_xray(n, idx):
     port = 20000 + (idx % 20000)
-    cfg = {
-        "log": {"loglevel": "warning"},
-        "inbounds": [{"listen": "127.0.0.1", "port": port, "protocol": "socks", "settings": {"udp": False}}],
-        "outbounds": [outbound(n)],
-    }
-    with tempfile.TemporaryDirectory() as td:
-        fp = Path(td) / "x.json"
-        fp.write_text(json.dumps(cfg))
-        proc = subprocess.Popen(["xray", "run", "-c", str(fp)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        try:
+    proc = None
+    try:
+        cfg = {
+            "log": {"loglevel": "warning"},
+            "inbounds": [{"listen": "127.0.0.1", "port": port, "protocol": "socks", "settings": {"udp": False}}],
+            "outbounds": [outbound(n)],
+        }
+        with tempfile.TemporaryDirectory() as td:
+            fp = Path(td) / "x.json"
+            fp.write_text(json.dumps(cfg))
+            proc = subprocess.Popen(["xray", "run", "-c", str(fp)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             time.sleep(0.15)
             cmd = [
                 "curl", "-L", "--silent", "--show-error", "--fail",
@@ -271,10 +297,11 @@ def test_with_xray(n, idx):
             n.score = round(n.mbps / (1.0 + n.latency_ms / 600.0), 3)
             n.ok = n.mbps >= 0.1
             return n.ok
-        except Exception as e:
-            n.error = f"xray:{type(e).__name__}"
-            return False
-        finally:
+    except Exception as e:
+        n.error = f"xray:{type(e).__name__}"
+        return False
+    finally:
+        if proc is not None:
             proc.terminate()
             try:
                 proc.wait(timeout=0.8)
