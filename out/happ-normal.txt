@@ -1,3 +1,6 @@
+#profile-title: Romlik Fast VPN
+#profile-update-interval: 5
+#subscription-auto-update-open-enable: 1
 vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.158.146:8080?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%E2%9A%A1%20%F0%9F%87%A8%F0%9F%87%A6%20Canada
 vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.47.113:2082?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=xudp&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%E2%9A%A1%20%F0%9F%87%A8%F0%9F%87%A6%20Canada
 vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.45.19:2086?security=none&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr&type=ws&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%E2%9A%A1%20%F0%9F%87%BA%F0%9F%87%B8%20United%20States
