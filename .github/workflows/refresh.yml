@@ -8,6 +8,8 @@ on:
     branches: [main]
     paths:
       - 'scanner.py'
+      - 'scanner_unique.py'
+      - 'server_identity.py'
       - 'decorate_subscription.py'
       - 'healthcheck.py'
       - 'sources.json'
@@ -51,22 +53,22 @@ jobs:
           sudo install -m 0755 /tmp/xray/xray /usr/local/bin/xray
           xray version
 
-      - name: Collect, validate and speed-test
+      - name: Collect unique logical servers and speed-test
         env:
           PYTHONUNBUFFERED: '1'
-          TOP_N: '100'
-          SOURCE_LIMIT: '450'
-          FETCH_WORKERS: '10'
+          TOP_N: '160'
+          SOURCE_LIMIT: '700'
+          FETCH_WORKERS: '12'
           FETCH_TIMEOUT: '10'
           TCP_TIMEOUT: '1.2'
-          TCP_KEEP: '150'
-          CONCURRENCY: '350'
-          XRAY_TEST_KEEP: '100'
-          XRAY_BATCH: '16'
+          TCP_KEEP: '360'
+          CONCURRENCY: '400'
+          XRAY_TEST_KEEP: '220'
+          XRAY_BATCH: '24'
           SPEED_TIMEOUT: '12'
           ROTATION_SECONDS: '300'
           SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=3000000'
-        run: python -u scanner.py
+        run: python -u scanner_unique.py
 
       - name: Add country flags and build subscriptions
         env:
@@ -84,7 +86,7 @@ jobs:
           git config user.name "romlik-bot"
           git config user.email "actions@users.noreply.github.com"
           git add out/
-          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt out/health.json; then
+          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt out/health.json out/real-servers.json; then
             echo "Subscriptions did not change"
             git reset
             git restore out/ 2>/dev/null || true
