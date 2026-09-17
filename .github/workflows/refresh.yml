@@ -5,7 +5,7 @@ on:
     - cron: '*/10 * * * *'
   workflow_dispatch:
   push:
-    branches: [main, feature/local-auto-selection]
+    branches: [main, feature/local-auto-selection, feature/single-auto-profile]
     paths:
       - 'scanner.py'
       - 'scanner_unique.py'
@@ -13,6 +13,7 @@ on:
       - 'candidate_pool.py'
       - 'mobile_candidates.py'
       - 'decorate_subscription.py'
+      - 'auto_profile.py'
       - 'healthcheck.py'
       - 'tests/**'
       - 'sources.json'
