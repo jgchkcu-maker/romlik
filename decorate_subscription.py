@@ -169,8 +169,13 @@ def happ_text(title: str, lines) -> str:
     text = "\n".join(lines) + ("\n" if lines else "")
     return (
         f"#profile-title: {title}\n"
-        "#profile-update-interval: 5\n"
+        "#profile-update-interval: 1\n"
         "#subscription-auto-update-open-enable: 1\n"
+        "#ping-type: proxy\n"
+        "#check-url-via-proxy: https://cp.cloudflare.com/generate_204\n"
+        "#subscription-ping-onopen-enabled: 1\n"
+        "#subscriptions-sort-type: ping\n"
+        "#subscription-autoconnect-type: lowestdelay\n"
         + text
     )
 
