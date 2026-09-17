@@ -119,12 +119,26 @@ def _as_node(node):
     )
 
 
+def _sanitize_outbound(outbound):
+    """Remove options no longer accepted by current Xray core.
+
+    scanner.outbound() intentionally mirrors source links and is also used by the
+    legacy scanner. AUTO profiles target the current Xray core shipped by HAPP,
+    where TLS allowInsecure was removed in favor of certificate pinning.
+    """
+    stream = outbound.get("streamSettings") or {}
+    tls = stream.get("tlsSettings")
+    if isinstance(tls, dict):
+        tls.pop("allowInsecure", None)
+    return outbound
+
+
 def build_subscription(nodes):
     outbounds = []
     valid_nodes = []
     for idx, node in enumerate(nodes, 1):
         try:
-            outbound = scanner.outbound(_as_node(node))
+            outbound = _sanitize_outbound(scanner.outbound(_as_node(node)))
         except Exception:
             continue
         outbound["tag"] = f"proxy-{idx:03d}"
