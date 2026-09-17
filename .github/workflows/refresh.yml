@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scanner.py'
+      - 'decorate_subscription.py'
       - 'sources.json'
       - '.github/workflows/refresh.yml'
 
@@ -42,19 +43,24 @@ jobs:
       - name: Collect, validate and speed-test
         env:
           PYTHONUNBUFFERED: '1'
-          TOP_N: '20'
+          TOP_N: '100'
           SOURCE_LIMIT: '450'
           FETCH_WORKERS: '10'
           FETCH_TIMEOUT: '10'
           TCP_TIMEOUT: '1.2'
-          TCP_KEEP: '90'
+          TCP_KEEP: '150'
           CONCURRENCY: '350'
-          XRAY_TEST_KEEP: '40'
+          XRAY_TEST_KEEP: '100'
           XRAY_BATCH: '16'
           SPEED_TIMEOUT: '6'
           ROTATION_SECONDS: '300'
           SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=1500000'
         run: python -u scanner.py
+
+      - name: Add country flags and readable names
+        env:
+          FAST_BADGE_COUNT: '5'
+        run: python -u decorate_subscription.py
 
       - name: Commit only when ranking changed
         shell: bash
