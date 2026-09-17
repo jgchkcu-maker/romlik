@@ -67,9 +67,11 @@ jobs:
           SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=3000000'
         run: python -u scanner.py
 
-      - name: Add country flags and readable names
+      - name: Add country flags and build subscriptions
         env:
           FAST_BADGE_COUNT: '5'
+          WHITELIST_LIMIT: '40'
+          HAPP_TOTAL_LIMIT: '100'
         run: python -u decorate_subscription.py
 
       - name: Commit only when subscriptions changed
@@ -78,7 +80,7 @@ jobs:
           git config user.name "romlik-bot"
           git config user.email "actions@users.noreply.github.com"
           git add out/
-          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ-normal.txt out/happ-whitelist.txt; then
+          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt; then
             echo "Subscriptions did not change"
             git reset
             git restore out/ 2>/dev/null || true
