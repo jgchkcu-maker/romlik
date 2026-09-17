@@ -1,17 +1,1 @@
-[
-  {
-    "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.46.234:2052?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#🇫🇷 🏴 WLUnlocker Франция | #56",
-    "protocol": "vless",
-    "host": "104.18.46.234",
-    "port": 2052,
-    "source": "wlunlocker-blacklist",
-    "pool": "normal",
-    "remark": "🇫🇷 🏴 WLUnlocker Франция | #56",
-    "tcp_ms": 1.4915020000003665,
-    "latency_ms": 589.72,
-    "mbps": 3.668936,
-    "score": 1.85,
-    "ok": true,
-    "error": ""
-  }
-]
+[]

@@ -1,42 +1,18 @@
 {
-  "updated_at": 1789601998,
-  "duration_sec": 35.05,
+  "updated_at": 1789609318,
+  "duration_sec": 36.99,
   "source_stats": {
     "sources": {
+      "AvenCores-4": {
+        "pool": "normal",
+        "raw": 150,
+        "sampled": 150,
+        "error": null
+      },
       "igareck-vless": {
         "pool": "normal",
-        "raw": 118,
-        "sampled": 118,
-        "error": null
-      },
-      "morpheusadam-all": {
-        "pool": "normal",
-        "raw": 0,
-        "sampled": 0,
-        "error": null
-      },
-      "igareck-ss-all": {
-        "pool": "normal",
-        "raw": 143,
-        "sampled": 143,
-        "error": null
-      },
-      "Au1rxx-verified": {
-        "pool": "normal",
-        "raw": 1504,
-        "sampled": 450,
-        "error": null
-      },
-      "AvenCores-3": {
-        "pool": "normal",
-        "raw": 13328,
-        "sampled": 443,
-        "error": null
-      },
-      "Baarcuda-top100": {
-        "pool": "normal",
-        "raw": 95,
-        "sampled": 95,
+        "raw": 180,
+        "sampled": 180,
         "error": null
       },
       "AvenCores-5": {
@@ -45,40 +21,34 @@
         "sampled": 66,
         "error": null
       },
-      "Baarcuda-top100-vless": {
+      "Au1rxx-verified": {
         "pool": "normal",
-        "raw": 100,
-        "sampled": 100,
-        "error": null
-      },
-      "AvenCores-4": {
-        "pool": "normal",
-        "raw": 147,
-        "sampled": 147,
-        "error": null
-      },
-      "wlunlocker-blacklist": {
-        "pool": "normal",
-        "raw": 3037,
+        "raw": 1512,
         "sampled": 450,
         "error": null
       },
-      "igareck-mobile": {
-        "pool": "whitelist",
-        "raw": 61,
-        "sampled": 61,
+      "igareck-ss-all": {
+        "pool": "normal",
+        "raw": 45,
+        "sampled": 45,
         "error": null
       },
-      "AvenCores-whitelist": {
-        "pool": "whitelist",
-        "raw": 4770,
-        "sampled": 435,
+      "morpheusadam-all": {
+        "pool": "normal",
+        "raw": 0,
+        "sampled": 0,
         "error": null
       },
-      "igareck-sni-all": {
+      "AvenCores-3": {
+        "pool": "normal",
+        "raw": 13327,
+        "sampled": 444,
+        "error": null
+      },
+      "igareck-cidr-all": {
         "pool": "whitelist",
-        "raw": 4,
-        "sampled": 4,
+        "raw": 49,
+        "sampled": 49,
         "error": null
       },
       "igareck-cidr-checked": {
@@ -87,10 +57,40 @@
         "sampled": 0,
         "error": null
       },
-      "igareck-cidr-all": {
+      "Baarcuda-top100-vless": {
+        "pool": "normal",
+        "raw": 100,
+        "sampled": 100,
+        "error": null
+      },
+      "AvenCores-1": {
+        "pool": "normal",
+        "raw": 9942,
+        "sampled": 450,
+        "error": null
+      },
+      "Baarcuda-top100": {
+        "pool": "normal",
+        "raw": 95,
+        "sampled": 95,
+        "error": null
+      },
+      "igareck-sni-all": {
         "pool": "whitelist",
-        "raw": 61,
-        "sampled": 61,
+        "raw": 4,
+        "sampled": 4,
+        "error": null
+      },
+      "anonymouskeys-all": {
+        "pool": "normal",
+        "raw": 24877,
+        "sampled": 450,
+        "error": null
+      },
+      "igareck-mobile": {
+        "pool": "whitelist",
+        "raw": 49,
+        "sampled": 49,
         "error": null
       },
       "wlunlocker-whitelist-all": {
@@ -99,9 +99,9 @@
         "sampled": 450,
         "error": null
       },
-      "anonymouskeys-all": {
+      "wlunlocker-blacklist": {
         "pool": "normal",
-        "raw": 24877,
+        "raw": 3048,
         "sampled": 450,
         "error": null
       },
@@ -117,172 +117,142 @@
         "sampled": 150,
         "error": null
       },
-      "AvenCores-1": {
-        "pool": "normal",
-        "raw": 10033,
-        "sampled": 450,
-        "error": null
-      },
       "wlunlocker-cidr1-ru": {
         "pool": "whitelist",
         "raw": 150,
         "sampled": 150,
         "error": null
       },
+      "AvenCores-whitelist": {
+        "pool": "whitelist",
+        "raw": 4780,
+        "sampled": 450,
+        "error": null
+      },
       "AvenCores-2": {
         "pool": "normal",
         "raw": 405406,
-        "sampled": 450,
+        "sampled": 448,
         "error": null
       }
     },
-    "raw_seen": 464651,
-    "sampled": 4703,
-    "unique_sampled": 4168
+    "raw_seen": 464531,
+    "sampled": 4660,
+    "unique_sampled": 4177
   },
   "pool_stats": {
     "normal": {
-      "working_tested": 1
+      "working_tested": 0
     },
     "whitelist": {
-      "working_tested": 8
+      "working_tested": 7
     }
   },
   "xray_tested": 80,
-  "working": 9,
+  "working": 7,
   "top": [
     {
-      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:22443?type=grpc&security=reality&pbk=V8llhEcbGI7Zqf52Ec0kryrdRv7lvLcKCjHe1Di23yw&sid=fdf9d63fcdd6be6a&sni=www.cloudflare.com&serviceName=f234981844&fp=firefox#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
+      "uri": "vless://a7c35c0c-e8b6-49a4-9d2c-1acee63fe2d6@146.103.100.242:443?type=tcp&security=reality&flow=xtls-rprx-vision&fp=firefox&pbk=CxjnGHCI3HXN2RAXwytela7jXyOGDCBqzMAqTfm60D0&sid=4ed920401771c4ab&sni=dzen.ru#%5BOpenRay%5D%20%F0%9F%87%B3%F0%9F%87%B1%20NL-12321",
       "protocol": "vless",
-      "host": "94.198.217.201",
-      "port": 22443,
-      "source": "igareck-mobile",
+      "host": "146.103.100.242",
+      "port": 443,
+      "source": "AvenCores-whitelist",
       "pool": "whitelist",
-      "remark": "🇵🇱 Poland | [*CIDR]",
-      "tcp_ms": 118.96503999999908,
-      "latency_ms": 891.269,
-      "mbps": 5.422976,
-      "score": 2.182,
+      "remark": "[OpenRay] 🇳🇱 NL-12321",
+      "tcp_ms": 151.28331699999364,
+      "latency_ms": 770.931,
+      "mbps": 5.687152,
+      "score": 2.489,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:22443?type=grpc&security=reality&pbk=V8llhEcbGI7Zqf52Ec0kryrdRv7lvLcKCjHe1Di23yw&sid=fdf9d63fcdd6be6a&sni=www.cloudflare.com&serviceName=f234981844&fp=edge#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
+      "uri": "vless://2cbf425a-aed6-4c8f-937f-6265ed13a7fa@188.225.56.11:443?security=reality&encryption=none&pbk=_qSbW4JL4Ffqvj25vX-6a2ul9Qlj6PBdlF0ghsf_0RQ&headerType=&type=tcp&flow=xtls-rprx-vision&sid=a9dc98a7dc87a7dc&fp=firefox#%F0%9F%8C%90%20Anycast-IP%20%7C%20%F0%9F%87%A9%F0%9F%87%AA%20%F0%9F%87%AB%F0%9F%87%AE%20%7C%20%5B%2ACIDR%5D",
       "protocol": "vless",
-      "host": "94.198.217.201",
-      "port": 22443,
-      "source": "igareck-mobile",
+      "host": "188.225.56.11",
+      "port": 443,
+      "source": "igareck-cidr-all",
       "pool": "whitelist",
-      "remark": "🇵🇱 Poland | [*CIDR]",
-      "tcp_ms": 116.46850700000044,
-      "latency_ms": 902.436,
-      "mbps": 5.252112,
-      "score": 2.097,
+      "remark": "🌐 Anycast-IP | 🇩🇪 🇫🇮 | [*CIDR]",
+      "tcp_ms": 169.34813400000337,
+      "latency_ms": 950.766,
+      "mbps": 5.13588,
+      "score": 1.987,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:22443?type=grpc&security=reality&pbk=V8llhEcbGI7Zqf52Ec0kryrdRv7lvLcKCjHe1Di23yw&sid=fdf9d63fcdd6be6a&sni=www.cloudflare.com&serviceName=f234981844&fp=chrome#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
+      "uri": "vless://24b84bd3-baa3-4192-9625-23c9690ae6f6@31.76.111.152:443?type=tcp&security=reality&flow=xtls-rprx-vision&pbk=yMoulSTnxnbOfAjWPfB244a29ms9HUkjgA1zLZ65Nzw&sni=ads.x5.ru&fp=safari#🇷🇺 🏳️ WLUnlocker Россия | #5",
       "protocol": "vless",
-      "host": "94.198.217.201",
-      "port": 22443,
-      "source": "igareck-mobile",
+      "host": "31.76.111.152",
+      "port": 443,
+      "source": "wlunlocker-whitelist-all",
       "pool": "whitelist",
-      "remark": "🇵🇱 Poland | [*CIDR]",
-      "tcp_ms": 113.18365399999664,
-      "latency_ms": 924.363,
-      "mbps": 5.246504,
-      "score": 2.065,
+      "remark": "🇷🇺 🏳️ WLUnlocker Россия | #5",
+      "tcp_ms": 144.27431900000443,
+      "latency_ms": 722.425,
+      "mbps": 3.430504,
+      "score": 1.556,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:22443?type=grpc&security=reality&pbk=V8llhEcbGI7Zqf52Ec0kryrdRv7lvLcKCjHe1Di23yw&sid=fdf9d63fcdd6be6a&sni=www.cloudflare.com&serviceName=f234981844&fp=safari#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
+      "uri": "vless://24b84bd3-baa3-4192-9625-23c9690ae6f6@31.76.111.152:443?type=tcp&security=reality&flow=xtls-rprx-vision&pbk=yMoulSTnxnbOfAjWPfB244a29ms9HUkjgA1zLZ65Nzw&sni=ads.x5.ru&fp=firefox#%F0%9F%8C%90%20Anycast-IP%20%7C%20%F0%9F%87%A9%F0%9F%87%AA%20%F0%9F%87%B8%F0%9F%87%AA%20%7C%20%5BSNI-RU%5D%20ads.x5.ru",
       "protocol": "vless",
-      "host": "94.198.217.201",
-      "port": 22443,
-      "source": "igareck-mobile",
+      "host": "31.76.111.152",
+      "port": 443,
+      "source": "igareck-sni-all",
       "pool": "whitelist",
-      "remark": "🇵🇱 Poland | [*CIDR]",
-      "tcp_ms": 121.20274900000538,
-      "latency_ms": 944.042,
-      "mbps": 5.166944,
-      "score": 2.008,
+      "remark": "🌐 Anycast-IP | 🇩🇪 🇸🇪 | [SNI-RU] ads.x5.ru",
+      "tcp_ms": 148.2780949999949,
+      "latency_ms": 718.997,
+      "mbps": 3.11504,
+      "score": 1.417,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.46.234:2052?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#🇫🇷 🏴 WLUnlocker Франция | #56",
+      "uri": "vless://24b84bd3-baa3-4192-9625-23c9690ae6f6@31.76.111.152:443?type=tcp&security=reality&flow=xtls-rprx-vision&pbk=yMoulSTnxnbOfAjWPfB244a29ms9HUkjgA1zLZ65Nzw&sni=ads.x5.ru&fp=ios#%F0%9F%8C%90%20Anycast-IP%20%7C%20%F0%9F%87%A9%F0%9F%87%AA%20%F0%9F%87%B8%F0%9F%87%AA%20%7C%20%5BSNI-RU%5D%20ads.x5.ru",
       "protocol": "vless",
-      "host": "104.18.46.234",
-      "port": 2052,
-      "source": "wlunlocker-blacklist",
-      "pool": "normal",
-      "remark": "🇫🇷 🏴 WLUnlocker Франция | #56",
-      "tcp_ms": 1.4915020000003665,
-      "latency_ms": 589.72,
-      "mbps": 3.668936,
-      "score": 1.85,
+      "host": "31.76.111.152",
+      "port": 443,
+      "source": "igareck-sni-all",
+      "pool": "whitelist",
+      "remark": "🌐 Anycast-IP | 🇩🇪 🇸🇪 | [SNI-RU] ads.x5.ru",
+      "tcp_ms": 148.329020999995,
+      "latency_ms": 741.461,
+      "mbps": 3.115144,
+      "score": 1.393,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:24443?type=grpc&security=reality&pbk=s2uiu3GQA2SlZzsr86Z5Dav97eAFTPf7Nvr-zqzzRgg&sid=72ccd4a7563c2953&sni=www.cloudflare.com&serviceName=9d30d49278&fp=safari#%F0%9F%87%AA%F0%9F%87%AA%20Estonia%20%7C%20%5B%2ACIDR%5D",
+      "uri": "vless://24b84bd3-baa3-4192-9625-23c9690ae6f6@31.76.111.152:443?type=tcp&security=reality&flow=xtls-rprx-vision&pbk=yMoulSTnxnbOfAjWPfB244a29ms9HUkjgA1zLZ65Nzw&sni=ads.x5.ru&fp=chrome#%F0%9F%8C%90%20Anycast-IP%20%7C%20%F0%9F%87%A9%F0%9F%87%AA%20%F0%9F%87%B8%F0%9F%87%AA%20%7C%20%5BSNI-RU%5D%20ads.x5.ru",
       "protocol": "vless",
-      "host": "94.198.217.201",
-      "port": 24443,
-      "source": "igareck-mobile",
+      "host": "31.76.111.152",
+      "port": 443,
+      "source": "igareck-sni-all",
       "pool": "whitelist",
-      "remark": "🇪🇪 Estonia | [*CIDR]",
-      "tcp_ms": 116.54259200000183,
-      "latency_ms": 1121.726,
-      "mbps": 4.018368,
-      "score": 1.4,
+      "remark": "🌐 Anycast-IP | 🇩🇪 🇸🇪 | [SNI-RU] ads.x5.ru",
+      "tcp_ms": 149.00925000000598,
+      "latency_ms": 772.3729999999999,
+      "mbps": 3.031312,
+      "score": 1.325,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:24443?type=grpc&security=reality&pbk=s2uiu3GQA2SlZzsr86Z5Dav97eAFTPf7Nvr-zqzzRgg&sid=72ccd4a7563c2953&sni=www.cloudflare.com&serviceName=9d30d49278&fp=firefox#%F0%9F%87%AA%F0%9F%87%AA%20Estonia%20%7C%20%5B%2ACIDR%5D",
+      "uri": "vless://24b84bd3-baa3-4192-9625-23c9690ae6f6@31.76.111.152:443?type=tcp&security=reality&flow=xtls-rprx-vision&pbk=yMoulSTnxnbOfAjWPfB244a29ms9HUkjgA1zLZ65Nzw&sni=ads.x5.ru&fp=qq#%F0%9F%8C%90%20Anycast-IP%20%7C%20%F0%9F%87%A9%F0%9F%87%AA%20%F0%9F%87%B8%F0%9F%87%AA%20%7C%20%5BSNI-RU%5D%20ads.x5.ru",
       "protocol": "vless",
-      "host": "94.198.217.201",
-      "port": 24443,
-      "source": "igareck-mobile",
+      "host": "31.76.111.152",
+      "port": 443,
+      "source": "igareck-sni-all",
       "pool": "whitelist",
-      "remark": "🇪🇪 Estonia | [*CIDR]",
-      "tcp_ms": 116.72929699999912,
-      "latency_ms": 1166.641,
-      "mbps": 3.819056,
-      "score": 1.297,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:24443?type=grpc&security=reality&pbk=s2uiu3GQA2SlZzsr86Z5Dav97eAFTPf7Nvr-zqzzRgg&sid=72ccd4a7563c2953&sni=www.cloudflare.com&serviceName=9d30d49278&fp=edge#%F0%9F%87%AA%F0%9F%87%AA%20Estonia%20%7C%20%5B%2ACIDR%5D",
-      "protocol": "vless",
-      "host": "94.198.217.201",
-      "port": 24443,
-      "source": "igareck-mobile",
-      "pool": "whitelist",
-      "remark": "🇪🇪 Estonia | [*CIDR]",
-      "tcp_ms": 118.82600700000268,
-      "latency_ms": 1201.2240000000002,
-      "mbps": 3.647704,
-      "score": 1.215,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://66ac188b-bd8d-4218-b9ba-0bad0e152cd0@94.198.217.201:24443?type=grpc&security=reality&pbk=s2uiu3GQA2SlZzsr86Z5Dav97eAFTPf7Nvr-zqzzRgg&sid=72ccd4a7563c2953&sni=www.cloudflare.com&serviceName=9d30d49278&fp=chrome#%F0%9F%87%AA%F0%9F%87%AA%20Estonia%20%7C%20%5B%2ACIDR%5D",
-      "protocol": "vless",
-      "host": "94.198.217.201",
-      "port": 24443,
-      "source": "igareck-mobile",
-      "pool": "whitelist",
-      "remark": "🇪🇪 Estonia | [*CIDR]",
-      "tcp_ms": 113.1442919999941,
-      "latency_ms": 1417.747,
-      "mbps": 4.04236,
-      "score": 1.202,
+      "remark": "🌐 Anycast-IP | 🇩🇪 🇸🇪 | [SNI-RU] ads.x5.ru",
+      "tcp_ms": 149.13669800000662,
+      "latency_ms": 800.125,
+      "mbps": 3.01144,
+      "score": 1.291,
       "ok": true,
       "error": ""
     }
