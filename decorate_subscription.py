@@ -102,18 +102,45 @@ def dedupe_nodes(nodes):
     return out
 
 
+def load_json(path: str):
+    try:
+        data = json.loads(Path(path).read_text())
+        return data if isinstance(data, list) else []
+    except Exception:
+        return []
+
+
+def merge_mobile_whitelist(mobile_nodes, tested_nodes):
+    """Prefer mobile-feed nodes, then fill gaps with Azure-tested whitelist nodes."""
+    out = []
+    seen = set()
+    for node in list(mobile_nodes) + list(tested_nodes):
+        node["pool"] = "whitelist"
+        ident = logical_id(node)
+        if ident in seen:
+            continue
+        seen.add(ident)
+        out.append(node)
+        if len(out) >= WHITELIST_LIMIT:
+            break
+    return out
+
+
 def label_for(node, pool, rank, geo):
     code, country = geo.get(str(node.get("host", "")), ("", ""))
-    badge = "⚡ " if rank <= FAST_BADGE_COUNT else ""
+    mobile = bool(node.get("mobile_candidate"))
+    badge = "⚡ " if rank <= FAST_BADGE_COUNT and not mobile else ""
+    mobile_badge = "📱 " if mobile else ""
     f = flag(code)
     country = country or "Server"
     suffix = f" • {rank:02d}"
     if pool == "whitelist":
-        return f"{badge}{f} Белые списки • {country}{suffix}"
+        return f"{badge}{f} {mobile_badge}Белые списки • {country}{suffix}"
     return f"{badge}{f} {country}{suffix}"
 
 
 def rewrite_uri(uri: str, label: str) -> str:
+    uri = (uri or "").replace("&amp;", "&")
     if uri.startswith("vmess://"):
         raw = uri[8:].split("#", 1)[0]
         raw += "=" * ((4 - len(raw) % 4) % 4)
@@ -156,24 +183,37 @@ def write_preserving(path: Path, title: str, lines):
 
 
 def main():
-    all_nodes = []
-    pool_nodes = {}
-    raw_counts = {}
-    for pool in POOLS:
-        path = Path(f"out/{pool}.json")
-        try:
-            nodes = json.loads(path.read_text())
-        except Exception:
-            nodes = []
-        raw_counts[pool] = len(nodes)
-        nodes = dedupe_nodes(nodes)
-        if pool == "whitelist":
-            nodes = nodes[:WHITELIST_LIMIT]
-        pool_nodes[pool] = nodes
-        all_nodes.extend(nodes)
+    normal_raw = load_json("out/normal.json")
+    tested_whitelist_raw = load_json("out/whitelist.json")
+    mobile_raw = load_json("out/mobile-whitelist.json")
 
+    normal_nodes = dedupe_nodes(normal_raw)
+    tested_whitelist = dedupe_nodes(tested_whitelist_raw)
+    mobile_nodes = []
+    seen_mobile = set()
+    for node in mobile_raw:
+        node["mobile_candidate"] = True
+        ident = logical_id(node)
+        if ident in seen_mobile:
+            continue
+        seen_mobile.add(ident)
+        mobile_nodes.append(node)
+
+    whitelist_nodes = merge_mobile_whitelist(mobile_nodes, tested_whitelist)
+    pool_nodes = {
+        "normal": normal_nodes,
+        "whitelist": whitelist_nodes,
+    }
+    raw_counts = {
+        "normal": len(normal_raw),
+        "whitelist": len(tested_whitelist_raw),
+        "mobile": len(mobile_raw),
+    }
+
+    all_nodes = normal_nodes + whitelist_nodes
     geo = geo_lookup(all_nodes)
     records_by_pool = {"normal": [], "whitelist": []}
+    mobile_decorated = []
 
     for pool in POOLS:
         nodes = pool_nodes[pool]
@@ -188,6 +228,8 @@ def main():
             node["server_identity"] = ident
             uri = rewrite_uri(str(node.get("uri", "")), label)
             decorated.append(uri)
+            if pool == "whitelist" and node.get("mobile_candidate"):
+                mobile_decorated.append(uri)
             records_by_pool[pool].append({
                 "identity": ident,
                 "uri": uri,
@@ -205,10 +247,16 @@ def main():
         write_preserving(Path(f"out/happ-{pool}.txt"), title, decorated)
         print(
             pool,
-            "raw_working", raw_counts[pool],
+            "raw_working", raw_counts.get(pool, 0),
             "unique_real", len(nodes),
             flush=True,
         )
+
+    write_preserving(
+        Path("out/happ-mobile.txt"),
+        "Romlik Mobile White Lists",
+        mobile_decorated[:WHITELIST_LIMIT],
+    )
 
     whitelist = records_by_pool["whitelist"][:WHITELIST_LIMIT]
     normal_slots = max(0, HAPP_TOTAL_LIMIT - len(whitelist))
@@ -220,7 +268,7 @@ def main():
 
     write_preserving(
         Path("out/happ.txt"),
-        "Romlik • Fast + White Lists",
+        "Romlik • Fast + Mobile White Lists",
         combined_uris,
     )
 
@@ -230,6 +278,7 @@ def main():
         real_servers.append({
             "identity": item["identity"][:16],
             "pool": n.get("pool", ""),
+            "mobile_candidate": bool(n.get("mobile_candidate")),
             "protocol": n.get("protocol", ""),
             "display_name": n.get("display_name", ""),
             "country": n.get("country", ""),
@@ -248,6 +297,7 @@ def main():
         "happ combined real_unique", len(combined),
         "normal", len(normal),
         "whitelist", len(whitelist),
+        "mobile_candidates", len(mobile_decorated),
         flush=True,
     )
 
