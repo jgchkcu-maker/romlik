@@ -1,24 +1,12 @@
 {
-  "updated_at": 1789611073,
-  "duration_sec": 69.28,
+  "updated_at": 1789611172,
+  "duration_sec": 78.53,
   "source_stats": {
     "sources": {
-      "AvenCores-5": {
+      "igareck-ss-all": {
         "pool": "normal",
-        "raw": 66,
-        "sampled": 66,
-        "error": null
-      },
-      "morpheusadam-all": {
-        "pool": "normal",
-        "raw": 0,
-        "sampled": 0,
-        "error": null
-      },
-      "AvenCores-4": {
-        "pool": "normal",
-        "raw": 150,
-        "sampled": 150,
+        "raw": 45,
+        "sampled": 45,
         "error": null
       },
       "igareck-vless": {
@@ -27,58 +15,10 @@
         "sampled": 180,
         "error": null
       },
-      "igareck-ss-all": {
+      "AvenCores-5": {
         "pool": "normal",
-        "raw": 45,
-        "sampled": 45,
-        "error": null
-      },
-      "Baarcuda-top100": {
-        "pool": "normal",
-        "raw": 95,
-        "sampled": 95,
-        "error": null
-      },
-      "Baarcuda-top100-vless": {
-        "pool": "normal",
-        "raw": 100,
-        "sampled": 100,
-        "error": null
-      },
-      "igareck-cidr-all": {
-        "pool": "whitelist",
-        "raw": 55,
-        "sampled": 55,
-        "error": null
-      },
-      "AvenCores-1": {
-        "pool": "normal",
-        "raw": 9942,
-        "sampled": 450,
-        "error": null
-      },
-      "igareck-sni-all": {
-        "pool": "whitelist",
-        "raw": 3,
-        "sampled": 3,
-        "error": null
-      },
-      "igareck-cidr-checked": {
-        "pool": "whitelist",
-        "raw": 0,
-        "sampled": 0,
-        "error": null
-      },
-      "igareck-mobile": {
-        "pool": "whitelist",
-        "raw": 55,
-        "sampled": 55,
-        "error": null
-      },
-      "wlunlocker-blacklist": {
-        "pool": "normal",
-        "raw": 3048,
-        "sampled": 450,
+        "raw": 66,
+        "sampled": 66,
         "error": null
       },
       "Au1rxx-verified": {
@@ -87,9 +27,81 @@
         "sampled": 450,
         "error": null
       },
-      "anonymouskeys-all": {
+      "Baarcuda-top100-vless": {
         "pool": "normal",
-        "raw": 24877,
+        "raw": 100,
+        "sampled": 100,
+        "error": null
+      },
+      "AvenCores-4": {
+        "pool": "normal",
+        "raw": 150,
+        "sampled": 150,
+        "error": null
+      },
+      "AvenCores-3": {
+        "pool": "normal",
+        "raw": 13327,
+        "sampled": 448,
+        "error": null
+      },
+      "Baarcuda-top100": {
+        "pool": "normal",
+        "raw": 95,
+        "sampled": 95,
+        "error": null
+      },
+      "morpheusadam-all": {
+        "pool": "normal",
+        "raw": 0,
+        "sampled": 0,
+        "error": null
+      },
+      "igareck-cidr-all": {
+        "pool": "whitelist",
+        "raw": 55,
+        "sampled": 55,
+        "error": null
+      },
+      "igareck-sni-all": {
+        "pool": "whitelist",
+        "raw": 3,
+        "sampled": 3,
+        "error": null
+      },
+      "igareck-mobile": {
+        "pool": "whitelist",
+        "raw": 55,
+        "sampled": 55,
+        "error": null
+      },
+      "igareck-cidr-checked": {
+        "pool": "whitelist",
+        "raw": 0,
+        "sampled": 0,
+        "error": null
+      },
+      "AvenCores-1": {
+        "pool": "normal",
+        "raw": 9942,
+        "sampled": 450,
+        "error": null
+      },
+      "wlunlocker-cidr1-ru": {
+        "pool": "whitelist",
+        "raw": 150,
+        "sampled": 150,
+        "error": null
+      },
+      "wlunlocker-blacklist": {
+        "pool": "normal",
+        "raw": 3048,
+        "sampled": 450,
+        "error": null
+      },
+      "wlunlocker-whitelist-all": {
+        "pool": "whitelist",
+        "raw": 571,
         "sampled": 450,
         "error": null
       },
@@ -99,40 +111,28 @@
         "sampled": 150,
         "error": null
       },
-      "AvenCores-whitelist": {
-        "pool": "whitelist",
-        "raw": 4780,
-        "sampled": 432,
-        "error": null
-      },
-      "wlunlocker-whitelist-all": {
-        "pool": "whitelist",
-        "raw": 571,
-        "sampled": 450,
-        "error": null
-      },
       "wlunlocker-cidr3-eu": {
         "pool": "whitelist",
         "raw": 30,
         "sampled": 30,
         "error": null
       },
-      "wlunlocker-cidr1-ru": {
+      "AvenCores-whitelist": {
         "pool": "whitelist",
-        "raw": 150,
-        "sampled": 150,
+        "raw": 4780,
+        "sampled": 432,
+        "error": null
+      },
+      "anonymouskeys-all": {
+        "pool": "normal",
+        "raw": 24877,
+        "sampled": 450,
         "error": null
       },
       "AvenCores-2": {
         "pool": "normal",
         "raw": 405406,
         "sampled": 447,
-        "error": null
-      },
-      "AvenCores-3": {
-        "pool": "normal",
-        "raw": 13327,
-        "sampled": 448,
         "error": null
       }
     },
@@ -142,177 +142,27 @@
   },
   "pool_stats": {
     "normal": {
-      "working_tested": 43
+      "working_tested": 5
     },
     "whitelist": {
-      "working_tested": 5
+      "working_tested": 0
     }
   },
-  "xray_tested": 200,
-  "working": 48,
+  "xray_tested": 195,
+  "working": 5,
   "top": [
     {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.39.218:8080?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=xudp&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-29318",
-      "protocol": "vless",
-      "host": "104.18.39.218",
-      "port": 8080,
-      "source": "AvenCores-1",
+      "uri": "vmess://eyJhZGQiOiIxMjkuMTQ2Ljc3LjI0OCIsImFpZCI6MCwiaG9zdCI6IiIsImlkIjoiZjgzNmM3MzYtODdmYy00ZmRlLWFhYmMtMDA4NTdlY2RmZjNlIiwibmV0Ijoid3MiLCJwYXRoIjoiL2NjdHYxMy5tM3U4IiwicG9ydCI6IjM5NDk1IiwicHMiOiJ2bWVzcy0xNjA5MSIsInNuaSI6IiIsInRscyI6IiIsInR5cGUiOiJub25lIiwidiI6IjIifQ==",
+      "protocol": "vmess",
+      "host": "129.146.77.248",
+      "port": 39495,
+      "source": "Au1rxx-verified",
       "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-29318",
-      "tcp_ms": 5.772504000006506,
-      "latency_ms": 213.155,
-      "mbps": 35.547024,
-      "score": 26.229,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.24.131:8080?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28406",
-      "protocol": "vless",
-      "host": "162.159.24.131",
-      "port": 8080,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28406",
-      "tcp_ms": 6.115375999996786,
-      "latency_ms": 237.1,
-      "mbps": 33.852688,
-      "score": 24.264,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.52.6:80?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28675",
-      "protocol": "vless",
-      "host": "172.64.52.6",
-      "port": 80,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28675",
-      "tcp_ms": 6.291354999987675,
-      "latency_ms": 241.73,
-      "mbps": 33.848584,
-      "score": 24.128,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.48.32:2095?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28671",
-      "protocol": "vless",
-      "host": "162.159.48.32",
-      "port": 2095,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28671",
-      "tcp_ms": 6.137824000006731,
-      "latency_ms": 257.729,
-      "mbps": 34.187352,
-      "score": 23.915,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.0.169:2086?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28414",
-      "protocol": "vless",
-      "host": "162.159.0.169",
-      "port": 2086,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28414",
-      "tcp_ms": 6.31962100000294,
-      "latency_ms": 236.899,
-      "mbps": 31.4486,
-      "score": 22.547,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.32.108:8880?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28634",
-      "protocol": "vless",
-      "host": "172.64.32.108",
-      "port": 8880,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28634",
-      "tcp_ms": 6.0461669999938294,
-      "latency_ms": 264.281,
-      "mbps": 31.085504,
-      "score": 21.58,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.52.6:8080?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28525",
-      "protocol": "vless",
-      "host": "172.64.52.6",
-      "port": 8080,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28525",
-      "tcp_ms": 6.303213999999002,
-      "latency_ms": 256.019,
-      "mbps": 28.513856,
-      "score": 19.986,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.42.85:8880?host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&path=%2F%3Fed%3D2560security%3Dtls&security=none&type=ws#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28755",
-      "protocol": "vless",
-      "host": "172.64.42.85",
-      "port": 8880,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28755",
-      "tcp_ms": 6.462081999998759,
-      "latency_ms": 259.348,
-      "mbps": 27.000264,
-      "score": 18.852,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.0.53:2082?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28417",
-      "protocol": "vless",
-      "host": "162.159.0.53",
-      "port": 2082,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28417",
-      "tcp_ms": 6.1208350000043765,
-      "latency_ms": 286.24699999999996,
-      "mbps": 26.402168,
-      "score": 17.875,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.48.32:80?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28410",
-      "protocol": "vless",
-      "host": "162.159.48.32",
-      "port": 80,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28410",
-      "tcp_ms": 6.091503999996917,
-      "latency_ms": 312.981,
-      "mbps": 19.967448,
-      "score": 13.122,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.0.53:80?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28548",
-      "protocol": "vless",
-      "host": "162.159.0.53",
-      "port": 80,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28548",
-      "tcp_ms": 6.257632000000513,
-      "latency_ms": 377.015,
-      "mbps": 18.212552,
-      "score": 11.185,
+      "remark": "vmess-16091",
+      "tcp_ms": 3.264664999960587,
+      "latency_ms": 85.23400000000001,
+      "mbps": 62.311696,
+      "score": 54.561,
       "ok": true,
       "error": ""
     },
@@ -324,280 +174,55 @@
       "source": "AvenCores-1",
       "pool": "normal",
       "remark": "[OpenRay] 🇨🇦 CA-28924",
-      "tcp_ms": 6.030928000001268,
-      "latency_ms": 361.33799999999997,
-      "mbps": 17.751896,
-      "score": 11.079,
+      "tcp_ms": 8.527656000069328,
+      "latency_ms": 421.597,
+      "mbps": 78.3676,
+      "score": 46.027,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.53.55:2086?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28729",
-      "protocol": "vless",
-      "host": "172.64.53.55",
-      "port": 2086,
-      "source": "AvenCores-1",
+      "uri": "vmess://eyJhZGQiOiIxMjkuMTQ2LjE0My44MCIsImFpZCI6MCwiaG9zdCI6IiIsImlkIjoiZDQ2MDNjYzItZTBlZS00NjUxLTgzZjUtMWRiNWI3MTY4MTc3IiwibmV0IjoidGNwIiwicGF0aCI6IiIsInBvcnQiOiI0ODExMSIsInBzIjoidm1lc3MtOTY0NDMiLCJzbmkiOiIiLCJ0bHMiOiIiLCJ0eXBlIjoibm9uZSIsInYiOiIyIn0=",
+      "protocol": "vmess",
+      "host": "129.146.143.80",
+      "port": 48111,
+      "source": "Au1rxx-verified",
       "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28729",
-      "tcp_ms": 5.96704599999498,
-      "latency_ms": 351.18,
-      "mbps": 17.296872,
-      "score": 10.911,
+      "remark": "vmess-96443",
+      "tcp_ms": 3.0149460000075123,
+      "latency_ms": 84.66799999999999,
+      "mbps": 36.808752,
+      "score": 32.257,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.53.55:80?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28418",
-      "protocol": "vless",
-      "host": "172.64.53.55",
-      "port": 80,
-      "source": "AvenCores-1",
+      "uri": "vmess://eyJhZGQiOiIxMjkuMTQ2LjE0My44MCIsImFpZCI6MCwiaG9zdCI6IiIsImlkIjoiZDQ2MDNjYzItZTBlZS00NjUxLTgzZjUtMWRiNWI3MTY4MTc3IiwibmV0IjoicmF3IiwicGF0aCI6IiIsInBvcnQiOiI0ODExMSIsInBzIjoidm1lc3MtMjU2ODg1MCIsInNuaSI6IiIsInRscyI6IiIsInR5cGUiOiJub25lIiwidiI6IjIifQ==",
+      "protocol": "vmess",
+      "host": "129.146.143.80",
+      "port": 48111,
+      "source": "Au1rxx-verified",
       "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28418",
-      "tcp_ms": 6.1276869999886685,
-      "latency_ms": 470.292,
-      "mbps": 18.9312,
-      "score": 10.613,
+      "remark": "vmess-2568850",
+      "tcp_ms": 2.5707290000127614,
+      "latency_ms": 102.57,
+      "mbps": 24.849392,
+      "score": 21.222,
       "ok": true,
       "error": ""
     },
     {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.46.234:8080?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28526",
-      "protocol": "vless",
-      "host": "104.18.46.234",
+      "uri": "trojan://A4u%5Ep%28_UR%2AF6@104.21.70.21:8080?encryption=none&security=none&type=ws&host=027.electrocellco-cf-027.workers.dev&path=%2FeyJqdW5rIjoidlhnMXN5OXFUSiIsInByb3RvY29sIjoidHIiLCJtb2RlIjoicHJveHlpcCIsInBhbmVsSVBzIjpbXX0%3D%3Fed%3D2560&fm=%7B%22tcp%22%3A%20%5B%7B%22type%22%3A%20%22fragment%22%2C%20%22settings%22%3A%20%7B%22packets%22%3A%20%221-1%22%2C%20%22lengths%22%3A%20%5B%221%22%5D%2C%20%22delays%22%3A%20%5B%224%22%5D%2C%20%22maxSplit%22%3A%20%22355%22%7D%7D%5D%7D#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28894",
+      "protocol": "trojan",
+      "host": "104.21.70.21",
       "port": 8080,
       "source": "AvenCores-1",
       "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28526",
-      "tcp_ms": 6.078208000005247,
-      "latency_ms": 363.61199999999997,
-      "mbps": 16.992664,
-      "score": 10.581,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.24.131:8880?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28687",
-      "protocol": "vless",
-      "host": "162.159.24.131",
-      "port": 8880,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28687",
-      "tcp_ms": 6.352583000008849,
-      "latency_ms": 480.074,
-      "mbps": 18.762312,
-      "score": 10.423,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.32.108:2086?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28382",
-      "protocol": "vless",
-      "host": "172.64.32.108",
-      "port": 2086,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28382",
-      "tcp_ms": 5.864336000001913,
-      "latency_ms": 410.52,
-      "mbps": 17.411592,
-      "score": 10.338,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.39.218:80?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28528",
-      "protocol": "vless",
-      "host": "104.18.39.218",
-      "port": 80,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28528",
-      "tcp_ms": 5.94871500000238,
-      "latency_ms": 377.15,
-      "mbps": 16.358824,
-      "score": 10.045,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.34.14:2052?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28534",
-      "protocol": "vless",
-      "host": "104.18.34.14",
-      "port": 2052,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28534",
-      "tcp_ms": 6.244333000012148,
-      "latency_ms": 392.472,
-      "mbps": 16.30736,
-      "score": 9.859,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.39.218:8080?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-29392",
-      "protocol": "vless",
-      "host": "104.18.39.218",
-      "port": 8080,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-29392",
-      "tcp_ms": 6.415904999997224,
-      "latency_ms": 386.903,
-      "mbps": 16.177368,
-      "score": 9.835,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.154.8:2086?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28689",
-      "protocol": "vless",
-      "host": "172.64.154.8",
-      "port": 2086,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28689",
-      "tcp_ms": 5.935960000002183,
-      "latency_ms": 386.679,
-      "mbps": 16.055936,
-      "score": 9.764,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.154.8:2095?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28419",
-      "protocol": "vless",
-      "host": "172.64.154.8",
-      "port": 2095,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28419",
-      "tcp_ms": 5.963711999996235,
-      "latency_ms": 414.543,
-      "mbps": 16.409424,
-      "score": 9.705,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.53.55:2052?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28404",
-      "protocol": "vless",
-      "host": "172.64.53.55",
-      "port": 2052,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28404",
-      "tcp_ms": 6.198506000004045,
-      "latency_ms": 274.036,
-      "mbps": 14.128912,
-      "score": 9.699,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.46.234:2082?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28777",
-      "protocol": "vless",
-      "host": "104.18.46.234",
-      "port": 2082,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28777",
-      "tcp_ms": 6.277316000009137,
-      "latency_ms": 377.99399999999997,
-      "mbps": 15.77216,
-      "score": 9.676,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.48.32:2095?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28409",
-      "protocol": "vless",
-      "host": "162.159.48.32",
-      "port": 2095,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28409",
-      "tcp_ms": 6.084771000004707,
-      "latency_ms": 404.06,
-      "mbps": 15.87944,
-      "score": 9.489,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.52.6:80?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=xudp&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28655",
-      "protocol": "vless",
-      "host": "172.64.52.6",
-      "port": 80,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28655",
-      "tcp_ms": 6.336621000002651,
-      "latency_ms": 414.78700000000003,
-      "mbps": 15.901448,
-      "score": 9.402,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.0.169:2095?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=xudp&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28514",
-      "protocol": "vless",
-      "host": "162.159.0.169",
-      "port": 2095,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28514",
-      "tcp_ms": 6.376897999999187,
-      "latency_ms": 398.503,
-      "mbps": 15.581016,
-      "score": 9.363,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@162.159.0.169:8880?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28552",
-      "protocol": "vless",
-      "host": "162.159.0.169",
-      "port": 8880,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28552",
-      "tcp_ms": 6.206657000006999,
-      "latency_ms": 394.22400000000005,
-      "mbps": 15.506072,
-      "score": 9.358,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@172.64.52.6:8880?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=none#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-28676",
-      "protocol": "vless",
-      "host": "172.64.52.6",
-      "port": 8880,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-28676",
-      "tcp_ms": 6.497684999999365,
-      "latency_ms": 391.824,
-      "mbps": 15.082176,
-      "score": 9.124,
-      "ok": true,
-      "error": ""
-    },
-    {
-      "uri": "vless://47fcef29-ab4e-4aa6-932b-d95a18f28a4e@104.18.46.46:2095?security=none&type=ws&path=%2F%3Fed%3D2560security%3Dtls&host=8nj2r.2k8t.f88.hh.vavava.kdns.fr&packetEncoding=xudp&sni=8nj2r.2k8t.f88.hh.vavava.kdns.fr#%5BOpenRay%5D%20%F0%9F%87%A8%F0%9F%87%A6%20CA-29334",
-      "protocol": "vless",
-      "host": "104.18.46.46",
-      "port": 2095,
-      "source": "AvenCores-1",
-      "pool": "normal",
-      "remark": "[OpenRay] 🇨🇦 CA-29334",
-      "tcp_ms": 6.1089989999914,
-      "latency_ms": 387.596,
-      "mbps": 14.86532,
-      "score": 9.031,
+      "remark": "[OpenRay] 🇨🇦 CA-28894",
+      "tcp_ms": 8.585239000012734,
+      "latency_ms": 806.119,
+      "mbps": 34.784752,
+      "score": 14.843,
       "ok": true,
       "error": ""
     }
