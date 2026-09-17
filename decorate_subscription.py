@@ -8,6 +8,8 @@ import urllib.request
 from pathlib import Path
 
 FAST_BADGE_COUNT = int(os.environ.get("FAST_BADGE_COUNT", "5"))
+WHITELIST_LIMIT = int(os.environ.get("WHITELIST_LIMIT", "40"))
+HAPP_TOTAL_LIMIT = int(os.environ.get("HAPP_TOTAL_LIMIT", "100"))
 POOLS = ("normal", "whitelist")
 
 
@@ -102,14 +104,21 @@ def rewrite_uri(uri: str, label: str) -> str:
         return uri
 
 
-def happ_text(pool: str, text: str) -> str:
-    title = "Romlik White Lists" if pool == "whitelist" else "Romlik Fast VPN"
+def happ_text(title: str, lines) -> str:
+    text = "\n".join(lines) + ("\n" if lines else "")
     return (
         f"#profile-title: {title}\n"
         "#profile-update-interval: 5\n"
         "#subscription-auto-update-open-enable: 1\n"
         + text
     )
+
+
+def write_preserving(path: Path, title: str, lines):
+    if lines:
+        path.write_text(happ_text(title, lines))
+    elif not path.exists():
+        path.write_text(happ_text(title, lines))
 
 
 def main():
@@ -121,10 +130,17 @@ def main():
             nodes = json.loads(path.read_text())
         except Exception:
             nodes = []
+
+        # scanner already writes nodes in speed/score order. Keep at most the
+        # requested number of whitelist nodes; normal may use all available.
+        if pool == "whitelist":
+            nodes = nodes[:WHITELIST_LIMIT]
+
         pool_nodes[pool] = nodes
         all_nodes.extend(nodes)
 
     geo = geo_lookup(all_nodes)
+    records_by_pool = {"normal": [], "whitelist": []}
 
     for pool in POOLS:
         nodes = pool_nodes[pool]
@@ -134,22 +150,45 @@ def main():
             node["display_name"] = label
             node["country_code"] = geo.get(str(node.get("host", "")), ("", ""))[0]
             node["country"] = geo.get(str(node.get("host", "")), ("", ""))[1]
-            decorated.append(rewrite_uri(str(node.get("uri", "")), label))
+            uri = rewrite_uri(str(node.get("uri", "")), label)
+            decorated.append(uri)
+            records_by_pool[pool].append({
+                "uri": uri,
+                "score": float(node.get("score") or 0),
+                "mbps": float(node.get("mbps") or 0),
+            })
 
         text = "\n".join(decorated) + ("\n" if decorated else "")
         Path(f"out/{pool}.txt").write_text(text)
         Path(f"out/{pool}.b64").write_text(base64.b64encode(text.encode()).decode())
         Path(f"out/{pool}.json").write_text(json.dumps(nodes, ensure_ascii=False, indent=2))
 
-        # HAPP gets its own plain-text subscription with metadata. If a scan
-        # temporarily finds zero servers, keep the previous known-good HAPP file.
-        happ_path = Path(f"out/happ-{pool}.txt")
-        if decorated:
-            happ_path.write_text(happ_text(pool, text))
-        elif not happ_path.exists():
-            happ_path.write_text(happ_text(pool, text))
-
+        title = "Romlik White Lists" if pool == "whitelist" else "Romlik Fast VPN"
+        write_preserving(Path(f"out/happ-{pool}.txt"), title, decorated)
         print(pool, "decorated", len(nodes), flush=True)
+
+    # Combined HAPP subscription: up to 100 total, no more than 40 whitelist.
+    whitelist = records_by_pool["whitelist"][:WHITELIST_LIMIT]
+    normal_slots = max(0, HAPP_TOTAL_LIMIT - len(whitelist))
+    normal = records_by_pool["normal"][:normal_slots]
+    combined = whitelist + normal
+    combined.sort(key=lambda x: (x["score"], x["mbps"]), reverse=True)
+    combined_uris = [x["uri"] for x in combined[:HAPP_TOTAL_LIMIT]]
+
+    write_preserving(
+        Path("out/happ.txt"),
+        "Romlik • Fast + White Lists",
+        combined_uris,
+    )
+    print(
+        "happ combined",
+        len(combined_uris),
+        "normal",
+        len(normal),
+        "whitelist",
+        len(whitelist),
+        flush=True,
+    )
 
 
 if __name__ == "__main__":
