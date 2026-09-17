@@ -7,6 +7,8 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from server_identity import server_identity
+
 FAST_BADGE_COUNT = int(os.environ.get("FAST_BADGE_COUNT", "5"))
 WHITELIST_LIMIT = int(os.environ.get("WHITELIST_LIMIT", "40"))
 HAPP_TOTAL_LIMIT = int(os.environ.get("HAPP_TOTAL_LIMIT", "100"))
@@ -63,10 +65,41 @@ def geo_lookup(nodes):
         except Exception as e:
             print("geo batch failed:", type(e).__name__, e, flush=True)
 
-    result = {}
-    for host, ip in host_to_ip.items():
-        result[host] = ip_geo.get(ip, ("", ""))
-    return result
+    return {host: ip_geo.get(ip, ("", "")) for host, ip in host_to_ip.items()}
+
+
+def logical_id(node) -> str:
+    return server_identity(
+        str(node.get("uri", "")),
+        str(node.get("protocol", "")),
+        str(node.get("host", "")),
+        int(node.get("port") or 0),
+    )
+
+
+def dedupe_nodes(nodes):
+    """Keep the best-scoring config for every logical backend."""
+    best = {}
+    for node in nodes:
+        ident = logical_id(node)
+        cur = best.get(ident)
+        score = float(node.get("score") or 0)
+        mbps = float(node.get("mbps") or 0)
+        if cur is None or (score, mbps) > (
+            float(cur.get("score") or 0),
+            float(cur.get("mbps") or 0),
+        ):
+            best[ident] = node
+    out = list(best.values())
+    out.sort(
+        key=lambda n: (
+            float(n.get("score") or 0),
+            float(n.get("mbps") or 0),
+            -float(n.get("latency_ms") or 999999),
+        ),
+        reverse=True,
+    )
+    return out
 
 
 def label_for(node, pool, rank, geo):
@@ -74,9 +107,10 @@ def label_for(node, pool, rank, geo):
     badge = "⚡ " if rank <= FAST_BADGE_COUNT else ""
     f = flag(code)
     country = country or "Server"
+    suffix = f" • {rank:02d}"
     if pool == "whitelist":
-        return f"{badge}{f} Белые списки • {country}"
-    return f"{badge}{f} {country}"
+        return f"{badge}{f} Белые списки • {country}{suffix}"
+    return f"{badge}{f} {country}{suffix}"
 
 
 def rewrite_uri(uri: str, label: str) -> str:
@@ -124,18 +158,17 @@ def write_preserving(path: Path, title: str, lines):
 def main():
     all_nodes = []
     pool_nodes = {}
+    raw_counts = {}
     for pool in POOLS:
         path = Path(f"out/{pool}.json")
         try:
             nodes = json.loads(path.read_text())
         except Exception:
             nodes = []
-
-        # scanner already writes nodes in speed/score order. Keep at most the
-        # requested number of whitelist nodes; normal may use all available.
+        raw_counts[pool] = len(nodes)
+        nodes = dedupe_nodes(nodes)
         if pool == "whitelist":
             nodes = nodes[:WHITELIST_LIMIT]
-
         pool_nodes[pool] = nodes
         all_nodes.extend(nodes)
 
@@ -146,14 +179,19 @@ def main():
         nodes = pool_nodes[pool]
         decorated = []
         for rank, node in enumerate(nodes, 1):
+            ident = logical_id(node)
             label = label_for(node, pool, rank, geo)
+            code, country = geo.get(str(node.get("host", "")), ("", ""))
             node["display_name"] = label
-            node["country_code"] = geo.get(str(node.get("host", "")), ("", ""))[0]
-            node["country"] = geo.get(str(node.get("host", "")), ("", ""))[1]
+            node["country_code"] = code
+            node["country"] = country
+            node["server_identity"] = ident
             uri = rewrite_uri(str(node.get("uri", "")), label)
             decorated.append(uri)
             records_by_pool[pool].append({
+                "identity": ident,
                 "uri": uri,
+                "node": node,
                 "score": float(node.get("score") or 0),
                 "mbps": float(node.get("mbps") or 0),
             })
@@ -165,28 +203,51 @@ def main():
 
         title = "Romlik White Lists" if pool == "whitelist" else "Romlik Fast VPN"
         write_preserving(Path(f"out/happ-{pool}.txt"), title, decorated)
-        print(pool, "decorated", len(nodes), flush=True)
+        print(
+            pool,
+            "raw_working", raw_counts[pool],
+            "unique_real", len(nodes),
+            flush=True,
+        )
 
-    # Combined HAPP subscription: up to 100 total, no more than 40 whitelist.
     whitelist = records_by_pool["whitelist"][:WHITELIST_LIMIT]
     normal_slots = max(0, HAPP_TOTAL_LIMIT - len(whitelist))
     normal = records_by_pool["normal"][:normal_slots]
     combined = whitelist + normal
     combined.sort(key=lambda x: (x["score"], x["mbps"]), reverse=True)
-    combined_uris = [x["uri"] for x in combined[:HAPP_TOTAL_LIMIT]]
+    combined = combined[:HAPP_TOTAL_LIMIT]
+    combined_uris = [x["uri"] for x in combined]
 
     write_preserving(
         Path("out/happ.txt"),
         "Romlik • Fast + White Lists",
         combined_uris,
     )
+
+    real_servers = []
+    for item in combined:
+        n = item["node"]
+        real_servers.append({
+            "identity": item["identity"][:16],
+            "pool": n.get("pool", ""),
+            "protocol": n.get("protocol", ""),
+            "display_name": n.get("display_name", ""),
+            "country": n.get("country", ""),
+            "host": n.get("host", ""),
+            "port": n.get("port", 0),
+            "mbps": n.get("mbps"),
+            "latency_ms": n.get("latency_ms"),
+            "score": n.get("score"),
+            "source": n.get("source", ""),
+        })
+    Path("out/real-servers.json").write_text(
+        json.dumps(real_servers, ensure_ascii=False, indent=2)
+    )
+
     print(
-        "happ combined",
-        len(combined_uris),
-        "normal",
-        len(normal),
-        "whitelist",
-        len(whitelist),
+        "happ combined real_unique", len(combined),
+        "normal", len(normal),
+        "whitelist", len(whitelist),
         flush=True,
     )
 
