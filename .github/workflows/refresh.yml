@@ -10,6 +10,7 @@ on:
       - 'scanner.py'
       - 'scanner_unique.py'
       - 'server_identity.py'
+      - 'mobile_candidates.py'
       - 'decorate_subscription.py'
       - 'healthcheck.py'
       - 'sources.json'
@@ -73,6 +74,12 @@ jobs:
           SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=3000000'
         run: python -u scanner_unique.py
 
+      - name: Collect mobile-network whitelist candidates
+        env:
+          MOBILE_WHITELIST_LIMIT: '40'
+          SOURCE_LIMIT: '700'
+        run: python -u mobile_candidates.py
+
       - name: Add country flags and build subscriptions
         env:
           FAST_BADGE_COUNT: '5'
@@ -89,7 +96,7 @@ jobs:
           git config user.name "romlik-bot"
           git config user.email "actions@users.noreply.github.com"
           git add out/
-          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt out/health.json out/real-servers.json; then
+          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt out/happ-mobile.txt out/mobile-whitelist.json out/mobile-whitelist-status.json out/health.json out/real-servers.json; then
             echo "Subscriptions did not change"
             git reset
             git restore out/ 2>/dev/null || true
