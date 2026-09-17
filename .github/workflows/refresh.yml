@@ -9,6 +9,7 @@ on:
     paths:
       - 'scanner.py'
       - 'decorate_subscription.py'
+      - 'healthcheck.py'
       - 'sources.json'
       - '.github/workflows/refresh.yml'
 
@@ -74,13 +75,16 @@ jobs:
           HAPP_TOTAL_LIMIT: '100'
         run: python -u decorate_subscription.py
 
+      - name: Monitor subscription health
+        run: python -u healthcheck.py
+
       - name: Commit only when subscriptions changed
         shell: bash
         run: |
           git config user.name "romlik-bot"
           git config user.email "actions@users.noreply.github.com"
           git add out/
-          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt; then
+          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt out/health.json; then
             echo "Subscriptions did not change"
             git reset
             git restore out/ 2>/dev/null || true
