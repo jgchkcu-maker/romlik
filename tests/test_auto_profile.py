@@ -47,6 +47,17 @@ class AutoProfileTests(unittest.TestCase):
         self.assertTrue(cfg["observatory"]["enableConcurrency"])
         self.assertEqual(cfg["inbounds"][0]["port"], 10808)
 
+    def test_tls_outbound_does_not_emit_removed_allow_insecure(self):
+        node = self._node(9, "DE")
+        node["uri"] = (
+            "vless://00000000-0000-0000-0000-000000000009@203.0.0.10:443"
+            "?encryption=none&security=tls&sni=example.com&type=ws&path=%2Fws&host=example.com"
+        )
+        payload = build_subscription([node])
+        proxy = next(x for x in payload[0]["outbounds"] if x.get("tag") == "proxy-001")
+        tls = proxy["streamSettings"]["tlsSettings"]
+        self.assertNotIn("allowInsecure", tls)
+
 
 if __name__ == "__main__":
     unittest.main()
