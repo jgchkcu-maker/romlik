@@ -32,13 +32,13 @@ def _clean_host(value: str) -> str:
 
 
 def server_identity(uri: str, protocol: str = "", fallback_host: str = "", fallback_port: int = 0) -> str:
-    """Identify the real backend rather than an account/config variant.
+    """Identify a logical backend/cluster rather than a cosmetic config variant.
 
-    Direct proxies collapse to protocol + host:port regardless of UUID/password,
-    fingerprint or transport spelling. CDN-style WS/gRPC/xHTTP configs collapse
-    by their logical Host/SNI + path/service so different edge IPs are one backend.
-    Reality always uses the direct host:port because its SNI is only a camouflage
-    target and must not merge unrelated servers.
+    Reality configs are commonly published with many endpoint IPs while keeping
+    the same user, public key, short-id, SNI and transport. Those endpoint
+    variants are one logical cluster and should occupy one visible slot.
+    CDN WS/gRPC/xHTTP variants similarly collapse by their logical host/path.
+    Direct configs without enough stable backend keys fall back to host:port.
     """
     protocol = (protocol or uri.split(":", 1)[0]).lower()
     try:
@@ -49,15 +49,17 @@ def server_identity(uri: str, protocol: str = "", fallback_host: str = "", fallb
             host_hdr = _clean_host(str(d.get("host", "") or ""))
             net = str(d.get("net", "tcp") or "tcp").lower()
             path = str(d.get("path", "") or "")
+            user = str(d.get("id", "") or "")
 
             if host_hdr and host_hdr != addr and net in ("ws", "grpc", "xhttp", "h2", "http"):
-                return _digest(("backend", protocol, "cdn", host_hdr, net, path))
+                return _digest(("backend", protocol, "cdn", user, host_hdr, net, path))
             return _digest(("backend", protocol, "direct", addr, port))
 
         if protocol in ("vless", "trojan") or uri.startswith(("vless://", "trojan://")):
             p, q = _query(uri)
             host = _clean_host(p.hostname or fallback_host)
             port = p.port or fallback_port or 0
+            credential = urllib.parse.unquote(p.username or "")
             net = (q.get("type", "tcp") or "tcp").lower()
             security = (q.get("security", "none") or "none").lower()
             host_hdr = _clean_host(q.get("host", ""))
@@ -66,13 +68,21 @@ def server_identity(uri: str, protocol: str = "", fallback_host: str = "", fallb
             service = q.get("serviceName", "") or q.get("service", "")
 
             if security == "reality":
-                return _digest(("backend", protocol, "direct", host, port))
+                pbk = q.get("pbk", "") or q.get("publicKey", "")
+                sid = q.get("sid", "") or q.get("shortId", "")
+                flow = q.get("flow", "")
+                if credential and pbk:
+                    return _digest((
+                        "backend", protocol, "reality-cluster", credential, pbk,
+                        sid, sni, flow, net, path, service, port,
+                    ))
+                return _digest(("backend", protocol, "reality-direct", host, port))
 
             if host_hdr and host_hdr != host and net in ("ws", "grpc", "xhttp", "h2", "http"):
-                return _digest(("backend", protocol, "cdn", host_hdr, net, path, service))
+                return _digest(("backend", protocol, "cdn", credential, host_hdr, net, path, service))
 
             if not host_hdr and sni and sni != host and net in ("ws", "grpc", "xhttp", "h2", "http"):
-                return _digest(("backend", protocol, "cdn", sni, net, path, service))
+                return _digest(("backend", protocol, "cdn", credential, sni, net, path, service))
 
             return _digest(("backend", protocol, "direct", host, port))
 

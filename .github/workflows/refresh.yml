@@ -5,14 +5,16 @@ on:
     - cron: '*/10 * * * *'
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, feature/local-auto-selection]
     paths:
       - 'scanner.py'
       - 'scanner_unique.py'
       - 'server_identity.py'
+      - 'candidate_pool.py'
       - 'mobile_candidates.py'
       - 'decorate_subscription.py'
       - 'healthcheck.py'
+      - 'tests/**'
       - 'sources.json'
       - '.github/workflows/refresh.yml'
 
@@ -20,7 +22,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: fastest-vpn-refresh
+  group: fastest-vpn-refresh-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -33,6 +35,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
 
       - name: Benchmark GitHub runner network
         shell: bash
