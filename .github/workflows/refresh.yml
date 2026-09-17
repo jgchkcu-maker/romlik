@@ -2,7 +2,7 @@ name: Select fastest working VPN servers
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/10 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -25,7 +25,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 9
     steps:
       - uses: actions/checkout@v4
 
@@ -61,10 +61,13 @@ jobs:
           FETCH_WORKERS: '12'
           FETCH_TIMEOUT: '10'
           TCP_TIMEOUT: '1.2'
-          TCP_KEEP: '360'
           CONCURRENCY: '400'
-          XRAY_TEST_KEEP: '220'
-          XRAY_BATCH: '24'
+          XRAY_BATCH: '32'
+          TARGET_NORMAL: '100'
+          TARGET_WHITELIST: '40'
+          MAX_XRAY_PER_POOL: '1200'
+          AVAIL_TIMEOUT: '6'
+          AVAIL_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=300000'
           SPEED_TIMEOUT: '12'
           ROTATION_SECONDS: '300'
           SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=3000000'
