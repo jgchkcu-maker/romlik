@@ -1,0 +1,27 @@
+{
+  "visible_configs": 1,
+  "internal_selected": 100,
+  "internal_valid_outbounds": 100,
+  "whitelist": 22,
+  "mobile": 8,
+  "normal_country_counts": {
+    "AE": 1,
+    "CA": 13,
+    "CY": 1,
+    "DE": 12,
+    "DK": 1,
+    "FR": 4,
+    "GB": 12,
+    "GT": 1,
+    "IR": 1,
+    "LT": 1,
+    "NL": 14,
+    "NO": 1,
+    "US": 16
+  },
+  "normal_country_limit": 12,
+  "normal_country_hard_limit": 20,
+  "strategy": "leastPing",
+  "probe_url": "https://cp.cloudflare.com/generate_204",
+  "probe_interval": "30s"
+}
