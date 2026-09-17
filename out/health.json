@@ -1,15 +1,15 @@
 {
-  "checked_at": 1789617419,
+  "checked_at": 1789617688,
   "status": "healthy",
   "combined": 100,
-  "normal": 78,
-  "whitelist": 22,
+  "normal": 89,
+  "whitelist": 11,
   "mobile": 8,
   "unique_identities": 100,
   "duplicate_identities": [],
   "candidate_pools": {
-    "normal": 142,
-    "whitelist": 22
+    "normal": 150,
+    "whitelist": 11
   },
   "limits": {
     "combined": 100,
@@ -17,7 +17,7 @@
   },
   "previous": {
     "combined": 100,
-    "whitelist": 9
+    "whitelist": 22
   },
   "decorations": {
     "lightning_entries": 5,
