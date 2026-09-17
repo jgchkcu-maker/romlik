@@ -1,25 +1,21 @@
 {
-  "checked_at": 1789612202,
-  "status": "warning",
-  "combined": 9,
-  "normal": 8,
-  "whitelist": 1,
+  "checked_at": 1789612452,
+  "status": "healthy",
+  "combined": 100,
+  "normal": 113,
+  "whitelist": 2,
   "limits": {
     "combined": 100,
     "whitelist": 40
   },
   "previous": {
-    "combined": 78,
-    "whitelist": 29
+    "combined": 9,
+    "whitelist": 1
   },
   "decorations": {
-    "lightning_entries": 6,
-    "flagged_entries_approx": 9
+    "lightning_entries": 5,
+    "flagged_entries_approx": 10
   },
-  "warnings": [
-    "Combined subscription is small: 9 servers",
-    "Sharp combined-list drop: 78 -> 9",
-    "Sharp whitelist drop: 29 -> 1"
-  ],
+  "warnings": [],
   "errors": []
 }

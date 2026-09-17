@@ -7,9 +7,9 @@
     "source": "igareck-cidr-all",
     "pool": "whitelist",
     "remark": "🇸🇪 Sweden | [*CIDR]",
-    "tcp_ms": 151.26514800002155,
-    "latency_ms": 1054.251,
-    "mbps": 9.26076,
+    "tcp_ms": 178.3841100000032,
+    "latency_ms": 965.179,
+    "mbps": 8.761296,
     "score": 3.359,
     "ok": true,
     "error": "",
@@ -17,5 +17,24 @@
     "country_code": "RU",
     "country": "Russia",
     "server_identity": "da01e8f83d5d2c22b69061b52e9d44639459a7ed8d8d7143d79c8ae681df658a"
+  },
+  {
+    "uri": "vless://237f91bf-102e-4077-8cc3-baebccb42936@85.198.70.200:14406?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=ldAmsl3dqTCUBmlmA8CS9ZnpznP6cFWj9AxNddWnbxY&security=reality&sid=1a2b3c4d5e6f7a8b&sni=vk.ru&type=raw#%F0%9F%87%B3%F0%9F%87%B1%20The%20Netherlands%20%E2%80%94%20%2360",
+    "protocol": "vless",
+    "host": "85.198.70.200",
+    "port": 14406,
+    "source": "AvenCores-whitelist",
+    "pool": "whitelist",
+    "remark": "🇳🇱 The Netherlands — #60",
+    "tcp_ms": 183.84657000000004,
+    "latency_ms": 1338.2659999999998,
+    "mbps": 4.499608,
+    "score": 1.393,
+    "ok": true,
+    "error": "",
+    "display_name": "⚡ 🇷🇺 Белые списки • Russia • 02",
+    "country_code": "RU",
+    "country": "Russia",
+    "server_identity": "0916f9d099d6b86b3d65668d89d8706fef7937d02394c980f9878ad8906973f7"
   }
 ]
