@@ -27,57 +27,63 @@ def _digest(parts) -> str:
     return hashlib.sha256(raw.encode()).hexdigest()
 
 
-def server_identity(uri: str, protocol: str = "", fallback_host: str = "", fallback_port: int = 0) -> str:
-    """Return a logical backend identity, collapsing CDN edge-IP variants.
+def _clean_host(value: str) -> str:
+    return (value or "").strip().strip("[]").lower().rstrip(".")
 
-    This intentionally treats configs with the same credentials + logical
-    SNI/Host/path as one real server even when the Cloudflare edge IP/port differs.
-    Direct endpoints keep host:port in the identity.
+
+def server_identity(uri: str, protocol: str = "", fallback_host: str = "", fallback_port: int = 0) -> str:
+    """Identify the real backend rather than an account/config variant.
+
+    Direct proxies collapse to protocol + host:port regardless of UUID/password,
+    fingerprint or transport spelling. CDN-style WS/gRPC/xHTTP configs collapse
+    by their logical Host/SNI + path/service so different edge IPs are one backend.
+    Reality always uses the direct host:port because its SNI is only a camouflage
+    target and must not merge unrelated servers.
     """
     protocol = (protocol or uri.split(":", 1)[0]).lower()
     try:
         if protocol == "vmess" or uri.startswith("vmess://"):
             d = json.loads(_b64decode(uri[8:].split("#", 1)[0]))
-            addr = str(d.get("add", fallback_host) or fallback_host)
+            addr = _clean_host(str(d.get("add", fallback_host) or fallback_host))
             port = int(d.get("port", fallback_port) or fallback_port or 0)
-            host_hdr = str(d.get("host", "") or "")
-            sni = str(d.get("sni", "") or "")
-            logical = host_hdr or sni or addr
-            direct = not host_hdr and not sni
-            return _digest((
-                "vmess", d.get("id", ""), d.get("net", "tcp"), d.get("tls", "none"),
-                logical, d.get("path", ""), port if direct else "", d.get("aid", 0),
-            ))
+            host_hdr = _clean_host(str(d.get("host", "") or ""))
+            net = str(d.get("net", "tcp") or "tcp").lower()
+            path = str(d.get("path", "") or "")
+
+            if host_hdr and host_hdr != addr and net in ("ws", "grpc", "xhttp", "h2", "http"):
+                return _digest(("backend", protocol, "cdn", host_hdr, net, path))
+            return _digest(("backend", protocol, "direct", addr, port))
 
         if protocol in ("vless", "trojan") or uri.startswith(("vless://", "trojan://")):
             p, q = _query(uri)
-            user = urllib.parse.unquote(p.username or "")
-            host = p.hostname or fallback_host
+            host = _clean_host(p.hostname or fallback_host)
             port = p.port or fallback_port or 0
-            host_hdr = q.get("host", "")
-            sni = q.get("sni", "") or q.get("serverName", "")
-            logical = host_hdr or sni or host
-            direct = not host_hdr and not sni
-            return _digest((
-                protocol, user, q.get("type", "tcp"), q.get("security", "none"),
-                logical, q.get("path", ""), q.get("serviceName", "") or q.get("service", ""),
-                q.get("pbk", ""), q.get("sid", ""), q.get("flow", ""),
-                port if direct else "",
-            ))
+            net = (q.get("type", "tcp") or "tcp").lower()
+            security = (q.get("security", "none") or "none").lower()
+            host_hdr = _clean_host(q.get("host", ""))
+            sni = _clean_host(q.get("sni", "") or q.get("serverName", ""))
+            path = q.get("path", "")
+            service = q.get("serviceName", "") or q.get("service", "")
+
+            if security == "reality":
+                return _digest(("backend", protocol, "direct", host, port))
+
+            if host_hdr and host_hdr != host and net in ("ws", "grpc", "xhttp", "h2", "http"):
+                return _digest(("backend", protocol, "cdn", host_hdr, net, path, service))
+
+            if not host_hdr and sni and sni != host and net in ("ws", "grpc", "xhttp", "h2", "http"):
+                return _digest(("backend", protocol, "cdn", sni, net, path, service))
+
+            return _digest(("backend", protocol, "direct", host, port))
 
         if protocol == "ss" or uri.startswith("ss://"):
             p = urllib.parse.urlparse(uri)
-            if p.hostname and p.port:
-                creds = urllib.parse.unquote(p.username or "")
-                decoded = _b64decode(creds)
-                if decoded:
-                    creds = decoded
-                return _digest(("ss", creds, p.hostname, p.port))
-            raw = uri[5:].split("#", 1)[0].split("?", 1)[0]
-            decoded = _b64decode(raw)
-            return _digest(("ss", decoded or raw, fallback_host, fallback_port))
+            host = _clean_host(p.hostname or fallback_host)
+            port = p.port or fallback_port or 0
+            if host and port:
+                return _digest(("backend", "ss", host, port))
+            return _digest(("backend", "ss", fallback_host, fallback_port))
     except Exception:
         pass
 
-    base = uri.split("#", 1)[0]
-    return _digest((protocol, base, fallback_host, fallback_port))
+    return _digest(("backend", protocol, fallback_host, fallback_port, uri.split("#", 1)[0]))
