@@ -62,9 +62,9 @@ jobs:
           CONCURRENCY: '350'
           XRAY_TEST_KEEP: '100'
           XRAY_BATCH: '16'
-          SPEED_TIMEOUT: '10'
+          SPEED_TIMEOUT: '12'
           ROTATION_SECONDS: '300'
-          SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=10000000'
+          SPEED_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=3000000'
         run: python -u scanner.py
 
       - name: Add country flags and readable names
@@ -72,14 +72,14 @@ jobs:
           FAST_BADGE_COUNT: '5'
         run: python -u decorate_subscription.py
 
-      - name: Commit only when ranking changed
+      - name: Commit only when subscriptions changed
         shell: bash
         run: |
           git config user.name "romlik-bot"
           git config user.email "actions@users.noreply.github.com"
           git add out/
-          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt; then
-            echo "Top server ranking did not change"
+          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ-normal.txt out/happ-whitelist.txt; then
+            echo "Subscriptions did not change"
             git reset
             git restore out/ 2>/dev/null || true
             exit 0
