@@ -7,6 +7,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from candidate_pool import select_candidates
 from server_identity import server_identity
 
 FAST_BADGE_COUNT = int(os.environ.get("FAST_BADGE_COUNT", "5"))
@@ -110,20 +111,21 @@ def load_json(path: str):
         return []
 
 
-def merge_mobile_whitelist(mobile_nodes, tested_nodes):
-    """Prefer mobile-feed nodes, then fill gaps with Azure-tested whitelist nodes."""
-    out = []
-    seen = set()
-    for node in list(mobile_nodes) + list(tested_nodes):
-        node["pool"] = "whitelist"
-        ident = logical_id(node)
-        if ident in seen:
-            continue
-        seen.add(ident)
-        out.append(node)
-        if len(out) >= WHITELIST_LIMIT:
-            break
-    return out
+def select_visible_nodes(
+    normal_nodes,
+    tested_whitelist,
+    mobile_nodes,
+    total_limit=HAPP_TOTAL_LIMIT,
+    whitelist_limit=WHITELIST_LIMIT,
+):
+    """Select the distinct, diverse candidates HAPP will test locally."""
+    return select_candidates(
+        normal_nodes,
+        tested_whitelist,
+        mobile_nodes,
+        total_limit=total_limit,
+        whitelist_limit=whitelist_limit,
+    )
 
 
 def label_for(node, pool, rank, geo):
@@ -198,13 +200,23 @@ def main():
     seen_mobile = set()
     for node in mobile_raw:
         node["mobile_candidate"] = True
+        node["pool"] = "whitelist"
         ident = logical_id(node)
         if ident in seen_mobile:
             continue
         seen_mobile.add(ident)
         mobile_nodes.append(node)
 
-    whitelist_nodes = merge_mobile_whitelist(mobile_nodes, tested_whitelist)
+    whitelist_nodes = select_visible_nodes(
+        [],
+        tested_whitelist,
+        mobile_nodes,
+        total_limit=WHITELIST_LIMIT,
+        whitelist_limit=WHITELIST_LIMIT,
+    )
+    for node in whitelist_nodes:
+        node["pool"] = "whitelist"
+
     pool_nodes = {
         "normal": normal_nodes,
         "whitelist": whitelist_nodes,
@@ -218,6 +230,7 @@ def main():
     all_nodes = normal_nodes + whitelist_nodes
     geo = geo_lookup(all_nodes)
     records_by_pool = {"normal": [], "whitelist": []}
+    records_by_identity = {}
     mobile_decorated = []
 
     for pool in POOLS:
@@ -235,13 +248,15 @@ def main():
             decorated.append(uri)
             if pool == "whitelist" and node.get("mobile_candidate"):
                 mobile_decorated.append(uri)
-            records_by_pool[pool].append({
+            record = {
                 "identity": ident,
                 "uri": uri,
                 "node": node,
                 "score": float(node.get("score") or 0),
                 "mbps": float(node.get("mbps") or 0),
-            })
+            }
+            records_by_pool[pool].append(record)
+            records_by_identity[ident] = record
 
         text = "\n".join(decorated) + ("\n" if decorated else "")
         Path(f"out/{pool}.txt").write_text(text)
@@ -263,17 +278,23 @@ def main():
         mobile_decorated[:WHITELIST_LIMIT],
     )
 
-    whitelist = records_by_pool["whitelist"][:WHITELIST_LIMIT]
-    normal_slots = max(0, HAPP_TOTAL_LIMIT - len(whitelist))
-    normal = records_by_pool["normal"][:normal_slots]
-    combined = whitelist + normal
-    combined.sort(key=lambda x: (x["score"], x["mbps"]), reverse=True)
-    combined = combined[:HAPP_TOTAL_LIMIT]
-    combined_uris = [x["uri"] for x in combined]
+    selected_nodes = select_visible_nodes(
+        normal_nodes,
+        tested_whitelist,
+        mobile_nodes,
+        total_limit=HAPP_TOTAL_LIMIT,
+        whitelist_limit=WHITELIST_LIMIT,
+    )
+    combined = []
+    for node in selected_nodes:
+        record = records_by_identity.get(logical_id(node))
+        if record is not None:
+            combined.append(record)
 
+    combined_uris = [x["uri"] for x in combined]
     write_preserving(
         Path("out/happ.txt"),
-        "Romlik • Fast + Mobile White Lists",
+        "Romlik • Local Auto Select",
         combined_uris,
     )
 
@@ -298,10 +319,12 @@ def main():
         json.dumps(real_servers, ensure_ascii=False, indent=2)
     )
 
+    whitelist_count = sum(1 for x in combined if x["node"].get("pool") == "whitelist")
+    normal_count = len(combined) - whitelist_count
     print(
         "happ combined real_unique", len(combined),
-        "normal", len(normal),
-        "whitelist", len(whitelist),
+        "normal", normal_count,
+        "whitelist", whitelist_count,
         "mobile_candidates", len(mobile_decorated),
         flush=True,
     )
