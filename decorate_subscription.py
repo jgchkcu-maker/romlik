@@ -102,6 +102,16 @@ def rewrite_uri(uri: str, label: str) -> str:
         return uri
 
 
+def happ_text(pool: str, text: str) -> str:
+    title = "Romlik White Lists" if pool == "whitelist" else "Romlik Fast VPN"
+    return (
+        f"#profile-title: {title}\n"
+        "#profile-update-interval: 5\n"
+        "#subscription-auto-update-open-enable: 1\n"
+        + text
+    )
+
+
 def main():
     all_nodes = []
     pool_nodes = {}
@@ -130,6 +140,15 @@ def main():
         Path(f"out/{pool}.txt").write_text(text)
         Path(f"out/{pool}.b64").write_text(base64.b64encode(text.encode()).decode())
         Path(f"out/{pool}.json").write_text(json.dumps(nodes, ensure_ascii=False, indent=2))
+
+        # HAPP gets its own plain-text subscription with metadata. If a scan
+        # temporarily finds zero servers, keep the previous known-good HAPP file.
+        happ_path = Path(f"out/happ-{pool}.txt")
+        if decorated:
+            happ_path.write_text(happ_text(pool, text))
+        elif not happ_path.exists():
+            happ_path.write_text(happ_text(pool, text))
+
         print(pool, "decorated", len(nodes), flush=True)
 
 
