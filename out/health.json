@@ -1,20 +1,20 @@
 {
-  "checked_at": 1789612685,
+  "checked_at": 1789613920,
   "status": "healthy",
   "combined": 100,
-  "normal": 100,
-  "whitelist": 4,
+  "normal": 101,
+  "whitelist": 12,
   "limits": {
     "combined": 100,
     "whitelist": 40
   },
   "previous": {
     "combined": 100,
-    "whitelist": 2
+    "whitelist": 4
   },
   "decorations": {
-    "lightning_entries": 9,
-    "flagged_entries_approx": 84
+    "lightning_entries": 5,
+    "flagged_entries_approx": 89
   },
   "warnings": [],
   "errors": []
