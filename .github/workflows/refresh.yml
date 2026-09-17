@@ -70,9 +70,9 @@ jobs:
           TCP_TIMEOUT: '1.2'
           CONCURRENCY: '400'
           XRAY_BATCH: '32'
-          TARGET_NORMAL: '100'
+          TARGET_NORMAL: '140'
           TARGET_WHITELIST: '40'
-          MAX_XRAY_PER_POOL: '1200'
+          MAX_XRAY_PER_POOL: '1400'
           AVAIL_TIMEOUT: '6'
           AVAIL_TEST_URL: 'https://speed.cloudflare.com/__down?bytes=300000'
           SPEED_TIMEOUT: '12'
@@ -93,6 +93,27 @@ jobs:
           HAPP_TOTAL_LIMIT: '100'
         run: python -u decorate_subscription.py
 
+      - name: Build one Android AUTO profile
+        env:
+          AUTO_TOTAL_LIMIT: '100'
+          AUTO_WHITELIST_LIMIT: '40'
+          AUTO_COUNTRY_LIMIT: '12'
+          AUTO_COUNTRY_HARD_LIMIT: '20'
+          AUTO_PROBE_URL: 'https://cp.cloudflare.com/generate_204'
+          AUTO_PROBE_INTERVAL: '30s'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -u auto_profile.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('out/happ-auto.json').read_text())
+          assert isinstance(payload, list) and len(payload) == 1, 'HAPP AUTO must contain exactly one JSON config'
+          Path('/tmp/happ-auto-xray.json').write_text(json.dumps(payload[0], ensure_ascii=False))
+          PY
+          xray run -test -c /tmp/happ-auto-xray.json
+
       - name: Monitor subscription health
         run: python -u healthcheck.py
 
@@ -102,7 +123,7 @@ jobs:
           git config user.name "romlik-bot"
           git config user.email "actions@users.noreply.github.com"
           git add out/
-          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt out/happ-mobile.txt out/mobile-whitelist.json out/mobile-whitelist-status.json out/health.json out/real-servers.json; then
+          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt out/happ-mobile.txt out/happ-auto.json out/auto-profile-status.json out/mobile-whitelist.json out/mobile-whitelist-status.json out/health.json out/real-servers.json; then
             echo "Subscriptions did not change"
             git reset
             git restore out/ 2>/dev/null || true
