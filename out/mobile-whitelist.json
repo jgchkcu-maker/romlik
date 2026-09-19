@@ -1,8 +1,8 @@
 [
   {
-    "uri": "vless://bcb5a897-8cc4-4e21-ad96-c82fb3a9d72a@dzen-ru-1.com:443?encryption=none&type=tcp&flow=xtls-rprx-vision&security=reality&sni=dzen-ru-1.com&pbk=9F7JxyyP-TNLt0dY2xOB0_34I8W0xXIpFY7rZ7-L0Gg&sid=19aa22f681923dc8&allowInsecure=1&fp=android#.%F0%96%A5%94%20%DD%81%20%CB%96%D6%B4%F0%9F%9B%B8%E0%BC%84%CB%96%C2%B0.%20%7C%20%5B%2ACIDR%5D",
+    "uri": "vless://Fluffy_VPN-zKZUa4Ie@72.56.38.83:443?encryption=none&flow=xtls-rprx-vision&pbk=ZzIetLcQtENjIXQ9XZqFo8p3J81p8Emj0wi51Uy07n8&security=reality&sni=absolute-disaster.org&type=tcp&fp=chrome#.%F0%96%A5%94%20%DD%81%20%CB%96%D6%B4%F0%9F%9B%B8%E0%BC%84%CB%96%C2%B0.%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
-    "host": "dzen-ru-1.com",
+    "host": "72.56.38.83",
     "port": 443,
     "source": "igareck-mobile",
     "pool": "whitelist",
@@ -15,7 +15,7 @@
     "error": "",
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "388242dd836594fee7b7f019d81fc949b75b2268ec61f252f09735e37f1f6887"
+    "server_identity": "8f851f121920c13a6976bd906e9a15a8ee7f7107f8f817bd1c75c93150aa6859"
   },
   {
     "uri": "vless://6a32736d-4b7f-4c35-a1cf-4489d49f2cfb@107.150.93.2:443?encryption=none&extra=%7B%22xmux%22%3A%7B%22maxConnections%22%3A1%2C%22maxReuseTimes%22%3A0%7D%7D&security=tls&sni=6a32736d.ferrin.uk&type=xhttp&fp=android#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%7C%20%5B%2ACIDR%5D",
@@ -36,7 +36,7 @@
     "server_identity": "91b515b4d5c08195d7727d937dc1e9fd662195e743595734d2c7a55dab09e28e"
   },
   {
-    "uri": "vless://6a32736d-4b7f-4c35-a1cf-4489d49f2cfb@fi.alpheratzz.org:443?allowInsecure=0&alpn=h2&encryption=none&extra=%7B%22xmux%22%3A%7B%22maxConnections%22%3A1%2C%22maxReuseTimes%22%3A0%7D%7D&insecure=0&mode=stream-one&path=%2F&security=tls&sni=6a32736d.ferrin.uk&type=xhttp&fp=android#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%7C%20%5B%2ACIDR%5D",
+    "uri": "vless://6a32736d-4b7f-4c35-a1cf-4489d49f2cfb@fi.alpheratzz.org:443?allowInsecure=0&alpn=h2&encryption=none&extra=%7B%22xmux%22%3A%7B%22maxConnections%22%3A1%2C%22maxReuseTimes%22%3A0%7D%7D&insecure=0&mode=stream-one&path=%2F&security=tls&sni=6a32736d.ferrin.uk&type=xhttp&fp=chrome#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
     "host": "fi.alpheratzz.org",
     "port": 443,
@@ -54,7 +54,7 @@
     "server_identity": "4638aa1cc58d72be421f6c7f73a301f36660b483e3fd0e4414f4b95d42cf5015"
   },
   {
-    "uri": "vless://4992470d-03aa-4422-aa74-f749c547c023@95.129.236.239:443?alpn=http%2F1.1&encryption=none&host=wiki.solarinfra.net&path=%2Fstream%2F615428%2Fsocket&security=tls&sni=wiki.solarinfra.net&type=ws&fp=chrome#%F0%9F%87%B8%F0%9F%87%AA%20Sweden%20%7C%20%5B%2ACIDR%5D",
+    "uri": "vless://c748ab70-a175-4ff3-94e6-5b7090f6c891@95.129.236.239:443?alpn=http%2F1.1&encryption=none&host=wiki.solarinfra.net&path=%2Fstream%2F615428%2Fsocket&security=tls&sni=wiki.solarinfra.net&type=ws&fp=android#%F0%9F%87%B8%F0%9F%87%AA%20Sweden%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
     "host": "95.129.236.239",
     "port": 443,
@@ -69,6 +69,24 @@
     "error": "",
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "56420efe1cbcb2282972b586d927c4267df4138498d5d696f1363defb5595b22"
+    "server_identity": "4b0ff3253c3f1f15a4eb7f0138e33f7c1fa08f949c23cc97feae4716496d1d73"
+  },
+  {
+    "uri": "vless://a82aa132-5ccc-4b3d-a219-bfd8a1993d59@94.228.166.164:463?encryption=none&pbk=2LhhfOTB7zeLJ-0s9aGNkISP3MmC2EV7odwrSVcdQww&security=reality&serviceName=google.android.location.SyncService&sid=53c7983cfd&sni=yandex.ru&type=grpc&fp=android#%F0%9F%87%BA%F0%9F%87%B8%20United%20States%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
+    "protocol": "vless",
+    "host": "94.228.166.164",
+    "port": 463,
+    "source": "igareck-mobile",
+    "pool": "whitelist",
+    "remark": "🇺🇸 United States | 🌐 | [*CIDR]",
+    "tcp_ms": null,
+    "latency_ms": null,
+    "mbps": null,
+    "score": null,
+    "ok": true,
+    "error": "",
+    "mobile_candidate": true,
+    "mobile_source": "igareck-mobile",
+    "server_identity": "4607bba52ddff20dd91bfb5618987de48f6cb33231ab2309218b5412d4b5a4c0"
   }
 ]
