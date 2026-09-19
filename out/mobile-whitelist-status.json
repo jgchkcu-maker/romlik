@@ -1,21 +1,21 @@
 {
-  "count": 15,
+  "count": 10,
   "limit": 40,
   "sources": [
     {
       "name": "igareck-mobile",
-      "raw": 65,
-      "parsed": 65
+      "raw": 59,
+      "parsed": 59
     },
     {
       "name": "igareck-cidr-checked",
-      "raw": 6,
-      "parsed": 6
+      "raw": 12,
+      "parsed": 12
     },
     {
       "name": "igareck-cidr-all",
-      "raw": 66,
-      "parsed": 66
+      "raw": 59,
+      "parsed": 59
     }
   ],
   "note": "Candidates are selected from Russian mobile whitelist feeds and are not discarded by Azure reachability tests."
