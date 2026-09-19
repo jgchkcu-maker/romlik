@@ -1,15 +1,15 @@
 {
-  "checked_at": 1789797912,
+  "checked_at": 1789815420,
   "status": "healthy",
   "combined": 100,
-  "normal": 87,
-  "whitelist": 13,
-  "mobile": 10,
+  "normal": 94,
+  "whitelist": 6,
+  "mobile": 6,
   "unique_identities": 100,
   "duplicate_identities": [],
   "candidate_pools": {
-    "normal": 150,
-    "whitelist": 13
+    "normal": 147,
+    "whitelist": 6
   },
   "limits": {
     "combined": 100,
@@ -17,11 +17,11 @@
   },
   "previous": {
     "combined": 100,
-    "whitelist": 15
+    "whitelist": 13
   },
   "decorations": {
     "lightning_entries": 5,
-    "flagged_entries_approx": 92
+    "flagged_entries_approx": 83
   },
   "warnings": [],
   "errors": []
