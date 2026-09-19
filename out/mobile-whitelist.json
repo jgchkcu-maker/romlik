@@ -1,6 +1,6 @@
 [
   {
-    "uri": "vless://Fluffy_VPN-zKZUa4Ie@72.56.38.83:443?encryption=none&flow=xtls-rprx-vision&pbk=ZzIetLcQtENjIXQ9XZqFo8p3J81p8Emj0wi51Uy07n8&security=reality&sni=absolute-disaster.org&type=tcp&fp=edge#.%F0%96%A5%94%20%DD%81%20%CB%96%D6%B4%F0%9F%9B%B8%E0%BC%84%CB%96%C2%B0.%20%7C%20%5B%2ACIDR%5D",
+    "uri": "vless://Fluffy_VPN-zKZUa4Ie@72.56.38.83:443?encryption=none&flow=xtls-rprx-vision&pbk=ZzIetLcQtENjIXQ9XZqFo8p3J81p8Emj0wi51Uy07n8&security=reality&sni=absolute-disaster.org&type=tcp&fp=android#.%F0%96%A5%94%20%DD%81%20%CB%96%D6%B4%F0%9F%9B%B8%E0%BC%84%CB%96%C2%B0.%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
     "host": "72.56.38.83",
     "port": 443,
@@ -18,7 +18,25 @@
     "server_identity": "8f851f121920c13a6976bd906e9a15a8ee7f7107f8f817bd1c75c93150aa6859"
   },
   {
-    "uri": "vless://6a32736d-4b7f-4c35-a1cf-4489d49f2cfb@fi.alpheratzz.org:443?allowInsecure=0&alpn=h2&encryption=none&extra=%7B%22xmux%22%3A%7B%22maxConnections%22%3A1%2C%22maxReuseTimes%22%3A0%7D%7D&insecure=0&mode=stream-one&path=%2F&security=tls&sni=6a32736d.ferrin.uk&type=xhttp&fp=chrome#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%7C%20%5B%2ACIDR%5D",
+    "uri": "vless://6a32736d-4b7f-4c35-a1cf-4489d49f2cfb@107.150.93.2:443?encryption=none&extra=%7B%22xmux%22%3A%7B%22maxConnections%22%3A1%2C%22maxReuseTimes%22%3A0%7D%7D&security=tls&sni=6a32736d.ferrin.uk&type=xhttp&fp=ios#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%7C%20%5B%2ACIDR%5D",
+    "protocol": "vless",
+    "host": "107.150.93.2",
+    "port": 443,
+    "source": "igareck-mobile",
+    "pool": "whitelist",
+    "remark": "🇫🇮 Finland | [*CIDR]",
+    "tcp_ms": null,
+    "latency_ms": null,
+    "mbps": null,
+    "score": null,
+    "ok": true,
+    "error": "",
+    "mobile_candidate": true,
+    "mobile_source": "igareck-mobile",
+    "server_identity": "91b515b4d5c08195d7727d937dc1e9fd662195e743595734d2c7a55dab09e28e"
+  },
+  {
+    "uri": "vless://6a32736d-4b7f-4c35-a1cf-4489d49f2cfb@fi.alpheratzz.org:443?type=xhttp&security=tls&path=%2F&sni=6a32736d.ferrin.uk&fp=chrome#%F0%9F%87%AB%F0%9F%87%AE%20Finland%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
     "host": "fi.alpheratzz.org",
     "port": 443,
@@ -36,43 +54,7 @@
     "server_identity": "4638aa1cc58d72be421f6c7f73a301f36660b483e3fd0e4414f4b95d42cf5015"
   },
   {
-    "uri": "vless://953358cb-82ba-4296-960d-6d2ec3468f4c@45.8.228.167:443?encryption=none&extra=null&mode=packet-up&path=%2Fxhttp_client_upload&pbk=n7Eivi9aG8PMxvaP5flLiukPADZIDVuzyOsOWDG43kQ&security=reality&sid=5eca&sni=bl3fk52.sysopnova.art&type=xhttp&fp=edge#%F0%9F%87%AE%F0%9F%87%B9%20Italy%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
-    "protocol": "vless",
-    "host": "45.8.228.167",
-    "port": 443,
-    "source": "igareck-mobile",
-    "pool": "whitelist",
-    "remark": "🇮🇹 Italy | 🌐 | [*CIDR]",
-    "tcp_ms": null,
-    "latency_ms": null,
-    "mbps": null,
-    "score": null,
-    "ok": true,
-    "error": "",
-    "mobile_candidate": true,
-    "mobile_source": "igareck-mobile",
-    "server_identity": "011b734616ffe469538879a3254cf42ab011cbf406f85754751d84a8a90f87b0"
-  },
-  {
-    "uri": "vless://953358cb-82ba-4296-960d-6d2ec3468f4c@45.8.228.167:443?encryption=none&extra=null&mode=packet-up&path=%2Fxhttp_client_upload&pbk=n7Eivi9aG8PMxvaP5flLiukPADZIDVuzyOsOWDG43kQ&security=reality&sid=5eca&sni=dailycanvas.sysopnova.art&type=xhttp&fp=chrome#%F0%9F%87%AE%F0%9F%87%B9%20Italy%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
-    "protocol": "vless",
-    "host": "45.8.228.167",
-    "port": 443,
-    "source": "igareck-mobile",
-    "pool": "whitelist",
-    "remark": "🇮🇹 Italy | 🌐 | [*CIDR]",
-    "tcp_ms": null,
-    "latency_ms": null,
-    "mbps": null,
-    "score": null,
-    "ok": true,
-    "error": "",
-    "mobile_candidate": true,
-    "mobile_source": "igareck-mobile",
-    "server_identity": "ca6943ab941f696dc656dded6535fe10e3f82bd2e936fd0e851e31e7641c4f30"
-  },
-  {
-    "uri": "vless://5f639cd9-3278-42e8-937a-f582ddde2f92@95.129.236.239:443?alpn=http%2F1.1&encryption=none&host=wiki.solarinfra.net&path=%2Fstream%2F615428%2Fsocket&security=tls&sni=wiki.solarinfra.net&type=ws&fp=chrome#%F0%9F%87%B8%F0%9F%87%AA%20Sweden%20%7C%20%5B%2ACIDR%5D",
+    "uri": "vless://ab1ba7a1-1332-44ab-bda6-fe45c1f01430@95.129.236.239:443?alpn=http%2F1.1&encryption=none&host=wiki.solarinfra.net&path=%2Fstream%2F615428%2Fsocket&security=tls&sni=wiki.solarinfra.net&type=ws&fp=chrome#%F0%9F%87%B8%F0%9F%87%AA%20Sweden%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
     "host": "95.129.236.239",
     "port": 443,
@@ -87,16 +69,16 @@
     "error": "",
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "5fddf40c7d4b843bad462ebb944fa88bfed045fafae61cf44c1d985bdbd34359"
+    "server_identity": "8723a09b8babbcce668009fb65d4252226ab2181220b93ac2049ad478f8fb173"
   },
   {
-    "uri": "vless://6a32736d-4b7f-4c35-a1cf-4489d49f2cfb@107.150.93.2:443?encryption=none&extra=%7B%22xmux%22%3A%7B%22maxConnections%22%3A1%2C%22maxReuseTimes%22%3A0%7D%7D&security=tls&sni=6a32736d.ferrin.uk&type=xhttp&fp=edge#%F0%9F%8C%90%20Anycast-IP%20%7C%20%F0%9F%87%AB%F0%9F%87%AE%20%5B%2ACIDR%5D",
+    "uri": "vless://151077fd-f4a0-4622-bfd2-1ee2c121a544@66.90.90.13:8443?encryption=none&type=tcp&flow=xtls-rprx-vision&security=tls&sni=dsapi-v2-6aaeee8a.adhil.uk&alpn=h2&fp=firefox#%F0%9F%8C%90%20Anycast-IP%20%7C%20%F0%9F%87%B7%F0%9F%87%BA%20%F0%9F%87%B8%F0%9F%87%AA%20%7C%20%5B%2ACIDR%5D%20Beeline",
     "protocol": "vless",
-    "host": "107.150.93.2",
-    "port": 443,
+    "host": "66.90.90.13",
+    "port": 8443,
     "source": "igareck-mobile",
     "pool": "whitelist",
-    "remark": "🌐 Anycast-IP | 🇫🇮 [*CIDR]",
+    "remark": "🌐 Anycast-IP | 🇷🇺 🇸🇪 | [*CIDR] Beeline",
     "tcp_ms": null,
     "latency_ms": null,
     "mbps": null,
@@ -105,16 +87,16 @@
     "error": "",
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "91b515b4d5c08195d7727d937dc1e9fd662195e743595734d2c7a55dab09e28e"
+    "server_identity": "23bbbe183bf37f7d2aa9ab44ad363ebe843ddf88b11572761a0362339c04a0fe"
   },
   {
-    "uri": "vless://528c9248-7b50-45fb-9188-e46d889dafe6@185.186.143.76:443?encryption=none&security=reality&sni=ru-kitchen.ru&pbk=6vDdlh4aAipoRQ-IXDjzTUtKpZS09xtNXIisCa__2CM&sid=f74c6a18133e2e72&spx=%2F&type=grpc&serviceName=grpc&fp=edge#%F0%9F%8C%90%20Anycast-IP%20%7C%20%F0%9F%87%B3%F0%9F%87%B4%20%5B%2ACIDR%5D",
+    "uri": "vless://208f19c0-f309-4e23-80d6-eb410e3636cf@ru-svo-1.blook.network:443?security=reality&encryption=none&pbk=04Kor4UEaxb90YlCNktYu52799Dw5uoYeaagJ-xQ8wA&headerType=none&spx=%2F&type=tcp&flow=xtls-rprx-vision&sni=ru-svo-1.blook.network&sid=8957cb90&fp=chrome#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
-    "host": "185.186.143.76",
+    "host": "ru-svo-1.blook.network",
     "port": 443,
     "source": "igareck-mobile",
     "pool": "whitelist",
-    "remark": "🌐 Anycast-IP | 🇳🇴 [*CIDR]",
+    "remark": "🇷🇺 Russia | 🌐 | [*CIDR]",
     "tcp_ms": null,
     "latency_ms": null,
     "mbps": null,
@@ -123,6 +105,6 @@
     "error": "",
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "aa830255ba352f5341e1499c756bcb9df57cd375f1976c459b8825ee490d40c5"
+    "server_identity": "da98502a5dddeff3b896c6d4bfecb20e2088b8cec06911145209e4831a4db4ac"
   }
 ]
