@@ -1,6 +1,6 @@
 [
   {
-    "uri": "vless://cdd6bfce-781a-4454-b7d5-4778abb5c24f@posa6.api3-max.ru:443?type=tcp&headerType=none&security=tls&encryption=none&sni=posa6.api3-max.ru&alpn=h3&flow=xtls-rprx-vision&fp=chrome#.%F0%96%A5%94%20%DD%81%20%CB%96%D6%B4%F0%9F%9B%B8%E0%BC%84%CB%96%C2%B0.%20%7C%20%5B%2ACIDR%5D",
+    "uri": "vless://cdd6bfce-781a-4454-b7d5-4778abb5c24f@posa6.api3-max.ru:443?type=tcp&headerType=none&security=tls&encryption=none&sni=posa6.api3-max.ru&alpn=h3&flow=xtls-rprx-vision&fp=edge#.%F0%96%A5%94%20%DD%81%20%CB%96%D6%B4%F0%9F%9B%B8%E0%BC%84%CB%96%C2%B0.%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
     "host": "posa6.api3-max.ru",
     "port": 443,
@@ -18,31 +18,13 @@
     "server_identity": "6a6d40d0e41c97e98e518e946ea756c9637dd64c78e2ec7d8f56410108f5d745"
   },
   {
-    "uri": "vless://ae8e2b94-5d44-437b-9002-80c2015f0e23@186.246.2.254:6443?encryption=none&security=tls&serviceName=media.playback.v1.SessionGateway&sni=nld.centermass.net&type=grpc&fp=chrome#%F0%9F%87%B3%F0%9F%87%B1%20The%20Netherlands%20%5B%2ACIDR%5D",
-    "protocol": "vless",
-    "host": "186.246.2.254",
-    "port": 6443,
-    "source": "igareck-mobile",
-    "pool": "whitelist",
-    "remark": "🇳🇱 The Netherlands [*CIDR]",
-    "tcp_ms": null,
-    "latency_ms": null,
-    "mbps": null,
-    "score": null,
-    "ok": true,
-    "error": "",
-    "mobile_candidate": true,
-    "mobile_source": "igareck-mobile",
-    "server_identity": "b70754a075fedeafb2a2e9021d318af02ecfb233779e7e668785aef695e1ea5b"
-  },
-  {
-    "uri": "vless://b1346aad-8d2b-4b06-a3cf-e20399c3ebd2@95.129.236.239:443?alpn=http%2F1.1&encryption=none&host=wiki.solarinfra.net&path=%2Fstream%2F615428%2Fsocket&security=tls&sni=wiki.solarinfra.net&type=ws&fp=chrome#%F0%9F%8C%90%20Anycast-IP%20%7C%20%F0%9F%87%A9%F0%9F%87%AA%20%F0%9F%87%B8%F0%9F%87%AA%20%7C%20%5B%2ACIDR%5D",
+    "uri": "vless://d97fec59-153e-4e1d-81e3-794bcead5ef3@95.129.236.239:443?alpn=http%2F1.1&encryption=none&host=wiki.solarinfra.net&path=%2Fstream%2F615428%2Fsocket&security=tls&sni=wiki.solarinfra.net&type=ws&fp=android#%F0%9F%87%A9%F0%9F%87%AA%20Germany%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
     "host": "95.129.236.239",
     "port": 443,
     "source": "igareck-mobile",
     "pool": "whitelist",
-    "remark": "🌐 Anycast-IP | 🇩🇪 🇸🇪 | [*CIDR]",
+    "remark": "🇩🇪 Germany | [*CIDR]",
     "tcp_ms": null,
     "latency_ms": null,
     "mbps": null,
@@ -51,13 +33,31 @@
     "error": "",
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "7db0b6341b616e02fc8611e234408b064611cdba310089984832c29d37f0212f"
+    "server_identity": "bf9aed58c86886a93882babb9f577db0ff2ba088b25a84c0714d029cda168b7c"
   },
   {
-    "uri": "vless://ae8e2b94-5d44-437b-9002-80c2015f0e23@188.225.25.191:5001?encryption=none&type=grpc&security=tls&sni=rus.centermass.net&alpn=h2&serviceName=media.playback.v1.SessionGateway&fp=android#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
+    "uri": "vless://f07d9192-9d39-49fc-ba70-610fcb7fb176@85.193.84.151:443?encryption=none&flow=xtls-rprx-vision&pbk=Nn9qoyJqjiJH-PliIjmy8lPtl0mIo52B3p6AeWsHQT4&security=reality&sid=9d9d411dbf0c1130&sni=prayercurerecall.forumsociety.info&type=tcp&fp=android#%F0%9F%87%B3%F0%9F%87%B1%20The%20Netherlands%20%7C%20%5B%2ACIDR%5D",
     "protocol": "vless",
-    "host": "188.225.25.191",
-    "port": 5001,
+    "host": "85.193.84.151",
+    "port": 443,
+    "source": "igareck-mobile",
+    "pool": "whitelist",
+    "remark": "🇳🇱 The Netherlands | [*CIDR]",
+    "tcp_ms": null,
+    "latency_ms": null,
+    "mbps": null,
+    "score": null,
+    "ok": true,
+    "error": "",
+    "mobile_candidate": true,
+    "mobile_source": "igareck-mobile",
+    "server_identity": "9e7f51567ad6731410335d579068374e2abea7dd40ac8ea31dd940d4cbdacfe6"
+  },
+  {
+    "uri": "vless://f07d9192-9d39-49fc-ba70-610fcb7fb176@5.42.116.118:443?encryption=none&flow=xtls-rprx-vision&pbk=X3U2Y1fzAORyXdy_awWirvlCjOV_Qsj6SEOPd4hFHgE&security=reality&sid=091faecd7e0808ed&sni=stablequenchcone.heatherneedle.info&type=tcp&fp=edge#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
+    "protocol": "vless",
+    "host": "5.42.116.118",
+    "port": 443,
     "source": "igareck-mobile",
     "pool": "whitelist",
     "remark": "🇷🇺 Russia | 🌐 | [*CIDR]",
@@ -69,6 +69,6 @@
     "error": "",
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "cb043af555c56d36ee72ff0dee0a2a906bece722c74e2c476d353c4aad0af871"
+    "server_identity": "f9cfe4ca51285a33aea980bb8a6d11e3fa92ec17851157aee293c66b978b3938"
   }
 ]
