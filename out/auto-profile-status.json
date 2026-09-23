@@ -1,18 +1,15 @@
 {
   "visible_configs": 1,
-  "internal_selected": 100,
-  "internal_valid_outbounds": 100,
-  "whitelist": 33,
-  "mobile": 23,
+  "internal_selected": 65,
+  "internal_valid_outbounds": 65,
+  "whitelist": 13,
+  "mobile": 13,
   "normal_country_counts": {
-    "CA": 16,
-    "DE": 4,
+    "CA": 20,
     "ES": 1,
-    "FR": 4,
-    "GB": 12,
-    "GT": 1,
-    "NL": 10,
-    "US": 19
+    "FR": 1,
+    "GB": 10,
+    "US": 20
   },
   "normal_country_limit": 12,
   "normal_country_hard_limit": 20,
