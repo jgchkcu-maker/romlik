@@ -1,5 +1,5 @@
 {
-  "count": 12,
+  "count": 11,
   "limit": 40,
   "sources": [
     {
@@ -9,8 +9,8 @@
     },
     {
       "name": "igareck-cidr-checked",
-      "raw": 21,
-      "parsed": 21
+      "raw": 5,
+      "parsed": 5
     },
     {
       "name": "igareck-cidr-all",
