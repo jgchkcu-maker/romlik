@@ -1,9 +1,9 @@
 {
-  "checked_at": 1790708859,
-  "status": "healthy",
+  "checked_at": 1790709081,
+  "status": "warning",
   "combined": 100,
-  "normal": 97,
-  "whitelist": 3,
+  "normal": 99,
+  "whitelist": 1,
   "mobile": 0,
   "verified": 100,
   "unverified": 0,
@@ -11,8 +11,8 @@
   "unique_identities": 100,
   "duplicate_identities": [],
   "candidate_pools": {
-    "normal": 156,
-    "whitelist": 3
+    "normal": 150,
+    "whitelist": 1
   },
   "limits": {
     "combined": 100,
@@ -23,9 +23,11 @@
     "whitelist": 3
   },
   "decorations": {
-    "lightning_entries": 6,
-    "flagged_entries_approx": 84
+    "lightning_entries": 4,
+    "flagged_entries_approx": 85
   },
-  "warnings": [],
+  "warnings": [
+    "Only 1 verified whitelist server is currently available"
+  ],
   "errors": []
 }
