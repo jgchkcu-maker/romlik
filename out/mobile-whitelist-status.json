@@ -18,5 +18,5 @@
       "parsed": 129
     }
   ],
-  "note": "Candidates are selected from Russian mobile whitelist feeds and are not discarded by Azure reachability tests."
+  "note": "Unverified carrier-specific candidates only. They are excluded from the main HAPP/AUTO pools until a HAPP-equivalent proxy probe succeeds."
 }
