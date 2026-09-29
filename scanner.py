@@ -371,7 +371,10 @@ def test_happ_with_xray(n, idx, url=None, timeout=None):
 
 def decorate(n, rank):
     p = urllib.parse.urlsplit(n.uri)
-    label = f"#{rank:02d} {n.pool} | {n.mbps:.1f}Mbps | {n.latency_ms:.0f}ms | {n.source}"
+    speed = f"{n.mbps:.1f}Mbps" if n.mbps is not None else "speed n/a"
+    latency = n.latency_ms if n.latency_ms is not None else n.happ_probe_ms
+    latency_text = f"{latency:.0f}ms" if latency is not None else "latency n/a"
+    label = f"#{rank:02d} {n.pool} | {speed} | {latency_text} | {n.source}"
     return urllib.parse.urlunsplit((p.scheme, p.netloc, p.path, p.query, urllib.parse.quote(label, safe=" |:.#"))) if p.scheme != "vmess" else n.uri
 
 
