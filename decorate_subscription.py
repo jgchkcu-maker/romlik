@@ -183,10 +183,8 @@ def happ_text(title: str, lines) -> str:
 
 
 def write_preserving(path: Path, title: str, lines):
-    if lines:
-        path.write_text(happ_text(title, lines))
-    elif not path.exists():
-        path.write_text(happ_text(title, lines))
+    """Always publish the current verified state; never preserve stale nodes."""
+    path.write_text(happ_text(title, lines))
 
 
 def main():
