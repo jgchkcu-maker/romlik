@@ -1,24 +1,9 @@
 name: Select fastest working VPN servers
 
 on:
-  schedule:
-    - cron: '*/10 * * * *'
   workflow_dispatch:
-  push:
-    branches: [main, feature/local-auto-selection, feature/single-auto-profile]
-    paths:
-      - 'scanner.py'
-      - 'scanner_unique.py'
-      - 'server_identity.py'
-      - 'candidate_pool.py'
-      - 'mobile_candidates.py'
-      - 'decorate_subscription.py'
-      - 'auto_profile.py'
-      - 'healthcheck.py'
-      - 'tests/**'
-      - 'sources.json'
-      - 'local_observations.json'
-      - '.github/workflows/refresh.yml'
+
+# PAUSED: automatic schedule/push triggers disabled by user request.
 
 permissions:
   contents: write
