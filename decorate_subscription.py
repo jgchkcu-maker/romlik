@@ -7,7 +7,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from candidate_pool import select_candidates
+from candidate_pool import is_verified, select_candidates
 from server_identity import server_identity
 
 FAST_BADGE_COUNT = int(os.environ.get("FAST_BADGE_COUNT", "5"))
@@ -227,7 +227,7 @@ def main():
         "mobile": len(mobile_raw),
     }
 
-    all_nodes = normal_nodes + whitelist_nodes
+    all_nodes = normal_nodes + whitelist_nodes + mobile_nodes
     geo = geo_lookup(all_nodes)
     records_by_pool = {"normal": [], "whitelist": []}
     records_by_identity = {}
@@ -244,10 +244,9 @@ def main():
             node["country_code"] = code
             node["country"] = country
             node["server_identity"] = ident
+            node["verified"] = is_verified(node)
             uri = rewrite_uri(str(node.get("uri", "")), label)
             decorated.append(uri)
-            if pool == "whitelist" and node.get("mobile_candidate"):
-                mobile_decorated.append(uri)
             record = {
                 "identity": ident,
                 "uri": uri,
@@ -272,10 +271,15 @@ def main():
             flush=True,
         )
 
+    for rank, node in enumerate(mobile_nodes[:WHITELIST_LIMIT], 1):
+        code, country = geo.get(str(node.get("host", "")), ("", ""))
+        label = f"🧪 {flag(code)} 📱 Mobile candidate • {country or 'Server'} • {rank:02d}"
+        mobile_decorated.append(rewrite_uri(str(node.get("uri", "")), label))
+
     write_preserving(
         Path("out/happ-mobile.txt"),
-        "Romlik Mobile White Lists",
-        mobile_decorated[:WHITELIST_LIMIT],
+        "Romlik Mobile Candidates • UNVERIFIED",
+        mobile_decorated,
     )
 
     selected_nodes = select_visible_nodes(
@@ -305,6 +309,9 @@ def main():
             "identity": item["identity"][:16],
             "pool": n.get("pool", ""),
             "mobile_candidate": bool(n.get("mobile_candidate")),
+            "verified": is_verified(n),
+            "happ_probe_ok": bool(n.get("happ_probe_ok")),
+            "happ_probe_ms": n.get("happ_probe_ms"),
             "protocol": n.get("protocol", ""),
             "display_name": n.get("display_name", ""),
             "country": n.get("country", ""),
