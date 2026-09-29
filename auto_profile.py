@@ -15,9 +15,12 @@ PROBE_URL = os.environ.get("AUTO_PROBE_URL", "https://cp.cloudflare.com/generate
 PROBE_INTERVAL = os.environ.get("AUTO_PROBE_INTERVAL", "30s")
 
 
+def _verified(node):
+    return bool(node.get("happ_probe_ok") or node.get("verified"))
+
+
 def _quality(node):
     return (
-        1 if node.get("mobile_candidate") else 0,
         float(node.get("score") or 0),
         float(node.get("mbps") or 0),
         -float(node.get("latency_ms") or 999999),
@@ -70,11 +73,11 @@ def select_country_balanced(
     per_country_limit = max(1, int(per_country_limit))
     hard_country_limit = max(per_country_limit, int(hard_country_limit))
 
-    white = _dedupe(whitelist)
+    white = _dedupe([n for n in whitelist if _verified(n)])
     selected = white[:whitelist_limit]
     used = {_identity(n) for n in selected}
 
-    normal_unique = [n for n in _dedupe(normal) if _identity(n) not in used]
+    normal_unique = [n for n in _dedupe([x for x in normal if _verified(x)]) if _identity(n) not in used]
     country_counts = Counter()
 
     caps = [per_country_limit]
@@ -134,6 +137,7 @@ def _sanitize_outbound(outbound):
 
 
 def build_subscription(nodes):
+    nodes = [node for node in nodes if _verified(node)]
     outbounds = []
     valid_nodes = []
     for idx, node in enumerate(nodes, 1):

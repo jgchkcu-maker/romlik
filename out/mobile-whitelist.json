@@ -11,11 +11,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "f946902440026da99098cec22f495b74f45af4c3804ad40a9c16fba85a977b18"
+    "server_identity": "f946902440026da99098cec22f495b74f45af4c3804ad40a9c16fba85a977b18",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.246.110:9830?encryption=none&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&security=reality&serviceName=grpc-tunnel&sni=dl.google.com&type=grpc&fp=firefox#%F0%9F%87%A6%F0%9F%87%B9%20Austria%20%7C%20%5B%2ACIDR%5D",
@@ -29,11 +32,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "9bc2c71999b12eed0c6850ce7117fdb848e78c0c967b49ac147c2b02454d14e1"
+    "server_identity": "9bc2c71999b12eed0c6850ce7117fdb848e78c0c967b49ac147c2b02454d14e1",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@213.171.25.178:9830?authority=%3F&mode=gun&type=grpc&security=reality&sni=dl.google.com&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&sid=aabb&serviceName=grpc-tunnel&fp=android#%F0%9F%87%A6%F0%9F%87%B9%20Austria%20%7C%20%5B%2ACIDR%5D",
@@ -47,11 +53,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "8aef9832bc14eeae4b3cbc8b93964848b7aa3663ea2f8b48119a422f0e9ef43f"
+    "server_identity": "8aef9832bc14eeae4b3cbc8b93964848b7aa3663ea2f8b48119a422f0e9ef43f",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.241.137:9891?encryption=none&pbk=Dfgu8Ey0M8Hz4gXGZAwQ3H9jLt2HByVsjAOTWiuKDB0&security=reality&serviceName=grpc-tunnel&sid=aabb&sni=dl.google.com&type=grpc&fp=chrome#%F0%9F%87%A8%F0%9F%87%BF%20Czechia%20%7C%20%5B%2ACIDR%5D",
@@ -65,11 +74,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "d932ddc1c7c41345c34fa00bea42349cac1a7eaa88fe9dd0434ad4a145d0ac88"
+    "server_identity": "d932ddc1c7c41345c34fa00bea42349cac1a7eaa88fe9dd0434ad4a145d0ac88",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@82.202.138.46:9891?encryption=none&pbk=Dfgu8Ey0M8Hz4gXGZAwQ3H9jLt2HByVsjAOTWiuKDB0&security=reality&serviceName=grpc-tunnel&sid=aa&sni=dl.google.com&type=grpc&fp=chrome#%F0%9F%87%A8%F0%9F%87%BF%20Czechia%20%7C%20%5B%2ACIDR%5D",
@@ -83,11 +95,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "0ba0beace2ab5c5ed86d9893bad0492644083f5181a27c5a9b7d7ba49bff21d9"
+    "server_identity": "0ba0beace2ab5c5ed86d9893bad0492644083f5181a27c5a9b7d7ba49bff21d9",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@82.202.138.46:9891?type=grpc&headerType=none&security=reality&encryption=none&sni=dl.google.com&pbk=Dfgu8Ey0M8Hz4gXGZAwQ3H9jLt2HByVsjAOTWiuKDB0&serviceName=grpc-tunnel&fp=edge#%F0%9F%87%A8%F0%9F%87%BF%20Czechia%20%7C%20%5B%2ACIDR%5D",
@@ -101,11 +116,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "18c7adf916eddba8fcb58ef9ca1a3248fd571db5390aa7a52021562c63080751"
+    "server_identity": "18c7adf916eddba8fcb58ef9ca1a3248fd571db5390aa7a52021562c63080751",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.244.38:9881?encryption=none&pbk=Dfgu8Ey0M8Hz4gXGZAwQ3H9jLt2HByVsjAOTWiuKDB0&security=reality&serviceName=grpc-tunnel&sid=aabb&sni=dl.google.com&type=grpc&fp=chrome#%F0%9F%87%A9%F0%9F%87%B0%20Denmark%20%7C%20%5B%2ACIDR%5D",
@@ -119,11 +137,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "ca9990de8fd29652c4c669a37f1b820ce923869546dde824cabb9b2e18c4e34c"
+    "server_identity": "ca9990de8fd29652c4c669a37f1b820ce923869546dde824cabb9b2e18c4e34c",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.109.106.182:9881?encryption=none&pbk=Dfgu8Ey0M8Hz4gXGZAwQ3H9jLt2HByVsjAOTWiuKDB0&security=reality&serviceName=grpc-tunnel&sni=dl.google.com&type=grpc&fp=edge#%F0%9F%87%AA%F0%9F%87%AA%20Estonia%20%7C%20%5B%2ACIDR%5D",
@@ -137,11 +158,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "9ad98cb9f2354bd6cd5f4c7d2f99c92e0019e9e62643a24088b2ebe7af1f5962"
+    "server_identity": "9ad98cb9f2354bd6cd5f4c7d2f99c92e0019e9e62643a24088b2ebe7af1f5962",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.123.162.100:9880?encryption=none&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&security=reality&serviceName=grpc-tunnel&sni=dl.google.com&type=grpc&fp=android#%F0%9F%87%AB%F0%9F%87%B7%20France%20%7C%20%5B%2ACIDR%5D",
@@ -155,11 +179,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "d4f4158cd7bf31637e972ac085971367c5a336a343f2dfd8047fb94f7d76c9e6"
+    "server_identity": "d4f4158cd7bf31637e972ac085971367c5a336a343f2dfd8047fb94f7d76c9e6",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.123.162.100:9880?encryption=none&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&security=reality&serviceName=grpc-tunnel&sid=aabb&sni=dl.google.com&type=grpc&fp=chrome#%F0%9F%87%AB%F0%9F%87%B7%20France%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
@@ -173,11 +200,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "1b03ca5d145d697ef9acc7686f321545db5364d0e801134ef86e201d8c2c0572"
+    "server_identity": "1b03ca5d145d697ef9acc7686f321545db5364d0e801134ef86e201d8c2c0572",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.244.178:9881?encryption=none&security=reality&sni=dl.google.com&pbk=ycPIUcY6ci2yi7YA_OHc20e4gzxEdJTqpmeShxSuHRU&sid=aa&type=grpc&authority=&serviceName=grpc-tunnel&mode=gun&fp=chrome#%F0%9F%87%AE%F0%9F%87%B9%20Italy%20%7C%20%5B%2ACIDR%5D",
@@ -191,11 +221,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "7a744d39a710155b17a89387f770d38c487078d3a7fa27043424b08c30d83f38"
+    "server_identity": "7a744d39a710155b17a89387f770d38c487078d3a7fa27043424b08c30d83f38",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.246.58:9881?encryption=none&pbk=ycPIUcY6ci2yi7YA_OHc20e4gzxEdJTqpmeShxSuHRU&security=reality&serviceName=grpc-tunnel&sni=dl.google.com&type=grpc&fp=android#%F0%9F%87%AE%F0%9F%87%B9%20Italy%20%7C%20%5B%2ACIDR%5D",
@@ -209,11 +242,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "b01fd667fb5f6ada177867a1bc2138d795e2c5711fd6df478eca860fa9314da5"
+    "server_identity": "b01fd667fb5f6ada177867a1bc2138d795e2c5711fd6df478eca860fa9314da5",
+    "verified": false
   },
   {
     "uri": "vless://953358cb-82ba-4296-960d-6d2ec3468f4c@45.8.228.167:443?encryption=none&security=reality&sni=dailycanvas.sysopnova.art&pbk=n7Eivi9aG8PMxvaP5flLiukPADZIDVuzyOsOWDG43kQ&sid=5eca&type=xhttp&path=%2Fxhttp_client_upload&mode=packet-up&fp=chrome#%F0%9F%87%AE%F0%9F%87%B9%20Italy%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
@@ -227,11 +263,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "ca6943ab941f696dc656dded6535fe10e3f82bd2e936fd0e851e31e7641c4f30"
+    "server_identity": "ca6943ab941f696dc656dded6535fe10e3f82bd2e936fd0e851e31e7641c4f30",
+    "verified": false
   },
   {
     "uri": "vless://953358cb-82ba-4296-960d-6d2ec3468f4c@45.8.228.167:443?encryption=none&security=reality&sni=pl314j2.sysopnova.art&pbk=n7Eivi9aG8PMxvaP5flLiukPADZIDVuzyOsOWDG43kQ&sid=5eca&type=xhttp&path=%2Fxhttp_client_upload&mode=packet-up&fp=chrome#%F0%9F%87%AE%F0%9F%87%B9%20Italy%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
@@ -245,11 +284,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "98af5be797d11e21c23a801f86e56b84df03a32c02574d34f698bb21e6d662d2"
+    "server_identity": "98af5be797d11e21c23a801f86e56b84df03a32c02574d34f698bb21e6d662d2",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.123.165.180:9881?encryption=none&pbk=Dfgu8Ey0M8Hz4gXGZAwQ3H9jLt2HByVsjAOTWiuKDB0&security=reality&serviceName=grpc-tunnel&sid=aabbccdd&sni=dl.google.com&type=grpc&fp=firefox#%F0%9F%87%B1%F0%9F%87%B9%20Lithuania%20%7C%20%5B%2ACIDR%5D",
@@ -263,11 +305,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "09be27bee23eb5054d5180798fe4fac673b1fc50b5f27896ba419826fe978421"
+    "server_identity": "09be27bee23eb5054d5180798fe4fac673b1fc50b5f27896ba419826fe978421",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.247.31:9844?mode=gun&security=reality&encryption=none&authority=PLANB_NET---PLANB_NET---PLANB_NET---PLANB_NET---PLANB_NET&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&type=grpc&serviceName=grpc-tunnel&sni=dl.google.com&sid=aabb&fp=chrome#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
@@ -281,11 +326,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "e30deb8178075dd3479d67bc40f3ab0f54f93e4f8efc5caa6404dfb6177d6913"
+    "server_identity": "e30deb8178075dd3479d67bc40f3ab0f54f93e4f8efc5caa6404dfb6177d6913",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.123.161.222:9892?encryption=none&security=reality&sni=dl.google.com&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&type=grpc&serviceName=grpc-tunnel&mode=gun&packetEncoding=none&fp=firefox#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
@@ -299,11 +347,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "dfbe3ea22b70f37165b954b02cdf3e206f00457196db65379c671f70c7670505"
+    "server_identity": "dfbe3ea22b70f37165b954b02cdf3e206f00457196db65379c671f70c7670505",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.123.161.222:9892?type=grpc&security=reality&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&sid=aabbccdd&sni=dl.google.com&serviceName=grpc-tunnel&fp=chrome#%F0%9F%87%B5%F0%9F%87%B1%20Poland%20%7C%20%5B%2ACIDR%5D",
@@ -317,11 +368,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "01413de80973657848ddfe8f535da45732f7a2e479443de8e302217277c2743f"
+    "server_identity": "01413de80973657848ddfe8f535da45732f7a2e479443de8e302217277c2743f",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.246.58:9889?encryption=none&pbk=ycPIUcY6ci2yi7YA_OHc20e4gzxEdJTqpmeShxSuHRU&security=reality&serviceName=grpc-tunnel&sni=dl.google.com&type=grpc&fp=edge#%F0%9F%87%B7%F0%9F%87%B8%20Serbia%20%7C%20%5B%2ACIDR%5D",
@@ -335,11 +389,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "3479e9e4685b1c3bf6e056378d99f51d3c2207a9c62645a9f0ac4c6d2dffc688"
+    "server_identity": "3479e9e4685b1c3bf6e056378d99f51d3c2207a9c62645a9f0ac4c6d2dffc688",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@213.171.25.29:9889?encryption=none&security=reality&sni=dl.google.com&pbk=ycPIUcY6ci2yi7YA_OHc20e4gzxEdJTqpmeShxSuHRU&sid=aabb&type=grpc&serviceName=grpc-tunnel&mode=gun&packetEncoding=xudp&fp=android#%F0%9F%87%B7%F0%9F%87%B8%20Serbia%20%7C%20%5B%2ACIDR%5D",
@@ -353,11 +410,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "00ee2a08c1f792c42ce82c5b73e5d76795003e0834a707ceb011780d4e3571cd"
+    "server_identity": "00ee2a08c1f792c42ce82c5b73e5d76795003e0834a707ceb011780d4e3571cd",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@213.171.25.29:9889?type=grpc&security=reality&pbk=ycPIUcY6ci2yi7YA_OHc20e4gzxEdJTqpmeShxSuHRU&sid=aabbccdd&sni=dl.google.com&serviceName=grpc-tunnel&fp=firefox#%F0%9F%87%B7%F0%9F%87%B8%20Serbia%20%7C%20%5B%2ACIDR%5D",
@@ -371,11 +431,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "1ff886e9a60222f87e8d6c269493fbadea592ba2071f67a72add5501c0e493bf"
+    "server_identity": "1ff886e9a60222f87e8d6c269493fbadea592ba2071f67a72add5501c0e493bf",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@85.208.86.91:9872?encryption=none&pbk=sm3E3hjmT6_Gmg_O9rBz4nfXYrHpnl6-LvcCp6T6_xc&security=reality&serviceName=grpc-tunnel&sid=aa&sni=dl.google.com&type=grpc&fp=firefox#%F0%9F%87%B8%F0%9F%87%AA%20Sweden%20%7C%20%5B%2ACIDR%5D",
@@ -389,11 +452,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "cb0bbda93d2c43585cdd363523b919948ba049dc1321c9ff9270a1979c980de2"
+    "server_identity": "cb0bbda93d2c43585cdd363523b919948ba049dc1321c9ff9270a1979c980de2",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@85.208.86.91:9872?type=grpc&security=reality&pbk=sm3E3hjmT6_Gmg_O9rBz4nfXYrHpnl6-LvcCp6T6_xc&sid=aabbccdd&sni=dl.google.com&serviceName=grpc-tunnel&fp=android#%F0%9F%87%B8%F0%9F%87%AA%20Sweden%20%7C%20%5B%2ACIDR%5D",
@@ -407,11 +473,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "30296dc1e3f484e5c74858d694a7f57f769e5099076404c433fed23514001063"
+    "server_identity": "30296dc1e3f484e5c74858d694a7f57f769e5099076404c433fed23514001063",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@85.208.86.91:9872?type=grpc&security=reality&pbk=sm3E3hjmT6_Gmg_O9rBz4nfXYrHpnl6-LvcCp6T6_xc&sni=dl.google.com&mode=gun&serviceName=grpc-tunnel&spx=%2F&fp=android#%F0%9F%87%B8%F0%9F%87%AA%20Sweden%20%7C%20%5B%2ACIDR%5D",
@@ -425,11 +494,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "a0814f5f8326c8e72759f7e4750d419884d9405a049c0820a23e3f2029f423c7"
+    "server_identity": "a0814f5f8326c8e72759f7e4750d419884d9405a049c0820a23e3f2029f423c7",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.241.137:9882?type=grpc&security=reality&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&sni=dl.google.com&mode=gun&serviceName=grpc-tunnel&fp=android#%F0%9F%87%A8%F0%9F%87%AD%20Switzerland%20%7C%20%5B%2ACIDR%5D",
@@ -443,11 +515,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "d964ecb0c61ff9264dda229a34108193d1a216f7c5362db32c5af0cc04bc5b59"
+    "server_identity": "d964ecb0c61ff9264dda229a34108193d1a216f7c5362db32c5af0cc04bc5b59",
+    "verified": false
   },
   {
     "uri": "vless://8f2a6194-1748-4ec7-9c5f-8ad504818aa3@37.220.86.155:443?encryption=none&security=tls&sni=uk-cf.aba-hum.store&type=xhttp&fp=edge#%F0%9F%87%AC%F0%9F%87%A7%20United%20Kingdom%20%7C%20%5B%2ACIDR%5D",
@@ -461,11 +536,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "2a9283c6d3ec1fa2e8de46002b4f88e3708ca1522041b6dc609f174a5b55fb52"
+    "server_identity": "2a9283c6d3ec1fa2e8de46002b4f88e3708ca1522041b6dc609f174a5b55fb52",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.246.73:9873?encryption=none&security=reality&sni=dl.google.com&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&sid=aabbccdd&type=grpc&authority=&serviceName=grpc-tunnel&mode=gun&fp=android#%F0%9F%87%BA%F0%9F%87%B8%20United%20States%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
@@ -479,11 +557,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "75cb0dd423c4e8e49e9212603f269535bc3c721765b0c215ef1d609a3a8d535d"
+    "server_identity": "75cb0dd423c4e8e49e9212603f269535bc3c721765b0c215ef1d609a3a8d535d",
+    "verified": false
   },
   {
     "uri": "vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.246.73:9873?type=grpc&security=reality&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&sid=aa&sni=dl.google.com&serviceName=grpc-tunnel&fp=firefox#%F0%9F%87%BA%F0%9F%87%B8%20United%20States%20%7C%20%F0%9F%8C%90%20%7C%20%5B%2ACIDR%5D",
@@ -497,11 +578,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "93519903b33776d28b0381868abf866ce3948cb9ed21be3aa324c4e25e6e618e"
+    "server_identity": "93519903b33776d28b0381868abf866ce3948cb9ed21be3aa324c4e25e6e618e",
+    "verified": false
   },
   {
     "uri": "vless://ff2936d3-caa4-4b79-bb96-1475bd39ceda@113.30.154.60:443?encryption=none&flow=xtls-rprx-vision&pbk=SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc&security=reality&sni=sellflow.org&type=tcp&fp=chrome#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%5B%2ACIDR%5D",
@@ -515,11 +599,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "7a372391b2c0f85a6001a94107f4459c085763e187e0af2676de5e7c1e4be951"
+    "server_identity": "7a372391b2c0f85a6001a94107f4459c085763e187e0af2676de5e7c1e4be951",
+    "verified": false
   },
   {
     "uri": "vless://84a3061b-3573-4a3c-a631-f26c31209268@95.215.108.36:443?flow=xtls-rprx-vision&encryption=none&security=reality&sni=ru-02.vacvps.com&pbk=bDAry75taTMaPJII9vRrJuXAjQglTJxCOVWraQ5BozY&type=tcp&headerType=none&fp=chrome#%F0%9F%87%B7%F0%9F%87%BA%20Russia%20%7C%20%5B%2ACIDR%5D",
@@ -533,11 +620,14 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-mobile",
-    "server_identity": "94f6d7d071fcc8a3c783c4c88de0a040d467286436aba37d74931785f6c017e7"
+    "server_identity": "94f6d7d071fcc8a3c783c4c88de0a040d467286436aba37d74931785f6c017e7",
+    "verified": false
   },
   {
     "uri": "vless://8f2a6194-1748-4ec7-9c5f-8ad504818aa3@37.220.86.155:443?encryption=none&security=tls&sni=uk-cf.aba-hum.store&type=xhttp&path=%2F&mode=auto&fp=edge#%F0%9F%87%AC%F0%9F%87%A7%20United%20Kingdom%20%5B%2ACIDR%5D",
@@ -551,10 +641,13 @@
     "latency_ms": null,
     "mbps": null,
     "score": null,
-    "ok": true,
+    "ok": false,
     "error": "",
+    "happ_probe_ok": false,
+    "happ_probe_ms": null,
     "mobile_candidate": true,
     "mobile_source": "igareck-cidr-all",
-    "server_identity": "cd7b24e057ff164a974f15aa18448f20aee191c56e02c831ce3c8972dcf7f99e"
+    "server_identity": "cd7b24e057ff164a974f15aa18448f20aee191c56e02c831ce3c8972dcf7f99e",
+    "verified": false
   }
 ]

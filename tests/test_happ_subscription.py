@@ -16,6 +16,8 @@ def node(host, *, pool="normal", source="src", score=10, mobile=False, uri=None)
         "mbps": score,
         "latency_ms": 100,
         "mobile_candidate": mobile,
+        "happ_probe_ok": not mobile,
+        "verified": not mobile,
     }
 
 
@@ -37,7 +39,7 @@ class HappSubscriptionTests(unittest.TestCase):
 
         self.assertIn("vless://example", text)
 
-    def test_visible_nodes_use_diversity_pool_and_keep_mobile_candidates(self):
+    def test_visible_nodes_use_diversity_pool_and_exclude_unverified_mobile_candidates(self):
         same_prefix = [
             node(f"169.40.42.{i}", source="big-source", score=200 - i)
             for i in range(1, 20)
@@ -66,7 +68,7 @@ class HappSubscriptionTests(unittest.TestCase):
         )
 
         self.assertLessEqual(len(selected), 10)
-        self.assertIn("5.129.198.223", [x["host"] for x in selected])
+        self.assertNotIn("5.129.198.223", [x["host"] for x in selected])
         normal = [x for x in selected if x.get("pool") != "whitelist"]
         self.assertLessEqual(
             sum(1 for x in normal if x["host"].startswith("169.40.42.")),

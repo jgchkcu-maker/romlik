@@ -16,6 +16,8 @@ def node(host, *, pool="normal", source="src", score=10, mobile=False, uri=None,
         "mbps": score,
         "latency_ms": 100,
         "mobile_candidate": mobile,
+        "happ_probe_ok": not mobile,
+        "verified": not mobile,
     }
 
 
@@ -35,18 +37,40 @@ class CandidatePoolTests(unittest.TestCase):
         self.assertEqual(1, len(selected))
         self.assertEqual("169.40.42.15", selected[0]["host"])
 
-    def test_mobile_candidates_survive_without_azure_metrics(self):
+    def test_unverified_mobile_candidates_do_not_enter_main_pool(self):
         mobile = node("5.129.198.223", pool="whitelist", source="igareck-mobile", score=0, mobile=True)
         mobile["score"] = None
         mobile["mbps"] = None
         mobile["latency_ms"] = None
         selected = select_candidates([], [], [mobile], total_limit=100, whitelist_limit=40)
-        self.assertEqual([mobile["host"]], [x["host"] for x in selected])
+        self.assertEqual([], selected)
+
+    def test_verified_whitelist_wins_over_unverified_mobile_duplicate(self):
+        verified = node(
+            "5.129.198.223",
+            pool="whitelist",
+            source="scanner",
+            score=10,
+            mobile=False,
+        )
+        mobile = dict(verified)
+        mobile["source"] = "igareck-mobile"
+        mobile["mobile_candidate"] = True
+        mobile["happ_probe_ok"] = False
+        mobile["verified"] = False
+        mobile["score"] = None
+        mobile["mbps"] = None
+        mobile["latency_ms"] = None
+
+        selected = select_candidates([], [verified], [mobile], total_limit=100, whitelist_limit=40)
+        self.assertEqual(1, len(selected))
+        self.assertEqual("scanner", selected[0]["source"])
+        self.assertTrue(selected[0]["happ_probe_ok"])
 
     def test_total_and_whitelist_limits_are_enforced(self):
         normal = [node(f"10.{i // 250}.{i % 250}.1", score=200 - i) for i in range(120)]
-        mobile = [node(f"172.16.{i}.1", pool="whitelist", source="mobile", score=0, mobile=True) for i in range(60)]
-        selected = select_candidates(normal, [], mobile, total_limit=100, whitelist_limit=40)
+        whitelist = [node(f"172.16.{i}.1", pool="whitelist", source="verified", score=100 - i) for i in range(60)]
+        selected = select_candidates(normal, whitelist, [], total_limit=100, whitelist_limit=40)
         self.assertLessEqual(len(selected), 100)
         self.assertLessEqual(sum(1 for x in selected if x.get("pool") == "whitelist"), 40)
 

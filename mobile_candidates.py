@@ -54,9 +54,14 @@ def main():
             d["mobile_candidate"] = True
             d["mobile_source"] = src["name"]
             d["server_identity"] = ident
-            # These are intentionally not rejected based on an Azure/Xray test.
-            # A whitelist route can be useful only from the target mobile network.
-            d["ok"] = True
+            # Keep mobile-only feeds as candidates, never as verified servers.
+            # GitHub Actions cannot prove that a route works from the user's
+            # carrier, so these entries must not enter the main HAPP/AUTO pools
+            # until they pass the same proxy probe used by HAPP.
+            d["ok"] = False
+            d["verified"] = False
+            d["happ_probe_ok"] = False
+            d["happ_probe_ms"] = None
             d["score"] = None
             d["mbps"] = None
             d["latency_ms"] = None
@@ -74,7 +79,7 @@ def main():
         "count": len(out),
         "limit": MOBILE_LIMIT,
         "sources": source_stats,
-        "note": "Candidates are selected from Russian mobile whitelist feeds and are not discarded by Azure reachability tests.",
+        "note": "Unverified carrier-specific candidates only. They are excluded from the main HAPP/AUTO pools until a HAPP-equivalent proxy probe succeeds.",
     }, ensure_ascii=False, indent=2))
     print("mobile whitelist candidates", len(out), "limit", MOBILE_LIMIT, flush=True)
 
