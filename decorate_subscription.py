@@ -128,6 +128,44 @@ def select_visible_nodes(
     )
 
 
+def _local_priority(node):
+    """Order local-network candidates by how likely they are to survive mobile filtering.
+
+    This is only a display/probe order. HAPP still performs the authoritative
+    proxy ping on the user's actual network and sorts by the measured result.
+    """
+    try:
+        p = urllib.parse.urlsplit(str(node.get("uri", "")))
+        q = {k: (v[0] if v else "") for k, v in urllib.parse.parse_qs(p.query).items()}
+    except Exception:
+        q = {}
+    transport = str(q.get("type") or "tcp").lower()
+    security = str(q.get("security") or "").lower()
+    port = int(node.get("port") or 0)
+    verified = 1 if is_verified(node) else 0
+    port443 = 1 if port == 443 else 0
+    tcp_like = 1 if transport in {"tcp", "raw"} else 0
+    reality = 1 if security == "reality" else 0
+    # Higher tuple sorts first.
+    return (verified, port443, tcp_like, reality, -port)
+
+
+def select_local_nodes(tested_whitelist, mobile_nodes, limit=WHITELIST_LIMIT):
+    """Build a small device-local probe pool.
+
+    Unlike the main feed, this intentionally includes carrier-specific
+    unverified candidates. They are not claimed to work until HAPP tests them
+    from the phone's Wi-Fi/mobile network.
+    """
+    best = {}
+    for node in list(tested_whitelist) + list(mobile_nodes):
+        ident = logical_id(node)
+        cur = best.get(ident)
+        if cur is None or _local_priority(node) > _local_priority(cur):
+            best[ident] = node
+    return sorted(best.values(), key=_local_priority, reverse=True)[:max(0, int(limit))]
+
+
 def label_for(node, pool, rank, geo):
     code, country = geo.get(str(node.get("host", "")), ("", ""))
     mobile = bool(node.get("mobile_candidate"))
@@ -225,7 +263,8 @@ def main():
         "mobile": len(mobile_raw),
     }
 
-    all_nodes = normal_nodes + whitelist_nodes + mobile_nodes
+    local_nodes = select_local_nodes(tested_whitelist, mobile_nodes)
+    all_nodes = normal_nodes + whitelist_nodes + mobile_nodes + local_nodes
     geo = geo_lookup(all_nodes)
     records_by_pool = {"normal": [], "whitelist": []}
     records_by_identity = {}
@@ -280,6 +319,22 @@ def main():
         mobile_decorated,
     )
 
+    local_decorated = []
+    for rank, node in enumerate(local_nodes, 1):
+        code, country = geo.get(str(node.get("host", "")), ("", ""))
+        mark = "✅" if is_verified(node) else "🧪"
+        label = (
+            f"{mark} {flag(code)} 📱 Local probe • "
+            f"{country or 'Server'} • {rank:02d}"
+        )
+        local_decorated.append(rewrite_uri(str(node.get("uri", "")), label))
+
+    write_preserving(
+        Path("out/happ-local.txt"),
+        "Romlik Russia • Local Network Auto",
+        local_decorated,
+    )
+
     selected_nodes = select_visible_nodes(
         normal_nodes,
         tested_whitelist,
@@ -331,6 +386,7 @@ def main():
         "normal", normal_count,
         "whitelist", whitelist_count,
         "mobile_candidates", len(mobile_decorated),
+        "local_probe_candidates", len(local_decorated),
         flush=True,
     )
 
