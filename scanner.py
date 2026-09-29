@@ -28,6 +28,8 @@ CONCURRENCY = int(os.environ.get("CONCURRENCY", "350"))
 XRAY_TEST_KEEP = int(os.environ.get("XRAY_TEST_KEEP", "40"))
 XRAY_BATCH = int(os.environ.get("XRAY_BATCH", "16"))
 SPEED_TIMEOUT = float(os.environ.get("SPEED_TIMEOUT", "6"))
+HAPP_PROBE_URL = os.environ.get("HAPP_PROBE_URL", "https://cp.cloudflare.com/generate_204")
+HAPP_PROBE_TIMEOUT = float(os.environ.get("HAPP_PROBE_TIMEOUT", "6"))
 ROTATION_SECONDS = int(os.environ.get("ROTATION_SECONDS", "300"))
 
 
@@ -46,6 +48,8 @@ class Node:
     score: Optional[float] = None
     ok: bool = False
     error: str = ""
+    happ_probe_ok: bool = False
+    happ_probe_ms: Optional[float] = None
 
     def key(self):
         raw = self.uri.split("#", 1)[0]
@@ -299,6 +303,61 @@ def test_with_xray(n, idx):
             return n.ok
     except Exception as e:
         n.error = f"xray:{type(e).__name__}"
+        return False
+    finally:
+        if proc is not None:
+            proc.terminate()
+            try:
+                proc.wait(timeout=0.8)
+            except Exception:
+                proc.kill()
+
+
+def test_happ_with_xray(n, idx, url=None, timeout=None):
+    """Verify a node with the same HTTP probe used by HAPP.
+
+    This is an availability check, not a speed test. A node is considered
+    publishable only when the request succeeds through Xray and receives a 2xx
+    response from the HAPP probe URL.
+    """
+    url = url or HAPP_PROBE_URL
+    timeout = float(timeout or HAPP_PROBE_TIMEOUT)
+    port = 40000 + (idx % 20000)
+    proc = None
+    try:
+        cfg = {
+            "log": {"loglevel": "warning"},
+            "inbounds": [{"listen": "127.0.0.1", "port": port, "protocol": "socks", "settings": {"udp": False}}],
+            "outbounds": [outbound(n)],
+        }
+        with tempfile.TemporaryDirectory() as td:
+            fp = Path(td) / "x.json"
+            fp.write_text(json.dumps(cfg))
+            proc = subprocess.Popen(["xray", "run", "-c", str(fp)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            time.sleep(0.15)
+            cmd = [
+                "curl", "-L", "--silent", "--show-error", "--fail",
+                "--max-time", str(timeout), "--connect-timeout", "2.5",
+                "--socks5-hostname", f"127.0.0.1:{port}", "-o", os.devnull,
+                "-w", "%{http_code} %{time_starttransfer}", url,
+            ]
+            cp = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout + 2)
+            if cp.returncode != 0:
+                raise RuntimeError(cp.stderr.strip()[:120])
+            code_s, ttfb_s = cp.stdout.strip().split()[:2]
+            code = int(code_s)
+            if not 200 <= code < 300:
+                raise RuntimeError(f"http:{code}")
+            n.happ_probe_ok = True
+            n.happ_probe_ms = float(ttfb_s) * 1000
+            n.ok = True
+            n.error = ""
+            return True
+    except Exception as e:
+        n.happ_probe_ok = False
+        n.happ_probe_ms = None
+        n.ok = False
+        n.error = f"happ:{type(e).__name__}"
         return False
     finally:
         if proc is not None:
