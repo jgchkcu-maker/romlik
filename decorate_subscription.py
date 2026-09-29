@@ -2,6 +2,7 @@
 import base64
 import json
 import os
+import re
 import socket
 import urllib.parse
 import urllib.request
@@ -128,12 +129,39 @@ def select_visible_nodes(
     )
 
 
-def _local_priority(node):
-    """Order local-network candidates by how likely they are to survive mobile filtering.
+def _load_local_observations():
+    try:
+        data = json.loads(Path("local_observations.json").read_text())
+        working = data.get("working", {})
+        return {
+            str(k): float(v)
+            for k, v in working.items()
+            if isinstance(v, (int, float))
+        }
+    except Exception:
+        return {}
 
-    This is only a display/probe order. HAPP still performs the authoritative
-    proxy ping on the user's actual network and sorts by the measured result.
+
+LOCAL_OBSERVATIONS = _load_local_observations()
+
+
+def source_country_hint(node):
+    """Preserve the country tag supplied by the mobile/CIDR feed.
+
+    The entry IPs are often geolocated to Russia, which is not the same thing
+    as the route/country label in the source feed.
     """
+    remark = urllib.parse.unquote(str(node.get("remark") or "")).strip()
+    if not remark:
+        return ""
+    first = re.sub(r"\s+", " ", remark.split("|", 1)[0]).strip()
+    first = re.sub(r"\s*\[\*?CIDR\]\s*$", "", first, flags=re.IGNORECASE).strip()
+    # Keep normal country text such as "🇦🇹 Austria"; discard decorative junk.
+    return first if re.search(r"[A-Za-z]", first) else ""
+
+
+def _local_priority(node):
+    """Order local candidates from real device observations first."""
     try:
         p = urllib.parse.urlsplit(str(node.get("uri", "")))
         q = {k: (v[0] if v else "") for k, v in urllib.parse.parse_qs(p.query).items()}
@@ -141,15 +169,31 @@ def _local_priority(node):
         q = {}
     transport = str(q.get("type") or "tcp").lower()
     security = str(q.get("security") or "").lower()
+    sni = str(q.get("sni") or q.get("serverName") or "").lower()
     port = int(node.get("port") or 0)
     verified = 1 if is_verified(node) else 0
-    port443 = 1 if port == 443 else 0
-    tcp_like = 1 if transport in {"tcp", "raw"} else 0
-    reality = 1 if security == "reality" else 0
-    # For a device-local feed, path survivability matters more than a
-    # datacenter verification result. Put 443/TCP/RAW/Reality first; use the
-    # GitHub verification flag only as a tie-breaker.
-    return (port443, tcp_like, reality, verified, -port)
+
+    ident = logical_id(node)
+    observed_ms = LOCAL_OBSERVATIONS.get(ident)
+    observed = 1 if observed_ms is not None else 0
+    observed_latency = -float(observed_ms or 999999)
+
+    # The phone screenshot showed two surviving families:
+    #   1) XHTTP + TLS on 443
+    #   2) gRPC + Reality with dl.google.com on the 98xx ports.
+    # These are only ranking hints. HAPP remains the authoritative local test.
+    if port == 443 and transport == "xhttp" and security == "tls":
+        family = 4
+    elif transport == "grpc" and security == "reality" and sni == "dl.google.com":
+        family = 3
+    elif port == 443 and transport == "xhttp":
+        family = 2
+    elif port == 443 and transport in {"tcp", "raw"} and security == "reality":
+        family = 1
+    else:
+        family = 0
+
+    return (observed, observed_latency, family, verified, -port)
 
 
 def select_local_nodes(tested_whitelist, mobile_nodes, limit=WHITELIST_LIMIT):
@@ -312,7 +356,9 @@ def main():
 
     for rank, node in enumerate(mobile_nodes[:WHITELIST_LIMIT], 1):
         code, country = geo.get(str(node.get("host", "")), ("", ""))
-        label = f"🧪 {flag(code)} 📱 Mobile candidate • {country or 'Server'} • {rank:02d}"
+        route = source_country_hint(node)
+        place = route or f"{flag(code)} {country or 'Server'}"
+        label = f"🧪 📱 Mobile candidate • {place} • {rank:02d}"
         mobile_decorated.append(rewrite_uri(str(node.get("uri", "")), label))
 
     write_preserving(
@@ -325,15 +371,16 @@ def main():
     for rank, node in enumerate(local_nodes, 1):
         code, country = geo.get(str(node.get("host", "")), ("", ""))
         mark = "✅" if is_verified(node) else "🧪"
-        label = (
-            f"{mark} {flag(code)} 📱 Local probe • "
-            f"{country or 'Server'} • {rank:02d}"
-        )
+        route = source_country_hint(node)
+        place = route or f"{flag(code)} {country or 'Server'}"
+        observed_ms = LOCAL_OBSERVATIONS.get(logical_id(node))
+        learned = " 🎯" if observed_ms is not None else ""
+        label = f"{mark}{learned} 📱 Local probe • {place} • {rank:02d}"
         local_decorated.append(rewrite_uri(str(node.get("uri", "")), label))
 
     write_preserving(
         Path("out/happ-local.txt"),
-        "Romlik Russia • Local Network Auto",
+        "Romlik • Local Network Routes",
         local_decorated,
     )
 

@@ -17,6 +17,7 @@ on:
       - 'healthcheck.py'
       - 'tests/**'
       - 'sources.json'
+      - 'local_observations.json'
       - '.github/workflows/refresh.yml'
 
 permissions:

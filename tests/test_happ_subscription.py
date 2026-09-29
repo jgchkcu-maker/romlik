@@ -1,6 +1,12 @@
 import unittest
 
-from decorate_subscription import happ_text, select_local_nodes, select_visible_nodes
+from decorate_subscription import (
+    LOCAL_OBSERVATIONS,
+    happ_text,
+    select_local_nodes,
+    select_visible_nodes,
+    source_country_hint,
+)
 
 
 def node(host, *, pool="normal", source="src", score=10, mobile=False, uri=None):
@@ -39,7 +45,7 @@ class HappSubscriptionTests(unittest.TestCase):
 
         self.assertIn("vless://example", text)
 
-    def test_local_feed_includes_unverified_mobile_candidates_and_prefers_verified_443(self):
+    def test_local_feed_prefers_device_observed_route(self):
         verified = node(
             "95.215.108.36",
             pool="whitelist",
@@ -51,32 +57,29 @@ class HappSubscriptionTests(unittest.TestCase):
         verified["verified"] = True
         verified["happ_probe_ok"] = True
 
-        mobile_443 = node(
-            "91.240.87.237",
-            pool="whitelist",
-            source="mobile",
-            score=0,
-            mobile=True,
-            uri="vless://user@91.240.87.237:443?security=reality&type=raw&sni=example.com",
-        )
-        mobile_443["verified"] = False
-        mobile_443["happ_probe_ok"] = False
-
-        mobile_grpc = node(
+        observed_grpc = node(
             "176.108.246.110",
             pool="whitelist",
             source="mobile",
             score=0,
             mobile=True,
-            uri="vless://user@176.108.246.110:9830?security=reality&type=grpc&sni=example.com",
+            uri="vless://5d16ac22-6eea-426f-b778-6f4c2961faef@176.108.246.110:9830?encryption=none&pbk=bnRIb3Er1i-K6NGGByCO9UbGfOvu43ZoiK7ulPd1SzU&security=reality&serviceName=grpc-tunnel&sni=dl.google.com&type=grpc&fp=firefox",
         )
-        mobile_grpc["verified"] = False
-        mobile_grpc["happ_probe_ok"] = False
+        observed_grpc["verified"] = False
+        observed_grpc["happ_probe_ok"] = False
+        observed_grpc["port"] = 9830
 
-        selected = select_local_nodes([verified], [mobile_grpc, mobile_443], limit=10)
+        selected = select_local_nodes([verified], [observed_grpc], limit=10)
+        self.assertEqual("176.108.246.110", selected[0]["host"])
+
+    def test_source_country_hint_uses_feed_country_not_entry_ip_geo(self):
         self.assertEqual(
-            ["95.215.108.36", "91.240.87.237", "176.108.246.110"],
-            [x["host"] for x in selected],
+            "🇦🇹 Austria",
+            source_country_hint({"remark": "🇦🇹 Austria | [*CIDR]"}),
+        )
+        self.assertEqual(
+            "🇬🇧 United Kingdom",
+            source_country_hint({"remark": "🇬🇧 United Kingdom [*CIDR]"}),
         )
 
     def test_visible_nodes_use_diversity_pool_and_exclude_unverified_mobile_candidates(self):
