@@ -146,8 +146,10 @@ def _local_priority(node):
     port443 = 1 if port == 443 else 0
     tcp_like = 1 if transport in {"tcp", "raw"} else 0
     reality = 1 if security == "reality" else 0
-    # Higher tuple sorts first.
-    return (verified, port443, tcp_like, reality, -port)
+    # For a device-local feed, path survivability matters more than a
+    # datacenter verification result. Put 443/TCP/RAW/Reality first; use the
+    # GitHub verification flag only as a tie-breaker.
+    return (port443, tcp_like, reality, verified, -port)
 
 
 def select_local_nodes(tested_whitelist, mobile_nodes, limit=WHITELIST_LIMIT):
