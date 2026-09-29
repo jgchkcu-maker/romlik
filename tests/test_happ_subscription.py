@@ -73,8 +73,14 @@ class HappSubscriptionTests(unittest.TestCase):
         self.assertEqual("176.108.246.110", selected[0]["host"])
 
     def test_source_country_hint_uses_feed_country_not_entry_ip_geo(self):
-        item = {"remark": "🇦🇹 Austria | [*CIDR]"}
-        self.assertEqual("🇦🇹 Austria", source_country_hint(item))
+        self.assertEqual(
+            "🇦🇹 Austria",
+            source_country_hint({"remark": "🇦🇹 Austria | [*CIDR]"}),
+        )
+        self.assertEqual(
+            "🇬🇧 United Kingdom",
+            source_country_hint({"remark": "🇬🇧 United Kingdom [*CIDR]"}),
+        )
 
     def test_visible_nodes_use_diversity_pool_and_exclude_unverified_mobile_candidates(self):
         same_prefix = [
