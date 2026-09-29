@@ -1,6 +1,6 @@
 import unittest
 
-from decorate_subscription import happ_text, select_visible_nodes
+from decorate_subscription import happ_text, select_local_nodes, select_visible_nodes
 
 
 def node(host, *, pool="normal", source="src", score=10, mobile=False, uri=None):
@@ -38,6 +38,46 @@ class HappSubscriptionTests(unittest.TestCase):
                 self.assertIn(line, text)
 
         self.assertIn("vless://example", text)
+
+    def test_local_feed_includes_unverified_mobile_candidates_and_prefers_verified_443(self):
+        verified = node(
+            "95.215.108.36",
+            pool="whitelist",
+            source="verified",
+            score=10,
+            mobile=False,
+            uri="vless://user@95.215.108.36:443?security=reality&type=tcp&sni=example.com",
+        )
+        verified["verified"] = True
+        verified["happ_probe_ok"] = True
+
+        mobile_443 = node(
+            "91.240.87.237",
+            pool="whitelist",
+            source="mobile",
+            score=0,
+            mobile=True,
+            uri="vless://user@91.240.87.237:443?security=reality&type=raw&sni=example.com",
+        )
+        mobile_443["verified"] = False
+        mobile_443["happ_probe_ok"] = False
+
+        mobile_grpc = node(
+            "176.108.246.110",
+            pool="whitelist",
+            source="mobile",
+            score=0,
+            mobile=True,
+            uri="vless://user@176.108.246.110:9830?security=reality&type=grpc&sni=example.com",
+        )
+        mobile_grpc["verified"] = False
+        mobile_grpc["happ_probe_ok"] = False
+
+        selected = select_local_nodes([verified], [mobile_grpc, mobile_443], limit=10)
+        self.assertEqual(
+            ["95.215.108.36", "91.240.87.237", "176.108.246.110"],
+            [x["host"] for x in selected],
+        )
 
     def test_visible_nodes_use_diversity_pool_and_exclude_unverified_mobile_candidates(self):
         same_prefix = [
