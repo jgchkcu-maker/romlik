@@ -273,6 +273,7 @@ def outbound(n):
 
 
 def test_with_xray(n, idx):
+    n.ok = False
     port = 20000 + (idx % 20000)
     proc = None
     try:
