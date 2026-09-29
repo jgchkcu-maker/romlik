@@ -24,6 +24,11 @@ def _quality(node: dict):
     return score, mbps, -latency
 
 
+def is_verified(node: dict) -> bool:
+    """Only publish nodes that passed the HAPP-equivalent proxy probe."""
+    return bool(node.get("happ_probe_ok") or node.get("verified"))
+
+
 def _network_bucket(node: dict) -> str:
     host = str(node.get("host", "")).strip().strip("[]")
     try:
@@ -98,26 +103,25 @@ def _diverse_pick(nodes, limit, *, per_network_limit=4, per_source_limit=20, pre
 
 
 def select_candidates(normal, whitelist, mobile, total_limit=100, whitelist_limit=40):
-    """Return one representative per logical backend with diversity-first ordering.
+    """Return only verified logical backends for the main HAPP subscription.
 
-    Mobile whitelist entries are allowed without Azure metrics. Whitelist/mobile
-    candidates consume at most ``whitelist_limit`` slots; normal candidates fill
-    the rest. A final identity check prevents the same logical cluster from
-    appearing in both pools.
+    Carrier-specific mobile feeds remain a separate candidate pool. They may join
+    the main pool later only if an entry has explicit verification metadata from
+    the HAPP-equivalent proxy probe.
     """
     total_limit = max(0, int(total_limit))
     whitelist_limit = max(0, min(int(whitelist_limit), total_limit))
 
-    white_unique = _dedupe_best(list(mobile) + list(whitelist), prefer_mobile=True)
+    verified_white = [x for x in list(whitelist) + list(mobile) if is_verified(x)]
+    white_unique = _dedupe_best(verified_white)
     white_selected = _diverse_pick(
         white_unique,
         whitelist_limit,
-        prefer_mobile=True,
     )
 
     used = {logical_id(x) for x in white_selected}
     normal_unique = [
-        x for x in _dedupe_best(normal)
+        x for x in _dedupe_best([n for n in normal if is_verified(n)])
         if logical_id(x) not in used
     ]
     normal_selected = _diverse_pick(normal_unique, total_limit - len(white_selected))
