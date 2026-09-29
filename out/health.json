@@ -1,5 +1,5 @@
 {
-  "checked_at": 1790708450,
+  "checked_at": 1790708859,
   "status": "healthy",
   "combined": 100,
   "normal": 97,
@@ -11,7 +11,7 @@
   "unique_identities": 100,
   "duplicate_identities": [],
   "candidate_pools": {
-    "normal": 153,
+    "normal": 156,
     "whitelist": 3
   },
   "limits": {
@@ -23,8 +23,8 @@
     "whitelist": 3
   },
   "decorations": {
-    "lightning_entries": 7,
-    "flagged_entries_approx": 88
+    "lightning_entries": 6,
+    "flagged_entries_approx": 84
   },
   "warnings": [],
   "errors": []
