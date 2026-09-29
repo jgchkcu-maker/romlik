@@ -1,4 +1,5 @@
 import unittest
+import urllib.parse
 
 from scanner import Node, decorate
 
@@ -16,8 +17,8 @@ class ScannerTests(unittest.TestCase):
             happ_probe_ok=True,
             happ_probe_ms=123.4,
         )
-        decorated = decorate(node, 1)
-        self.assertIn("speed%20n/a", decorated)
+        decorated = urllib.parse.unquote(decorate(node, 1))
+        self.assertIn("speed n/a", decorated)
         self.assertIn("123ms", decorated)
 
 
