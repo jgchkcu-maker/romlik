@@ -155,6 +155,7 @@ def source_country_hint(node):
     if not remark:
         return ""
     first = re.sub(r"\s+", " ", remark.split("|", 1)[0]).strip()
+    first = re.sub(r"\s*\[\*?CIDR\]\s*$", "", first, flags=re.IGNORECASE).strip()
     # Keep normal country text such as "🇦🇹 Austria"; discard decorative junk.
     return first if re.search(r"[A-Za-z]", first) else ""
 
