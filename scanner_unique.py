@@ -17,8 +17,8 @@ scanner.Node.key = logical_key
 TARGET_NORMAL = int(os.environ.get("TARGET_NORMAL", "100"))
 TARGET_WHITELIST = int(os.environ.get("TARGET_WHITELIST", "40"))
 MAX_XRAY_PER_POOL = int(os.environ.get("MAX_XRAY_PER_POOL", "1200"))
-AVAIL_TEST_URL = os.environ.get("AVAIL_TEST_URL", "https://speed.cloudflare.com/__down?bytes=300000")
-AVAIL_TIMEOUT = float(os.environ.get("AVAIL_TIMEOUT", "6"))
+HAPP_PROBE_URL = os.environ.get("HAPP_PROBE_URL", "https://cp.cloudflare.com/generate_204")
+HAPP_PROBE_TIMEOUT = float(os.environ.get("HAPP_PROBE_TIMEOUT", "6"))
 FULL_TEST_URL = os.environ.get("SPEED_TEST_URL", "https://speed.cloudflare.com/__down?bytes=3000000")
 FULL_TIMEOUT = float(os.environ.get("SPEED_TIMEOUT", "12"))
 
@@ -27,9 +27,9 @@ def target_for(pool: str) -> int:
     return TARGET_WHITELIST if pool == "whitelist" else TARGET_NORMAL
 
 
-async def run_batch(batch, base_idx):
+async def run_batch(batch, base_idx, test_fn=scanner.test_with_xray):
     await asyncio.gather(*[
-        asyncio.to_thread(scanner.test_with_xray, n, base_idx + i)
+        asyncio.to_thread(test_fn, n, base_idx + i)
         for i, n in enumerate(batch)
     ])
 
@@ -54,15 +54,22 @@ async def main():
         target = target_for(pool)
         scanner.log(pool, "availability candidates", len(candidates), "target", target)
 
-        scanner.TEST_URL = AVAIL_TEST_URL
-        scanner.SPEED_TIMEOUT = AVAIL_TIMEOUT
         working = []
         for i in range(0, len(candidates), scanner.XRAY_BATCH):
             batch = candidates[i:i + scanner.XRAY_BATCH]
             base = 0 if pool == "normal" else 12000
-            await run_batch(batch, base + i)
+            await asyncio.gather(*[
+                asyncio.to_thread(
+                    scanner.test_happ_with_xray,
+                    n,
+                    base + i + j,
+                    HAPP_PROBE_URL,
+                    HAPP_PROBE_TIMEOUT,
+                )
+                for j, n in enumerate(batch)
+            ])
             tested.extend(batch)
-            working.extend(n for n in batch if n.ok)
+            working.extend(n for n in batch if n.happ_probe_ok)
             scanner.log(
                 pool,
                 "availability",
