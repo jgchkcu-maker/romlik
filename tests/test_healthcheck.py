@@ -6,7 +6,7 @@ from healthcheck import validate_visible_records
 class HealthcheckTests(unittest.TestCase):
     def test_duplicate_visible_identity_is_an_error(self):
         records = [
-            {"identity": "same", "pool": "normal", "mobile_candidate": False},
+            {"identity": "same", "pool": "normal", "mobile_candidate": False, "verified": True},
             {"identity": "same", "pool": "normal", "mobile_candidate": False},
         ]
         result = validate_visible_records(records, expected_count=2)
@@ -17,7 +17,7 @@ class HealthcheckTests(unittest.TestCase):
 
     def test_visible_whitelist_limit_and_count_mismatch_are_errors(self):
         records = [
-            {"identity": f"w{i}", "pool": "whitelist", "mobile_candidate": i < 2}
+            {"identity": f"w{i}", "pool": "whitelist", "mobile_candidate": i < 2, "verified": True}
             for i in range(5)
         ]
         result = validate_visible_records(
@@ -32,10 +32,20 @@ class HealthcheckTests(unittest.TestCase):
         self.assertTrue(any("whitelist" in e.lower() for e in result["errors"]))
         self.assertTrue(any("mismatch" in e.lower() for e in result["errors"]))
 
+    def test_unverified_visible_server_is_an_error(self):
+        records = [
+            {"identity": "a", "pool": "normal", "mobile_candidate": False, "verified": True},
+            {"identity": "b", "pool": "whitelist", "mobile_candidate": True, "verified": False},
+        ]
+        result = validate_visible_records(records, expected_count=2)
+        self.assertEqual(1, result["verified"])
+        self.assertEqual(1, result["unverified"])
+        self.assertTrue(any("unverified" in e.lower() for e in result["errors"]))
+
     def test_clean_visible_pool_passes(self):
         records = [
-            {"identity": "a", "pool": "normal", "mobile_candidate": False},
-            {"identity": "b", "pool": "whitelist", "mobile_candidate": True},
+            {"identity": "a", "pool": "normal", "mobile_candidate": False, "verified": True},
+            {"identity": "b", "pool": "whitelist", "mobile_candidate": False, "verified": True},
         ]
         result = validate_visible_records(records, expected_count=2)
         self.assertEqual([], result["errors"])
