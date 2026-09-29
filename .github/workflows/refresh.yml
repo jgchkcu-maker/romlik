@@ -123,7 +123,7 @@ jobs:
           git config user.name "romlik-bot"
           git config user.email "actions@users.noreply.github.com"
           git add out/
-          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt out/happ-mobile.txt out/happ-auto.json out/auto-profile-status.json out/mobile-whitelist.json out/mobile-whitelist-status.json out/health.json out/real-servers.json; then
+          if git diff --cached --quiet -- out/normal.txt out/whitelist.txt out/happ.txt out/happ-normal.txt out/happ-whitelist.txt out/happ-mobile.txt out/happ-local.txt out/happ-auto.json out/auto-profile-status.json out/mobile-whitelist.json out/mobile-whitelist-status.json out/health.json out/real-servers.json; then
             echo "Subscriptions did not change"
             git reset
             git restore out/ 2>/dev/null || true
