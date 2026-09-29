@@ -61,6 +61,8 @@ def validate_visible_records(
     unique = len(identity_counts)
     whitelist = sum(1 for r in records if r.get("pool") == "whitelist")
     mobile = sum(1 for r in records if bool(r.get("mobile_candidate")))
+    verified = sum(1 for r in records if bool(r.get("verified") or r.get("happ_probe_ok")))
+    unverified = visible - verified
     normal = visible - whitelist
 
     errors = []
@@ -83,6 +85,10 @@ def validate_visible_records(
         errors.append(
             f"Visible record count mismatch: happ={int(expected_count)} real_servers={visible}"
         )
+    if unverified:
+        errors.append(
+            f"Main HAPP subscription contains {unverified} unverified servers"
+        )
 
     return {
         "visible": visible,
@@ -90,6 +96,8 @@ def validate_visible_records(
         "normal": normal,
         "whitelist": whitelist,
         "mobile": mobile,
+        "verified": verified,
+        "unverified": unverified,
         "duplicates": duplicates,
         "missing_identities": missing,
         "errors": errors,
@@ -105,6 +113,7 @@ def main():
     normal_pool = read_lines("out/normal.txt")
     whitelist_pool = read_lines("out/whitelist.txt")
     visible_records = read_json_list("out/real-servers.json")
+    mobile_candidates = read_json_list("out/mobile-whitelist.json")
     prev_combined = previous_lines("out/happ.txt")
     prev_whitelist = previous_lines("out/happ-whitelist.txt")
 
@@ -131,7 +140,9 @@ def main():
     if len(combined) < 20:
         warnings.append(f"Combined subscription is small: {len(combined)} servers")
     if not whitelist_pool:
-        warnings.append("Current scan found 0 whitelist servers")
+        warnings.append("Current scan found 0 verified whitelist servers")
+    elif len(whitelist_pool) == 1:
+        warnings.append("Only 1 verified whitelist server is currently available")
 
     if prev_combined and len(combined) < max(5, int(len(prev_combined) * 0.5)):
         warnings.append(
@@ -154,6 +165,9 @@ def main():
         "normal": visible["normal"],
         "whitelist": visible["whitelist"],
         "mobile": visible["mobile"],
+        "verified": visible["verified"],
+        "unverified": visible["unverified"],
+        "mobile_candidates": len(mobile_candidates),
         "unique_identities": visible["unique"],
         "duplicate_identities": visible["duplicates"],
         "candidate_pools": {
@@ -182,6 +196,9 @@ def main():
         "normal", visible["normal"],
         "whitelist", visible["whitelist"],
         "mobile", visible["mobile"],
+        "verified", visible["verified"],
+        "unverified", visible["unverified"],
+        "mobile_candidates", len(mobile_candidates),
         flush=True,
     )
 
