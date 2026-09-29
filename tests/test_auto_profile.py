@@ -15,6 +15,8 @@ class AutoProfileTests(unittest.TestCase):
             "country_code": country,
             "country": country,
             "mobile_candidate": mobile,
+            "verified": True,
+            "happ_probe_ok": True,
             "score": 1000 - idx,
             "mbps": 100 - idx / 10,
             "latency_ms": 20 + idx,
@@ -46,6 +48,19 @@ class AutoProfileTests(unittest.TestCase):
         self.assertEqual(cfg["observatory"]["subjectSelector"], ["proxy-"])
         self.assertTrue(cfg["observatory"]["enableConcurrency"])
         self.assertEqual(cfg["inbounds"][0]["port"], 10808)
+
+    def test_unverified_node_is_not_used_as_auto_fallback(self):
+        verified = self._node(1, "US")
+        unverified = self._node(2, "DE", mobile=True)
+        unverified["verified"] = False
+        unverified["happ_probe_ok"] = False
+        unverified["score"] = 99999
+
+        payload = build_subscription([unverified, verified])
+        cfg = payload[0]
+        proxies = [x for x in cfg["outbounds"] if x.get("tag", "").startswith("proxy-")]
+        self.assertEqual(1, len(proxies))
+        self.assertEqual("proxy-001", cfg["routing"]["balancers"][0]["fallbackTag"])
 
     def test_tls_outbound_does_not_emit_removed_allow_insecure(self):
         node = self._node(9, "DE")
