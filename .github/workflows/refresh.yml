@@ -5,7 +5,7 @@ on:
     - cron: '*/10 * * * *'
   workflow_dispatch:
   push:
-    branches: [main, feature/local-auto-selection, feature/single-auto-profile, fix/local-network-adaptive-feed]
+    branches: [main, feature/local-auto-selection, feature/single-auto-profile]
     paths:
       - 'scanner.py'
       - 'scanner_unique.py'
