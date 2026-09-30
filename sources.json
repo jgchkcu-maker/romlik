@@ -31,6 +31,22 @@
     {
       "name": "Baarcuda-top100-vless",
       "url": "https://raw.githubusercontent.com/Baarcuda/vpn-configs/master/top100-vless.txt"
+    },
+    {
+      "name": "slxkware-black",
+      "url": "https://raw.githubusercontent.com/slxkware/Vless-list/main/Black%20Vless.txt"
+    },
+    {
+      "name": "rkp-blacklist",
+      "url": "https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/main/blacklist.txt"
+    },
+    {
+      "name": "flarefeed-fastest",
+      "url": "https://raw.githubusercontent.com/svinakraft-maker/FlareFeed/main/public/fastest.txt"
+    },
+    {
+      "name": "aliilapro-all",
+      "url": "https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/main/server.txt"
     }
   ],
   "whitelist": [
@@ -65,6 +81,14 @@
     {
       "name": "wlunlocker-cidr3-eu",
       "url": "https://raw.githubusercontent.com/wlunlocker/vpn-configs/main/whitelist_cidr3_eu.txt"
+    },
+    {
+      "name": "slxkware-white",
+      "url": "https://raw.githubusercontent.com/slxkware/Vless-list/main/White%20Vless.txt"
+    },
+    {
+      "name": "rkp-whitelist",
+      "url": "https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/main/whitelist.txt"
     }
   ]
 }
