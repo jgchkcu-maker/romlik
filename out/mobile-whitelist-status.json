@@ -1,21 +1,11 @@
 {
-  "count": 31,
+  "count": 40,
   "limit": 40,
   "sources": [
     {
       "name": "igareck-mobile",
-      "raw": 129,
-      "parsed": 129
-    },
-    {
-      "name": "igareck-cidr-checked",
-      "raw": 0,
-      "parsed": 0
-    },
-    {
-      "name": "igareck-cidr-all",
-      "raw": 129,
-      "parsed": 129
+      "raw": 142,
+      "parsed": 142
     }
   ],
   "note": "Unverified carrier-specific candidates only. They are excluded from the main HAPP/AUTO pools until a HAPP-equivalent proxy probe succeeds."
